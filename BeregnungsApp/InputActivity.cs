@@ -12,14 +12,16 @@ using Android.Widget;
 
 namespace BeregnungsApp
 {
-    [Activity(Label = "SecondActivity")]
-    public class SecondActivity : Activity
+    [Activity(Label = "InputActivity")]
+    public class InputActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            // Set our view from the "main" layout resource
+            SetContentView(Resource.Layout.activity_input);
             // Create your application here
+
         }
     }
 }

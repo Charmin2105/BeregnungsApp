@@ -34,7 +34,7 @@ namespace BeregnungsApp
             var mail = editTextEmail.Text.ToString();
             var password =  editTextPassword.Text.ToString();
             Login(mail, password);
-            Intent intent = new Intent(this, typeof(SecondActivity));
+            Intent intent = new Intent(this, typeof(InputActivity));
             StartActivity(intent);
         }
         private void Login(string mail, string password)
