@@ -15,6 +15,7 @@ using REST.Api.Entities;
 using REST.Api.Services;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace REST.Api
 {
@@ -38,14 +39,17 @@ namespace REST.Api
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var connectionString = Configuration["connectionStrings:BeregnungsDBConnectionString"];
-            services.AddDbContext<BeregnungsContext>(opt =>  opt.UseSqlServer(connectionString));            
+            services.AddDbContext<BeregnungsContext>(opt => opt.UseSqlServer(connectionString));
 
             services.AddScoped<IBeregnungsRepository, BeregnungsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,BeregnungsContext beregnungsContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BeregnungsContext beregnungsContext)
         {
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug(LogLevel.Information);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -57,6 +61,13 @@ namespace REST.Api
                 {
                     appBuilder.Run(async context =>
                     {
+                        var exceotionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+                        if (exceotionHandlerFeature !=null)
+                        {
+                            var logger = loggerFactory.CreateLogger("Globaler Exception logger");
+                            logger.LogError(500, exceotionHandlerFeature.Error, exceotionHandlerFeature.Error.Message);
+                        }
+
                         context.Response.StatusCode = 500;
                         await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
 
@@ -69,6 +80,9 @@ namespace REST.Api
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                     $"{src.Name}"));
                 cfg.CreateMap<Models.SchlagForCreationDto, Entities.Schlag>();
+
+                cfg.CreateMap<Models.SchlagForUpdateDto, Entities.Schlag>();
+                cfg.CreateMap<Entities.Schlag, Models.SchlagForUpdateDto>();
 
             });
 

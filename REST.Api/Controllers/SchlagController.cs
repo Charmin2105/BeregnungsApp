@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using REST.Api.Entities;
 using REST.Api.Models;
 using REST.Api.Services;
@@ -12,9 +14,11 @@ namespace REST.Api.Controllers
     public class SchlagController : Controller
     {
         private IBeregnungsRepository _beregnungsRepository;
+        private ILogger<SchlagController> _iLogger;
 
-        public SchlagController(IBeregnungsRepository beregnungsRepository)
+        public SchlagController(IBeregnungsRepository beregnungsRepository,ILogger<SchlagController> ilogger)
         {
+            _iLogger = ilogger;
             _beregnungsRepository = beregnungsRepository;
         }
 
@@ -34,7 +38,7 @@ namespace REST.Api.Controllers
         [HttpGet("{id}", Name = "GetSchlag")]
         public IActionResult GetSchlaege(Guid id)
         {
-            
+
             var schlagfromRepo = _beregnungsRepository.GetSchlaege(id);
             if (schlagfromRepo == null)
             {
@@ -57,6 +61,20 @@ namespace REST.Api.Controllers
                 return BadRequest();
             }
 
+            //Für evtl.spätere weitere Eigenschaft die Validiert werden müssen
+            //if (schlag.Name == schlag.irgendwas)
+            //{
+            //    ModelState.AddModelError(nameof(SchlagForCreationDto), "Name und irgendwas darf nicht gleich sein");
+            //}
+
+            if (!ModelState.IsValid)
+            {
+                //return 422
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
+            
+
             var schlagEntity = Mapper.Map<Schlag>(schlag);
 
             _beregnungsRepository.AddSchlag(schlagEntity);
@@ -67,16 +85,19 @@ namespace REST.Api.Controllers
             }
             var schlagToReturn = Mapper.Map<SchlagDto>(schlagEntity);
 
+            _iLogger.LogInformation($"CreatSchlag erfolgreich ID: {schlagToReturn.Id} .");
+
             return CreatedAtRoute("GetSchlag",
                 new { id = schlagToReturn.Id },
                 schlagToReturn);
+
         }
 
-        // Hinzufügen eines Schlages.
+        // Löschen eines Schlages.
         /// <param name="id">Id des zu löschenden Schlag.</param>
         /// <returns>NoContent  Code</returns>
         [HttpDelete("{id}")]
-        public IActionResult DeleteSchlag (Guid id)
+        public IActionResult DeleteSchlag(Guid id)
         {
             //Existiert der Schlag?
             /// <returns>NotFound </returns>
@@ -86,14 +107,164 @@ namespace REST.Api.Controllers
             }
 
             var schlagFromRepo = _beregnungsRepository.GetSchlaege(id);
+            if (schlagFromRepo == null)
+            {
+                return NotFound();
+            }
             _beregnungsRepository.DeleteSchlag(schlagFromRepo);
-            
+
             if (!_beregnungsRepository.Save())
             {
                 throw new Exception($"Löschen des Schlags schlug fehl. ");
             }
+            _iLogger.LogInformation($"Schlag {schlagFromRepo.Name} erfolgreich gelöscht.");
 
             return NoContent();
+        }
+
+        // Update eines Schlages.
+        /// <param name="id">Id des zu updatenden Schlag.</param>
+        /// <param name="schlag">Schlag Entity</param>
+        /// <returns>NoContent  Code</returns>
+        [HttpPut("{id}")]
+        public IActionResult UpdateSchlag(Guid id, [FromBody]SchlagForUpdateDto schlag)
+        {
+            //geänderte Daten
+            /// <returns>BadRequest </returns>
+            if (schlag == null)
+            {
+                return BadRequest();
+            }
+
+            //Existiert der Schlag?
+            /// <returns>NotFound </returns>
+            if (!_beregnungsRepository.SchlagExists(id))
+            {
+                var schlagEntity = Mapper.Map<Schlag>(schlag);
+                schlagEntity.ID = id;
+
+                _beregnungsRepository.AddSchlag(schlagEntity);
+
+                if (!_beregnungsRepository.Save())
+                {
+                    throw new Exception($"Upserting schlug fehl.");
+                }
+
+                var schlagToReturn = Mapper.Map<SchlagDto>(schlagEntity);
+
+                return CreatedAtRoute("GetSchlag",
+                    new { id = schlagToReturn.Id },
+                    schlagToReturn);
+            }
+            var schlagFromRepo = _beregnungsRepository.GetSchlaege(id);
+            //if (schlagFromRepo == null)
+            //{
+            //    var schlagEntity = Mapper.Map<Schlag>(schlag);
+            //    schlagEntity.ID = id;
+
+            //    _beregnungsRepository.AddSchlag(schlagEntity);
+
+            //    if (!_beregnungsRepository.Save())
+            //    {
+            //        throw new Exception($"Upserting schlug fehl.");
+            //    }
+
+            //    var schlagToReturn = Mapper.Map<SchlagDto>(schlagEntity);
+
+            //    return CreatedAtRoute("GetSchlag",
+            //        new { id = schlagToReturn.Id },
+            //        schlagToReturn);
+            //}
+
+            Mapper.Map(schlag, schlagFromRepo);
+
+            _beregnungsRepository.UpdateSchlag(schlagFromRepo);
+
+            if (!_beregnungsRepository.Save())
+            {
+                throw new Exception($"Speichern des Schlags schlug fehl. ");
+            }
+
+            _iLogger.LogInformation($"Update Schlag mit ID: {schlagFromRepo.ID} erfolgreich.");
+
+            return NoContent();
+        }
+
+        // Teilupdate eines Schlages.
+        /// <param name="id">Id des zu updatenden Schlag.</param>
+        /// <param name="patchDoc">Schlag Entity</param>
+        /// <returns>NoContent  Code</returns>
+        [HttpPatch("{id}")]
+        public IActionResult PartiallyUpdateSchlag(Guid id,
+            [FromBody]JsonPatchDocument<SchlagForUpdateDto> patchDoc)
+        {
+            //Eingabe ist nicht null
+            if (patchDoc == null)
+            {
+                return BadRequest();
+            }
+            //Existiert der Schlag?
+            /// <returns>NotFound </returns>
+            if (!_beregnungsRepository.SchlagExists(id))
+            {
+                return NotFound();
+            }
+
+            var schlagFromRepo = _beregnungsRepository.GetSchlaege(id);
+
+            if (schlagFromRepo == null)
+            {
+                var schlagDto = new SchlagForUpdateDto();
+                patchDoc.ApplyTo(schlagDto);
+
+                TryValidateModel(schlagDto);
+
+                if (!ModelState.IsValid)
+                {
+                    return new UnprocessableEntityObjectResult(ModelState);
+                }
+
+                var schlagToAdd = Mapper.Map<Schlag>(schlagDto);
+                schlagToAdd.ID = id;
+
+                _beregnungsRepository.AddSchlag(schlagToAdd);
+
+                if (!_beregnungsRepository.Save())
+                {
+                    throw new Exception($"Upserting Schlag mit der ID: {id} schlug fehl");
+                }
+                var schlagToReturn = Mapper.Map<SchlagDto>(schlagToAdd);
+
+                return CreatedAtRoute("GetSchlag",
+                        new { id = schlagToReturn.Id },
+                        schlagToReturn);
+            }
+
+            var schlagToPatch = Mapper.Map<SchlagForUpdateDto>(schlagFromRepo);
+
+            patchDoc.ApplyTo(schlagToPatch,ModelState);
+
+            TryValidateModel(schlagToPatch);
+
+            if (!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
+
+            Mapper.Map(schlagToPatch, schlagFromRepo);
+
+            _beregnungsRepository.UpdateSchlag(schlagFromRepo);
+            if (!_beregnungsRepository.Save())
+            {
+                throw new Exception($"Patch Schlag mit der ID: {id} schlug fehl");
+            }
+
+            _iLogger.LogInformation($"Patch Schlag mit ID: {schlagFromRepo.ID} erfolgreich.");
+
+            return NoContent();
+
+
         }
     }
 }

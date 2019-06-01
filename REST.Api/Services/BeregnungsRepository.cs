@@ -53,7 +53,7 @@ namespace REST.Api.Services
 
         public void UpdateSchlag(Schlag schlag)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
