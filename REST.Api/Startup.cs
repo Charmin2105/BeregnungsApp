@@ -16,6 +16,8 @@ using REST.Api.Services;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace REST.Api
 {
@@ -42,6 +44,15 @@ namespace REST.Api
             services.AddDbContext<BeregnungsContext>(opt => opt.UseSqlServer(connectionString));
 
             services.AddScoped<IBeregnungsRepository, BeregnungsRepository>();
+
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.AddScoped<IUrlHelper, UrlHelper>(
+                implementationFactory =>
+                {
+                    var actionContext = implementationFactory.GetService<IActionContextAccessor>().ActionContext;
+                    return new UrlHelper(actionContext);
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

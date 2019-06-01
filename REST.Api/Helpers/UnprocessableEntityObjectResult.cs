@@ -11,7 +11,7 @@ namespace REST.Api.Helpers
     public class UnprocessableEntityObjectResult: ObjectResult
     {
         /// <summary>
-        /// 
+        /// UnprocessableEntityObjectResult
         /// </summary>
         /// <param name="modelState"></param>
         public UnprocessableEntityObjectResult(ModelStateDictionary modelState)

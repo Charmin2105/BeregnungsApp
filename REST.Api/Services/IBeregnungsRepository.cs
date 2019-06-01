@@ -1,4 +1,5 @@
 ﻿using REST.Api.Entities;
+using REST.Api.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace REST.Api.Services
 {
     public interface IBeregnungsRepository
     {
-        IEnumerable<Schlag> GetSchlaege();
+        PagedList<Schlag> GetSchlaege(SchlagResourceParameters schlagResourceParameters);
 
         Schlag GetSchlaege(Guid Id);
 

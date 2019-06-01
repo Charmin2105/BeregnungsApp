@@ -21,7 +21,7 @@ namespace REST.Api.Entities
 
         [Required]
         [MaxLength(50)]
-        public int SchlagID { get; set; }
+        public Guid SchlagID { get; set; }
 
         [Required]
         [MaxLength(50)]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using REST.Api.Entities;
+using REST.Api.Helpers;
 
 namespace REST.Api.Services
 {
@@ -26,9 +27,10 @@ namespace REST.Api.Services
             _context.Schlaege.Remove(schlag);
         }
 
-        public IEnumerable<Schlag> GetSchlaege()
+        public PagedList<Schlag> GetSchlaege(SchlagResourceParameters schlagRessource)
         {
-            return _context.Schlaege.ToList();
+            var collectionBeforPaging = _context.Schlaege.OrderBy(a => a.Name);
+            return PagedList<Schlag>.Create(collectionBeforPaging, schlagRessource.PageNumber, schlagRessource.PageSize);
         }
 
         public Schlag GetSchlaege(Guid Id)
