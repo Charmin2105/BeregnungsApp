@@ -15,7 +15,7 @@ namespace REST.Api.Controllers
     public class SchlagController : Controller
     {
         //fields
-        private IBeregnungsRepository _beregnungsRepository;
+        private ISchlagRepository _schlagRepository;
         private ILogger<SchlagController> _iLogger;
         private IUrlHelper _urlHelper;
 
@@ -26,10 +26,10 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="beregnungsRepository"></param>
         /// <param name="ilogger"></param>
-        public SchlagController(IBeregnungsRepository beregnungsRepository, ILogger<SchlagController> ilogger, IUrlHelper urlHelper)
+        public SchlagController(ISchlagRepository schlagRepository, ILogger<SchlagController> ilogger, IUrlHelper urlHelper)
         {
             _iLogger = ilogger;
-            _beregnungsRepository = beregnungsRepository;
+            _schlagRepository = schlagRepository;
             _urlHelper = urlHelper;
         }
         #endregion
@@ -42,9 +42,9 @@ namespace REST.Api.Controllers
         /// /// <param name="pageSize">Seitenzahl die Angezeigt werden soll</param>
         /// <returns>OK Code </returns>
         [HttpGet(Name = "GetSchlaege")]
-        public IActionResult GetSchlaege(SchlagResourceParameters schlagRessourceParameters)
+        public IActionResult GetSchlaege(ResourceParameters schlagRessourceParameters)
         {
-            var schlagfromRepo = _beregnungsRepository.GetSchlaege(schlagRessourceParameters);
+            var schlagfromRepo = _schlagRepository.GetSchlaege(schlagRessourceParameters);
             
             // erstellen der Links
             var previousPageLink = schlagfromRepo.HasPrevious ? 
@@ -70,33 +70,34 @@ namespace REST.Api.Controllers
             var schlag = Mapper.Map<IEnumerable<SchlagDto>>(schlagfromRepo);
             return Ok(schlag);
         }
+
         /// <summary>
         /// CreateSchlagResourceUri
         /// </summary>
         /// <param name="schlagRessourceParameters">Übergabe der RessourceParameter</param>
         /// <param name="type">Übergabe der ResourceUriType </param>
         /// <returns>Link</returns>
-        private string CreateSchlagResourceUri(SchlagResourceParameters schlagRessourceParameters, ResourceUriType type)
+        private string CreateSchlagResourceUri(ResourceParameters resourceParameters, ResourceUriType type)
         {
             switch (type)
             {
                 case ResourceUriType.PreviousPage:
                     return _urlHelper.Link("GetSchlaege", new
                     {
-                        pageNumber = schlagRessourceParameters.PageNumber - 1,
-                        pageSize = schlagRessourceParameters.PageSize
+                        pageNumber = resourceParameters.PageNumber - 1,
+                        pageSize = resourceParameters.PageSize
                     });
                 case ResourceUriType.NextPage:
                     return _urlHelper.Link("GetSchlaege", new
                     {
-                        pageNumber = schlagRessourceParameters.PageNumber + 1,
-                        pageSize = schlagRessourceParameters.PageSize
+                        pageNumber = resourceParameters.PageNumber + 1,
+                        pageSize = resourceParameters.PageSize
                     });
                 default:
                     return _urlHelper.Link("GetSchlaege", new
                     {
-                        pageNumber = schlagRessourceParameters.PageNumber,
-                        pageSize = schlagRessourceParameters.PageSize
+                        pageNumber = resourceParameters.PageNumber,
+                        pageSize = resourceParameters.PageSize
                     });
             }
         }
@@ -110,7 +111,7 @@ namespace REST.Api.Controllers
         public IActionResult GetSchlaege(Guid id)
         {
 
-            var schlagfromRepo = _beregnungsRepository.GetSchlaege(id);
+            var schlagfromRepo = _schlagRepository.GetSchlaege(id);
             if (schlagfromRepo == null)
             {
                 return NotFound();
@@ -150,9 +151,9 @@ namespace REST.Api.Controllers
 
             var schlagEntity = Mapper.Map<Schlag>(schlag);
 
-            _beregnungsRepository.AddSchlag(schlagEntity);
+            _schlagRepository.AddSchlag(schlagEntity);
 
-            if (!_beregnungsRepository.Save())
+            if (!_schlagRepository.Save())
             {
                 throw new Exception("Fehler beim Speichern eines neuen Schlages");
             }
@@ -176,19 +177,19 @@ namespace REST.Api.Controllers
         {
             //Existiert der Schlag?
             /// <returns>NotFound </returns>
-            if (!_beregnungsRepository.SchlagExists(id))
+            if (!_schlagRepository.SchlagExists(id))
             {
                 return NotFound();
             }
 
-            var schlagFromRepo = _beregnungsRepository.GetSchlaege(id);
+            var schlagFromRepo = _schlagRepository.GetSchlaege(id);
             if (schlagFromRepo == null)
             {
                 return NotFound();
             }
-            _beregnungsRepository.DeleteSchlag(schlagFromRepo);
+            _schlagRepository.DeleteSchlag(schlagFromRepo);
 
-            if (!_beregnungsRepository.Save())
+            if (!_schlagRepository.Save())
             {
                 throw new Exception($"Löschen des Schlags schlug fehl. ");
             }
@@ -215,14 +216,14 @@ namespace REST.Api.Controllers
 
             //Existiert der Schlag?
             /// <returns>NotFound </returns>
-            if (!_beregnungsRepository.SchlagExists(id))
+            if (!_schlagRepository.SchlagExists(id))
             {
                 var schlagEntity = Mapper.Map<Schlag>(schlag);
                 schlagEntity.ID = id;
 
-                _beregnungsRepository.AddSchlag(schlagEntity);
+                _schlagRepository.AddSchlag(schlagEntity);
 
-                if (!_beregnungsRepository.Save())
+                if (!_schlagRepository.Save())
                 {
                     throw new Exception($"Upserting schlug fehl.");
                 }
@@ -233,7 +234,7 @@ namespace REST.Api.Controllers
                     new { id = schlagToReturn.Id },
                     schlagToReturn);
             }
-            var schlagFromRepo = _beregnungsRepository.GetSchlaege(id);
+            var schlagFromRepo = _schlagRepository.GetSchlaege(id);
             //if (schlagFromRepo == null)
             //{
             //    var schlagEntity = Mapper.Map<Schlag>(schlag);
@@ -255,9 +256,9 @@ namespace REST.Api.Controllers
 
             Mapper.Map(schlag, schlagFromRepo);
 
-            _beregnungsRepository.UpdateSchlag(schlagFromRepo);
+            _schlagRepository.UpdateSchlag(schlagFromRepo);
 
-            if (!_beregnungsRepository.Save())
+            if (!_schlagRepository.Save())
             {
                 throw new Exception($"Speichern des Schlags schlug fehl. ");
             }
@@ -284,12 +285,12 @@ namespace REST.Api.Controllers
             }
             //Existiert der Schlag?
             /// <returns>NotFound </returns>
-            if (!_beregnungsRepository.SchlagExists(id))
+            if (!_schlagRepository.SchlagExists(id))
             {
                 return NotFound();
             }
 
-            var schlagFromRepo = _beregnungsRepository.GetSchlaege(id);
+            var schlagFromRepo = _schlagRepository.GetSchlaege(id);
 
             if (schlagFromRepo == null)
             {
@@ -306,9 +307,9 @@ namespace REST.Api.Controllers
                 var schlagToAdd = Mapper.Map<Schlag>(schlagDto);
                 schlagToAdd.ID = id;
 
-                _beregnungsRepository.AddSchlag(schlagToAdd);
+                _schlagRepository.AddSchlag(schlagToAdd);
 
-                if (!_beregnungsRepository.Save())
+                if (!_schlagRepository.Save())
                 {
                     throw new Exception($"Upserting Schlag mit der ID: {id} schlug fehl");
                 }
@@ -333,8 +334,8 @@ namespace REST.Api.Controllers
 
             Mapper.Map(schlagToPatch, schlagFromRepo);
 
-            _beregnungsRepository.UpdateSchlag(schlagFromRepo);
-            if (!_beregnungsRepository.Save())
+            _schlagRepository.UpdateSchlag(schlagFromRepo);
+            if (!_schlagRepository.Save())
             {
                 throw new Exception($"Patch Schlag mit der ID: {id} schlug fehl");
             }

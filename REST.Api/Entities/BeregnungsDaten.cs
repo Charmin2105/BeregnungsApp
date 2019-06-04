@@ -3,18 +3,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace REST.Api.Entities
 {
-    public class Daten
+    public class BeregnungsDaten
     {
         [Key]
         public Guid ID { get; set; }
 
         [Required]
-        public DateTime StartDatum { get; set; }
+        public DateTimeOffset StartDatum { get; set; }
 
         public DateTime StartUhrzeit { get; set; }
 
         [Required]
-        public DateTime EndDatum { get; set; }
+        public DateTimeOffset EndDatum { get; set; }
 
         [Required]
         public string Betrieb { get; set; }
@@ -33,9 +33,11 @@ namespace REST.Api.Entities
         [Required]
         public int WasseruhrEnde { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string Vorkomnisse { get; set; }
+
+        [Required]
+        public bool IstAbgeschlossen { get; set; }
 
     }
 }

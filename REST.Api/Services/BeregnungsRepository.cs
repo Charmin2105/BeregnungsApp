@@ -7,55 +7,94 @@ using REST.Api.Helpers;
 
 namespace REST.Api.Services
 {
+    /// <summary>
+    /// Daten verarbeiten
+    /// </summary>
     public class BeregnungsRepository : IBeregnungsRepository
     {
+
         private BeregnungsContext _context;
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="context">Datenbank Inhalt</param>
         public BeregnungsRepository(BeregnungsContext context)
         {
             _context = context;
         }
-
-        public void AddSchlag(Schlag schlag)
+        /// <summary>
+        /// Hinzufügen neuer Daten
+        /// </summary>
+        /// <param name="daten">Neue Daten</param>
+        public void AddBeregnungsDaten(BeregnungsDaten daten)
         {
-            schlag.ID = Guid.NewGuid();
-            _context.Schlaege.Add(schlag);
+            daten.ID = Guid.NewGuid();
+            _context.BeregnungsDatens.Add(daten);
         }
 
-        public void DeleteSchlag(Schlag schlag)
+        /// <summary>
+        /// Abfrage ob eine bestimmte Daten existieren
+        /// </summary>
+        /// <param name="guid">Abzufragende Daten</param>
+        /// <returns>bool</returns>
+        public bool BeregnungsDatenExists(Guid guid)
         {
-            _context.Schlaege.Remove(schlag);
+            return _context.BeregnungsDatens.Any(a => a.ID == guid);
         }
 
-        public PagedList<Schlag> GetSchlaege(SchlagResourceParameters schlagRessource)
+        /// <summary>
+        /// Daten löschen
+        /// </summary>
+        /// <param name="daten">Zu löschende Daten</param>
+        public void DeleteBeregnungsDaten(BeregnungsDaten daten)
         {
-            var collectionBeforPaging = _context.Schlaege.OrderBy(a => a.Name);
-            return PagedList<Schlag>.Create(collectionBeforPaging, schlagRessource.PageNumber, schlagRessource.PageSize);
+            _context.BeregnungsDatens.Remove(daten);
         }
 
-        public Schlag GetSchlaege(Guid Id)
+        /// <summary>
+        /// Eine bestimmte Daten anzeigen
+        /// </summary>
+        /// <param name="guid">ID des Daten</param>
+        /// <returns></returns>
+        public BeregnungsDaten GetBeregnungsDaten(Guid guid)
         {
-            return _context.Schlaege.FirstOrDefault(a => a.ID == Id);
+            return _context.BeregnungsDatens.FirstOrDefault(a => a.ID == guid);
         }
 
-        public IEnumerable<Schlag> GetSchlaege(IEnumerable<Guid> guids)
+        /// <summary>
+        /// GetDaten mit Seiten
+        /// </summary>
+        /// <param name="datenresourceParameters">Seiteneinstellungen</param>
+        /// <returns> PagedList<Daten></returns>
+        public PagedList<BeregnungsDaten> GetBeregnungsDatens(ResourceParameters datenresourceParameters)
         {
-            return _context.Schlaege.Where(a => guids.Contains(a.ID)).ToList();
+            var collectionBeforPaging = _context.BeregnungsDatens.OrderBy(a => a.StartDatum);
+            return PagedList<BeregnungsDaten>.Create(collectionBeforPaging, datenresourceParameters.PageNumber, datenresourceParameters.PageSize);
         }
 
+        /// <summary>
+        /// GetDaten
+        /// </summary>
+        /// <param name="guids">IEnumerable der IDs</param>
+        /// <returns>IEnumerable</returns>
+        public IEnumerable<BeregnungsDaten> GetBeregnungsDatens(IEnumerable<Guid> guids)
+        {
+            return _context.BeregnungsDatens.Where(a => guids.Contains(a.ID)).ToList();
+        }
+
+        /// <summary>
+        /// Abfrage ob gespeichert wurde
+        /// </summary>
+        /// <returns>bool</returns>
         public bool Save()
         {
             return (_context.SaveChanges() >= 0);
         }
 
-        public bool SchlagExists(Guid schlagId)
+        public void UpdateBeregnungsDaten(BeregnungsDaten daten)
         {
-            return _context.Schlaege.Any(a => a.ID == schlagId);
-        }
-
-        public void UpdateSchlag(Schlag schlag)
-        {
-            //throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
     }
 }

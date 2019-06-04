@@ -43,6 +43,7 @@ namespace REST.Api
             var connectionString = Configuration["connectionStrings:BeregnungsDBConnectionString"];
             services.AddDbContext<BeregnungsContext>(opt => opt.UseSqlServer(connectionString));
 
+            services.AddScoped<ISchlagRepository, SchlagRepository>();
             services.AddScoped<IBeregnungsRepository, BeregnungsRepository>();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -85,8 +86,17 @@ namespace REST.Api
                     });
                 });
             }
+
             AutoMapper.Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<Entities.BeregnungsDaten, Models.BeregnungsDatenDto>()
+                    .ForMember(dest => dest.StartDatum, opt => opt.MapFrom(src =>
+                    $"{src.StartDatum}"));
+                cfg.CreateMap<Models.BeregnungsDatenForCreationDto, Entities.BeregnungsDaten>();
+
+                cfg.CreateMap<Models.BeregnungsDatenForUpdateDto, Entities.BeregnungsDaten>();
+                cfg.CreateMap<Entities.BeregnungsDaten, Models.BeregnungsDatenForUpdateDto>();
+
                 cfg.CreateMap<Entities.Schlag, Models.SchlagDto>()
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                     $"{src.Name}"));
@@ -97,8 +107,9 @@ namespace REST.Api
 
             });
 
+            //DbReset
+            // beregnungsContext.DataForContext();
 
-            beregnungsContext.DataForContext();
             app.UseMvc();
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Models
 {
-    public class SchlagForManipulationDto
+    public abstract class SchlagForManipulationDto
     {
         [Required(ErrorMessage = "Ein Name ist erforderlich.")]
         [MaxLength(100, ErrorMessage = "Bitte nicht mehr wie 100 Zeichen eingeben.")]

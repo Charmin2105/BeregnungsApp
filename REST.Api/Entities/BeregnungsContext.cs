@@ -8,11 +8,12 @@ namespace REST.Api.Entities
 {
     public class BeregnungsContext : DbContext
     {
-        public BeregnungsContext(DbContextOptions<BeregnungsContext> options) : base(options)
+        public BeregnungsContext(DbContextOptions<BeregnungsContext> options)
+            : base(options)
         {
             Database.Migrate();
         }
-        //public DbSet<Daten> Daten { get; set; }
+        public DbSet<BeregnungsDaten> BeregnungsDatens { get; set; }
         public DbSet<Schlag> Schlaege { get; set; }
     }
 

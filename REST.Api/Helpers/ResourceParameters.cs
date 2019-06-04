@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Helpers
 {
-    public class SchlagResourceParameters
+    public class ResourceParameters
     {
         const int maxPageSize = 20;
 
