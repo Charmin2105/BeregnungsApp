@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Helpers
 {
-    public class ResourceParameters
+    public abstract class ResourceParameters
     {
         const int maxPageSize = 20;
 
@@ -25,5 +25,6 @@ namespace REST.Api.Helpers
                 _pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
+        public string searchQuery { get; set; }
     }
 }

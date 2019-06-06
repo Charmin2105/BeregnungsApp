@@ -42,7 +42,7 @@ namespace REST.Api.Controllers
         /// /// <param name="pageSize">Seitenzahl die Angezeigt werden soll</param>
         /// <returns>OK Code </returns>
         [HttpGet(Name = "GetSchlaege")]
-        public IActionResult GetSchlaege(ResourceParameters schlagRessourceParameters)
+        public IActionResult GetSchlaege(SchlagResourceParameter schlagRessourceParameters)
         {
             var schlagfromRepo = _schlagRepository.GetSchlaege(schlagRessourceParameters);
             
@@ -77,7 +77,7 @@ namespace REST.Api.Controllers
         /// <param name="schlagRessourceParameters">Übergabe der RessourceParameter</param>
         /// <param name="type">Übergabe der ResourceUriType </param>
         /// <returns>Link</returns>
-        private string CreateSchlagResourceUri(ResourceParameters resourceParameters, ResourceUriType type)
+        private string CreateSchlagResourceUri(SchlagResourceParameter resourceParameters, ResourceUriType type)
         {
             switch (type)
             {

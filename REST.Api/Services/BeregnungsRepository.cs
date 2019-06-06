@@ -67,9 +67,35 @@ namespace REST.Api.Services
         /// </summary>
         /// <param name="datenresourceParameters">Seiteneinstellungen</param>
         /// <returns> PagedList<Daten></returns>
-        public PagedList<BeregnungsDaten> GetBeregnungsDatens(ResourceParameters datenresourceParameters)
+        public PagedList<BeregnungsDaten> GetBeregnungsDatens(BeregnungsDatenResourceParameter datenresourceParameters)
         {
-            var collectionBeforPaging = _context.BeregnungsDatens.OrderBy(a => a.StartDatum);
+            var collectionBeforPaging = _context.BeregnungsDatens.OrderBy(a => a.StartDatum).AsQueryable();
+
+            /// Filter nach abgeschlossenen Daten
+            /// Nicht Filter sondern Suche ist hier gefordert
+            //var abgeschlossenForWhereClause = datenresourceParameters.IstAbgeschlossen;
+
+            //collectionBeforPaging = collectionBeforPaging
+            //    .Where(a =>
+            //    a.IstAbgeschlossen == abgeschlossenForWhereClause&!abgeschlossenForWhereClause);
+
+            //Filter nach SchlagId
+            if (datenresourceParameters.SchlagId != new Guid("00000000-0000-0000-0000-000000000000"))
+            {
+                var schlagIdForWhereClause = datenresourceParameters.SchlagId;
+                collectionBeforPaging = collectionBeforPaging.Where(a =>
+                a.SchlagID == schlagIdForWhereClause);
+            }
+
+            //Suche nach abgeschlossenen Daten
+            if (!string.IsNullOrEmpty(datenresourceParameters.IstAbgeschlossen))
+            {                
+                var abgeschlossenForWhereClause = bool.Parse(datenresourceParameters.IstAbgeschlossen);
+                collectionBeforPaging = collectionBeforPaging.Where(a =>
+                a.IstAbgeschlossen == abgeschlossenForWhereClause);
+            }
+
+
             return PagedList<BeregnungsDaten>.Create(collectionBeforPaging, datenresourceParameters.PageNumber, datenresourceParameters.PageSize);
         }
 

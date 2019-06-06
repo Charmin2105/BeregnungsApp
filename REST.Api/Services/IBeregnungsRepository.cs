@@ -7,7 +7,7 @@ namespace REST.Api.Services
 {
     public interface IBeregnungsRepository
     {
-        PagedList<BeregnungsDaten> GetBeregnungsDatens(ResourceParameters datenresourceParameters);
+        PagedList<BeregnungsDaten> GetBeregnungsDatens(BeregnungsDatenResourceParameter datenresourceParameters);
         BeregnungsDaten GetBeregnungsDaten(Guid id);
         IEnumerable<BeregnungsDaten> GetBeregnungsDatens(IEnumerable<Guid> guids);
         void AddBeregnungsDaten(BeregnungsDaten daten);

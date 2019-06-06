@@ -27,7 +27,7 @@ namespace REST.Api.Services
             _context.Schlaege.Remove(schlag);
         }
 
-        public PagedList<Schlag> GetSchlaege(ResourceParameters schlagRessource)
+        public PagedList<Schlag> GetSchlaege(SchlagResourceParameter schlagRessource)
         {
             var collectionBeforPaging = _context.Schlaege.OrderBy(a => a.Name);
             return PagedList<Schlag>.Create(collectionBeforPaging, schlagRessource.PageNumber, schlagRessource.PageSize);

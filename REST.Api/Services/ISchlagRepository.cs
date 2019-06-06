@@ -8,7 +8,7 @@ namespace REST.Api.Services
 {
     public interface ISchlagRepository
     {
-        PagedList<Schlag> GetSchlaege(ResourceParameters schlagResourceParameters);
+        PagedList<Schlag> GetSchlaege(SchlagResourceParameter schlagResourceParameters);
 
         Schlag GetSchlaege(Guid guid);
 

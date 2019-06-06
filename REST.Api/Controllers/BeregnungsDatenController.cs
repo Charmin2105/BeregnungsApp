@@ -38,7 +38,7 @@ namespace REST.Api.Controllers
         /// <param name="resourceParameters">Metadateneinstellungen</param>
         /// <returns></returns>
         [HttpGet(Name = "GetBergenungsDatens")]
-        public IActionResult GetBeregnungsDaten(ResourceParameters resourceParameters)
+        public IActionResult GetBeregnungsDaten(BeregnungsDatenResourceParameter resourceParameters)
         {
             var datenFromRepo = _beregnungsRepository.GetBeregnungsDatens(resourceParameters);
 
@@ -46,8 +46,10 @@ namespace REST.Api.Controllers
             var previousPageLink = datenFromRepo.HasPrevious ?
                 CreateBergenungsDatenResourceUri(resourceParameters,
                 ResourceUriType.PreviousPage) : null;
+
             var nextPageLink = datenFromRepo.HasNext ?
-                CreateBergenungsDatenResourceUri(resourceParameters, ResourceUriType.NextPage) : null;
+                CreateBergenungsDatenResourceUri(resourceParameters,
+                ResourceUriType.NextPage) : null;
 
             //Metadaten erstellen
             var paginationMetadata = new
@@ -56,10 +58,11 @@ namespace REST.Api.Controllers
                 pageSize = datenFromRepo.PageSize,
                 currentPage = datenFromRepo.CurrentPage,
                 totalPage = datenFromRepo.TotalPages,
-                previousPage = previousPageLink,
-                nextPage = nextPageLink
+                previousPageLink = previousPageLink,
+                nextPageLink = nextPageLink
             };
-            Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+            Response.Headers.Add("X-Pagination",
+                Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
             var daten = Mapper.Map<IEnumerable<BeregnungsDatenDto>>(datenFromRepo);
 
@@ -72,28 +75,38 @@ namespace REST.Api.Controllers
         /// <param name="ressourceParameters">Übergabe der RessourceParameter</param>
         /// <param name="type">Übergabe der ResourceUriType </param>
         /// <returns>string</returns>
-        private string CreateBergenungsDatenResourceUri(ResourceParameters resourceParameters, ResourceUriType type)
+        private string CreateBergenungsDatenResourceUri(BeregnungsDatenResourceParameter resourceParameters,
+            ResourceUriType type)
         {
             switch (type)
             {
                 case ResourceUriType.PreviousPage:
-                    return _urlHelper.Link("GetBergenungsDaten", new
-                    {
-                        pageNumber = resourceParameters.PageNumber - 1,
-                        pageSize = resourceParameters.PageSize
-                    });
+                    return _urlHelper.Link("GetBergenungsDatens",
+                        new
+                        {
+                            istAbgeschloss = resourceParameters.IstAbgeschlossen,
+                            schlagid = resourceParameters.SchlagId,
+                            pageNumber = resourceParameters.PageNumber - 1,
+                            pageSize = resourceParameters.PageSize
+                        });
                 case ResourceUriType.NextPage:
-                    return _urlHelper.Link("GetBergenungsDaten", new
-                    {
-                        pageNumber = resourceParameters.PageNumber + 1,
-                        pageSize = resourceParameters.PageSize
-                    });
+                    return _urlHelper.Link("GetBergenungsDatens",
+                        new
+                        {
+                            istAbgeschloss = resourceParameters.IstAbgeschlossen,
+                            schlagid = resourceParameters.SchlagId,
+                            pageNumber = resourceParameters.PageNumber + 1,
+                            pageSize = resourceParameters.PageSize
+                        });
                 default:
-                    return _urlHelper.Link("GetBergenungsDaten", new
-                    {
-                        pageNumber = resourceParameters.PageNumber,
-                        pageSize = resourceParameters.PageSize
-                    });
+                    return _urlHelper.Link("GetBergenungsDatens",
+                        new
+                        {
+                            istAbgeschloss = resourceParameters.IstAbgeschlossen,
+                            schlagid = resourceParameters.SchlagId,
+                            pageNumber = resourceParameters.PageNumber,
+                            pageSize = resourceParameters.PageSize
+                        });
             }
         }
 
@@ -253,6 +266,12 @@ namespace REST.Api.Controllers
 
         }
 
+        /// <summary>
+        /// Patch Update von BeregnungsDaten
+        /// </summary>
+        /// <param name="id">Id des zu Updatenen</param>
+        /// <param name="patchDoc">Update Body</param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         public IActionResult PartallyUpdateBeregnungsDaten(Guid id,
             [FromBody]JsonPatchDocument<BeregnungsDatenForUpdateDto> patchDoc)
