@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using REST.Api.Entities;
 using REST.Api.Services;
+using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
@@ -38,7 +39,12 @@ namespace REST.Api
             {
                 setupAction.ReturnHttpNotAcceptable = true;
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
+            });
 
             var connectionString = Configuration["connectionStrings:BeregnungsDBConnectionString"];
             services.AddDbContext<BeregnungsContext>(opt => opt.UseSqlServer(connectionString));
@@ -54,6 +60,11 @@ namespace REST.Api
                     var actionContext = implementationFactory.GetService<IActionContextAccessor>().ActionContext;
                     return new UrlHelper(actionContext);
                 });
+
+            services.AddTransient<IPropertyMappingService, PropertyMappingService>();
+
+            services.AddTransient<ITypeHelperService, TypeHelperService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +85,7 @@ namespace REST.Api
                     appBuilder.Run(async context =>
                     {
                         var exceotionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
-                        if (exceotionHandlerFeature !=null)
+                        if (exceotionHandlerFeature != null)
                         {
                             var logger = loggerFactory.CreateLogger("Globaler Exception logger");
                             logger.LogError(500, exceotionHandlerFeature.Error, exceotionHandlerFeature.Error.Message);

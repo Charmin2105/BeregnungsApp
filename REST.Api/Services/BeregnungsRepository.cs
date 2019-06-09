@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using REST.Api.Entities;
 using REST.Api.Helpers;
+using REST.Api.Models;
 
 namespace REST.Api.Services
 {
@@ -14,14 +15,16 @@ namespace REST.Api.Services
     {
 
         private BeregnungsContext _context;
+        private IPropertyMappingService _propertyMappingService;
 
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="context">Datenbank Inhalt</param>
-        public BeregnungsRepository(BeregnungsContext context)
+        public BeregnungsRepository(BeregnungsContext context, IPropertyMappingService propertyMappingService)
         {
             _context = context;
+            _propertyMappingService = propertyMappingService;
         }
         /// <summary>
         /// Hinzufügen neuer Daten
@@ -31,6 +34,7 @@ namespace REST.Api.Services
         {
             daten.ID = Guid.NewGuid();
             _context.BeregnungsDatens.Add(daten);
+            
         }
 
         /// <summary>
@@ -69,7 +73,11 @@ namespace REST.Api.Services
         /// <returns> PagedList<Daten></returns>
         public PagedList<BeregnungsDaten> GetBeregnungsDatens(BeregnungsDatenResourceParameter datenresourceParameters)
         {
-            var collectionBeforPaging = _context.BeregnungsDatens.OrderBy(a => a.StartDatum).AsQueryable();
+            //var collectionBeforPaging = _context.BeregnungsDatens.OrderBy(a =>
+            //a.StartDatum).AsQueryable();
+            var collectionBeforPaging = 
+                _context.BeregnungsDatens.ApplySort(datenresourceParameters.OrderBy,
+                _propertyMappingService.GetPropertyMapping<BeregnungsDatenDto,BeregnungsDaten>());
 
             /// Filter nach abgeschlossenen Daten
             /// Nicht Filter sondern Suche ist hier gefordert

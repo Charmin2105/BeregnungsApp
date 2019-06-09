@@ -18,6 +18,8 @@ namespace REST.Api.Controllers
         private IBeregnungsRepository _beregnungsRepository;
         private ILogger<BeregnungsDatenController> _ilogger;
         private IUrlHelper _urlHelper;
+        private IPropertyMappingService _propertyMappingService;
+        private ITypeHelperService _typeHelperService;
 
         /// <summary>
         /// Ctor
@@ -25,11 +27,17 @@ namespace REST.Api.Controllers
         /// <param name="beregnungsRepository"></param>
         /// <param name="ilogger"></param>
         /// <param name="urlHelper"></param>
-        public BeregnungsDatenController(IBeregnungsRepository beregnungsRepository, ILogger<BeregnungsDatenController> ilogger, IUrlHelper urlHelper)
+        public BeregnungsDatenController(IBeregnungsRepository beregnungsRepository,
+            ILogger<BeregnungsDatenController> ilogger,
+            IUrlHelper urlHelper,
+            IPropertyMappingService propertyMappingService,
+            ITypeHelperService typeHelperService)
         {
             _ilogger = ilogger;
             _beregnungsRepository = beregnungsRepository;
             _urlHelper = urlHelper;
+            _propertyMappingService = propertyMappingService;
+            _typeHelperService = typeHelperService;
         }
 
         /// <summary>
@@ -40,6 +48,17 @@ namespace REST.Api.Controllers
         [HttpGet(Name = "GetBergenungsDatens")]
         public IActionResult GetBeregnungsDaten(BeregnungsDatenResourceParameter resourceParameters)
         {
+            if (!_propertyMappingService.ValidMappingExistsFor<BeregnungsDatenDto,
+                BeregnungsDaten>(resourceParameters.OrderBy))
+            {
+                return BadRequest();
+            }
+
+            if (!_typeHelperService.TypeHasProperties<BeregnungsDatenDto>(resourceParameters.Fields))
+            {
+                return BadRequest();
+            }
+
             var datenFromRepo = _beregnungsRepository.GetBeregnungsDatens(resourceParameters);
 
             //erstellen der Links für Seiten
@@ -66,7 +85,7 @@ namespace REST.Api.Controllers
 
             var daten = Mapper.Map<IEnumerable<BeregnungsDatenDto>>(datenFromRepo);
 
-            return Ok(daten);
+            return Ok(daten.ShapeData(resourceParameters.Fields));
         }
 
         /// <summary>
@@ -84,6 +103,8 @@ namespace REST.Api.Controllers
                     return _urlHelper.Link("GetBergenungsDatens",
                         new
                         {
+                            fields = resourceParameters.Fields,
+                            orderBy = resourceParameters.OrderBy,
                             istAbgeschloss = resourceParameters.IstAbgeschlossen,
                             schlagid = resourceParameters.SchlagId,
                             pageNumber = resourceParameters.PageNumber - 1,
@@ -93,6 +114,8 @@ namespace REST.Api.Controllers
                     return _urlHelper.Link("GetBergenungsDatens",
                         new
                         {
+                            fields = resourceParameters.Fields,
+                            orderBy = resourceParameters.OrderBy,
                             istAbgeschloss = resourceParameters.IstAbgeschlossen,
                             schlagid = resourceParameters.SchlagId,
                             pageNumber = resourceParameters.PageNumber + 1,
@@ -102,6 +125,8 @@ namespace REST.Api.Controllers
                     return _urlHelper.Link("GetBergenungsDatens",
                         new
                         {
+                            fields = resourceParameters.Fields,
+                            orderBy = resourceParameters.OrderBy,
                             istAbgeschloss = resourceParameters.IstAbgeschlossen,
                             schlagid = resourceParameters.SchlagId,
                             pageNumber = resourceParameters.PageNumber,
