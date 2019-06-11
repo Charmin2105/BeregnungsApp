@@ -15,7 +15,7 @@ namespace REST.Api.Models
         public DateTime EndDatum { get; set; }
 
         [Required(ErrorMessage = "Ein Betrieb ist erforderlich.")]
-        public string Betrieb { get; set; }
+        public Guid Betrieb { get; set; }
 
         [Required(ErrorMessage = "Es muss eine Schlag ID angegben werden")]
 

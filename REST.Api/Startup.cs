@@ -119,7 +119,7 @@ namespace REST.Api
             });
 
             //DbReset
-            // beregnungsContext.DataForContext();
+            //beregnungsContext.DataForContext();
 
             app.UseMvc();
         }

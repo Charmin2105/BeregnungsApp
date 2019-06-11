@@ -2,9 +2,9 @@
 
 namespace REST.Api.Models
 {
-    public class SchlagDto
+    public class SchlagDto : LinkedResourceBaseDto
     {
-        public Guid Id { get; set; }
+        public Guid ID { get; set; }
         public string Name { get; set; }
     }
 }

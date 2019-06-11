@@ -17,7 +17,7 @@ namespace REST.Api.Entities
         public DateTimeOffset EndDatum { get; set; }
 
         [Required]
-        public string Betrieb { get; set; }
+        public Guid Betrieb { get; set; }
 
         [Required]
         [MaxLength(50)]

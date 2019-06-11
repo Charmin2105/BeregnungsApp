@@ -7,5 +7,6 @@ namespace REST.Api.Helpers
 {
     public class SchlagResourceParameter : ResourceParameters
     {
+        public string Fields { get; set; }
     }
 }

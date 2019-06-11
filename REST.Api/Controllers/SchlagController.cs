@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,8 @@ namespace REST.Api.Controllers
         private ISchlagRepository _schlagRepository;
         private ILogger<SchlagController> _iLogger;
         private IUrlHelper _urlHelper;
+        private IPropertyMappingService _propertyMappingService;
+        private ITypeHelperService _typeHelperService;
 
 
         #region Ctor
@@ -26,11 +29,17 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="beregnungsRepository"></param>
         /// <param name="ilogger"></param>
-        public SchlagController(ISchlagRepository schlagRepository, ILogger<SchlagController> ilogger, IUrlHelper urlHelper)
+        public SchlagController(ISchlagRepository schlagRepository, 
+            ILogger<SchlagController> ilogger, 
+            IUrlHelper urlHelper,
+            IPropertyMappingService propertyMappingService,
+            ITypeHelperService typeHelperService)
         {
             _iLogger = ilogger;
             _schlagRepository = schlagRepository;
             _urlHelper = urlHelper;
+            _propertyMappingService = propertyMappingService;
+            _typeHelperService = typeHelperService;
         }
         #endregion
         #region Methods
@@ -42,17 +51,21 @@ namespace REST.Api.Controllers
         /// /// <param name="pageSize">Seitenzahl die Angezeigt werden soll</param>
         /// <returns>OK Code </returns>
         [HttpGet(Name = "GetSchlaege")]
-        public IActionResult GetSchlaege(SchlagResourceParameter schlagRessourceParameters)
+        public IActionResult GetSchlaege(SchlagResourceParameter resourceParameters)
         {
-            var schlagfromRepo = _schlagRepository.GetSchlaege(schlagRessourceParameters);
-            
-            // erstellen der Links
-            var previousPageLink = schlagfromRepo.HasPrevious ? 
-                CreateSchlagResourceUri(schlagRessourceParameters, 
-                ResourceUriType.PreviousPage) : null;
-            var nextPageLink = schlagfromRepo.HasNext ? 
-                CreateSchlagResourceUri(schlagRessourceParameters, 
-                ResourceUriType.NextPage) : null;
+            if (!_typeHelperService.TypeHasProperties<SchlagDto>(resourceParameters.Fields))
+            {
+                return BadRequest();
+            }
+            var schlagfromRepo = _schlagRepository.GetSchlaege(resourceParameters);
+
+            //// erstellen der Links
+            //var previousPageLink = schlagfromRepo.HasPrevious ?
+            //    CreateSchlagResourceUri(resourceParameters,
+            //    ResourceUriType.PreviousPage) : null;
+            //var nextPageLink = schlagfromRepo.HasNext ?
+            //    CreateSchlagResourceUri(resourceParameters,
+            //    ResourceUriType.NextPage) : null;
 
             //erstellen der Metadaten
             var paginationMetadata = new
@@ -61,14 +74,37 @@ namespace REST.Api.Controllers
                 pageSize = schlagfromRepo.PageSize,
                 currentPage = schlagfromRepo.CurrentPage,
                 totalPages = schlagfromRepo.TotalPages,
-                previousPage = previousPageLink,
-                nextPage = nextPageLink
+                //previousPage = previousPageLink,
+                //nextPage = nextPageLink
             };
             Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
-
             var schlag = Mapper.Map<IEnumerable<SchlagDto>>(schlagfromRepo);
-            return Ok(schlag);
+
+            //Links für alle Daten
+            var links = CreateLinksForschlaege(resourceParameters,
+                schlagfromRepo.HasNext,
+                schlagfromRepo.HasPrevious);
+
+            //DataShape
+            var shapedSchlaege = schlag.ShapeData(resourceParameters.Fields);
+
+            //Links für jede einzelnen Datensatz
+            var shapedSchlaegeWithLinks = shapedSchlaege.Select(s =>
+            {
+                var schlagAsDictionary = s as IDictionary<string, object>;
+                var schlagLinks = CreateLinksForSchlag((Guid)schlagAsDictionary["ID"], resourceParameters.Fields);
+                schlagAsDictionary.Add("links", schlagLinks);
+                return schlagAsDictionary;
+
+            });
+            var linkedCollectionResource = new
+            {
+                value = shapedSchlaegeWithLinks,
+                links = links
+            };
+
+            return Ok(linkedCollectionResource);
         }
 
         /// <summary>
@@ -84,18 +120,21 @@ namespace REST.Api.Controllers
                 case ResourceUriType.PreviousPage:
                     return _urlHelper.Link("GetSchlaege", new
                     {
+                        fields = resourceParameters.Fields,
                         pageNumber = resourceParameters.PageNumber - 1,
                         pageSize = resourceParameters.PageSize
                     });
                 case ResourceUriType.NextPage:
                     return _urlHelper.Link("GetSchlaege", new
                     {
+                        fields = resourceParameters.Fields,
                         pageNumber = resourceParameters.PageNumber + 1,
                         pageSize = resourceParameters.PageSize
                     });
                 default:
                     return _urlHelper.Link("GetSchlaege", new
                     {
+                        fields = resourceParameters.Fields,
                         pageNumber = resourceParameters.PageNumber,
                         pageSize = resourceParameters.PageSize
                     });
@@ -108,16 +147,23 @@ namespace REST.Api.Controllers
         /// <param name="id">ID des gesuchten Schlages.</param>
         /// <returns>OK Code </returns>
         [HttpGet("{id}", Name = "GetSchlag")]
-        public IActionResult GetSchlaege(Guid id)
+        public IActionResult GetSchlaeg(Guid id, [FromQuery] string fields)
         {
-
             var schlagfromRepo = _schlagRepository.GetSchlaege(id);
             if (schlagfromRepo == null)
             {
                 return NotFound();
             }
             var schlag = Mapper.Map<SchlagDto>(schlagfromRepo);
-            return Ok(schlag);
+
+            var links = CreateLinksForSchlag(id, fields);
+
+            var linkedResourceToReturn = schlag.ShapeData(fields)
+                as IDictionary<string, object>;
+
+            linkedResourceToReturn.Add("links", links);
+
+            return Ok(linkedResourceToReturn);
         }
 
         /// <summary>
@@ -147,8 +193,6 @@ namespace REST.Api.Controllers
                 return new Helpers.UnprocessableEntityObjectResult(ModelState);
             }
 
-
-
             var schlagEntity = Mapper.Map<Schlag>(schlag);
 
             _schlagRepository.AddSchlag(schlagEntity);
@@ -159,11 +203,17 @@ namespace REST.Api.Controllers
             }
             var schlagToReturn = Mapper.Map<SchlagDto>(schlagEntity);
 
-            _iLogger.LogInformation($"CreatSchlag erfolgreich ID: {schlagToReturn.Id} .");
+            _iLogger.LogInformation($"CreatSchlag erfolgreich ID: {schlagToReturn.ID} .");
 
-            return CreatedAtRoute("GetSchlag",
-                new { id = schlagToReturn.Id },
-                schlagToReturn);
+            var links = CreateLinksForSchlag(schlagToReturn.ID, null);
+
+            var linkedResourceToReturn = schlag.ShapeData(null)
+                as IDictionary<string, object>;
+
+            linkedResourceToReturn.Add("links", links);
+
+            return Ok(("GetSchlag",
+                new { id = linkedResourceToReturn["Id"] }, linkedResourceToReturn));
 
         }
 
@@ -172,7 +222,7 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">Id des zu löschenden Schlag.</param>
         /// <returns>NoContent  Code</returns>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}",Name = "DeleteSchlag")]
         public IActionResult DeleteSchlag(Guid id)
         {
             //Existiert der Schlag?
@@ -204,7 +254,7 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des zu updatenden Schlag.</param>
         /// <param name="schlag">Schlag Entity</param>
         /// <returns>NoContent  Code</returns>
-        [HttpPut("{id}")]
+        [HttpPut("{id}",Name = "UpdateSchlag")]
         public IActionResult UpdateSchlag(Guid id, [FromBody]SchlagForUpdateDto schlag)
         {
             //geänderte Daten
@@ -230,9 +280,15 @@ namespace REST.Api.Controllers
 
                 var schlagToReturn = Mapper.Map<SchlagDto>(schlagEntity);
 
-                return CreatedAtRoute("GetSchlag",
-                    new { id = schlagToReturn.Id },
-                    schlagToReturn);
+                var links = CreateLinksForSchlag(schlagToReturn.ID, null);
+
+                var linkedResourceToReturn = schlag.ShapeData(null)
+                    as IDictionary<string, object>;
+
+                linkedResourceToReturn.Add("links", links);
+
+                return Ok(("GetSchlag",
+                    new { id = linkedResourceToReturn["Id"] }, linkedResourceToReturn));
             }
             var schlagFromRepo = _schlagRepository.GetSchlaege(id);
             //if (schlagFromRepo == null)
@@ -274,7 +330,7 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des zu updatenden Schlag.</param>
         /// <param name="patchDoc">Schlag Entity</param>
         /// <returns>NoContent  Code</returns>
-        [HttpPatch("{id}")]
+        [HttpPatch("{id}",Name = "PartiallyUpdateSchlag")]
         public IActionResult PartiallyUpdateSchlag(Guid id,
             [FromBody]JsonPatchDocument<SchlagForUpdateDto> patchDoc)
         {
@@ -316,7 +372,7 @@ namespace REST.Api.Controllers
                 var schlagToReturn = Mapper.Map<SchlagDto>(schlagToAdd);
 
                 return CreatedAtRoute("GetSchlag",
-                        new { id = schlagToReturn.Id },
+                        new { id = schlagToReturn.ID },
                         schlagToReturn);
             }
 
@@ -346,6 +402,84 @@ namespace REST.Api.Controllers
 
 
         }
+
+        /// <summary>
+        /// CreateLinksForSchlag
+        /// </summary>
+        /// <param name="schlag">Übergabe eines SchlagDto</param>
+        /// <returns>SchlagDto mit Links </returns>
+        public IEnumerable<LinkDto> CreateLinksForSchlag(Guid id, string fields)
+        {
+            var links = new List<LinkDto>();
+
+            if (string.IsNullOrWhiteSpace(fields))
+            {
+                links.Add(
+                    new LinkDto(_urlHelper.Link("GetSchlag", new { id = id }),
+                    "self",
+                    "GET"));
+            }
+            else
+            {
+                links.Add(
+                    new LinkDto(_urlHelper.Link("GetSchlag", new { id = id, fields = fields }),
+                    "self",
+                    "GET"));
+            }
+
+            links.Add(new LinkDto(_urlHelper.Link("GetSchlag",
+                new { id = id }),
+                "self",
+                "GET"));
+
+            links.Add(new LinkDto(_urlHelper.Link("DeleteSchlag",
+               new { id = id }),
+               "delete_schlag",
+               "DELETE"));
+
+            links.Add(new LinkDto(_urlHelper.Link("UpdateSchlag",
+                new { id = id }),
+                "update_schlag",
+                "PUT"));
+
+            links.Add(new LinkDto(_urlHelper.Link("PartiallyUpdateSchlag",
+               new { id = id }),
+               "partially_update_schlag",
+               "PATCH"));
+
+
+            return links;
+        }
+
+
+        private IEnumerable<LinkDto> CreateLinksForschlaege(SchlagResourceParameter resourceParameter, bool hasNext, bool hasPrevious)
+        {
+            var links = new List<LinkDto>();
+
+            // self 
+            links.Add(
+               new LinkDto(CreateSchlagResourceUri(resourceParameter,
+               ResourceUriType.Current)
+               , "self", "GET"));
+
+            if (hasNext)
+            {
+                links.Add(
+                  new LinkDto(CreateSchlagResourceUri(resourceParameter,
+                  ResourceUriType.NextPage),
+                  "nextPage", "GET"));
+            }
+
+            if (hasPrevious)
+            {
+                links.Add(
+                    new LinkDto(CreateSchlagResourceUri(resourceParameter,
+                    ResourceUriType.PreviousPage),
+                    "previousPage", "GET"));
+            }
+            return links;
+        }
+
         #endregion
     }
 

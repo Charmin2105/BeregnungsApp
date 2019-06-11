@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -61,14 +62,14 @@ namespace REST.Api.Controllers
 
             var datenFromRepo = _beregnungsRepository.GetBeregnungsDatens(resourceParameters);
 
-            //erstellen der Links für Seiten
-            var previousPageLink = datenFromRepo.HasPrevious ?
-                CreateBergenungsDatenResourceUri(resourceParameters,
-                ResourceUriType.PreviousPage) : null;
+            ////erstellen der Links für Seiten
+            //var previousPageLink = datenFromRepo.HasPrevious ?
+            //    CreateBergenungsDatenResourceUri(resourceParameters,
+            //    ResourceUriType.PreviousPage) : null;
 
-            var nextPageLink = datenFromRepo.HasNext ?
-                CreateBergenungsDatenResourceUri(resourceParameters,
-                ResourceUriType.NextPage) : null;
+            //var nextPageLink = datenFromRepo.HasNext ?
+            //    CreateBergenungsDatenResourceUri(resourceParameters,
+            //    ResourceUriType.NextPage) : null;
 
             //Metadaten erstellen
             var paginationMetadata = new
@@ -77,15 +78,39 @@ namespace REST.Api.Controllers
                 pageSize = datenFromRepo.PageSize,
                 currentPage = datenFromRepo.CurrentPage,
                 totalPage = datenFromRepo.TotalPages,
-                previousPageLink = previousPageLink,
-                nextPageLink = nextPageLink
+                //previousPageLink = previousPageLink,
+                //nextPageLink = nextPageLink
             };
             Response.Headers.Add("X-Pagination",
                 Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
             var daten = Mapper.Map<IEnumerable<BeregnungsDatenDto>>(datenFromRepo);
 
-            return Ok(daten.ShapeData(resourceParameters.Fields));
+            //Links für alle Daten
+            var links = CreateLinksForBeregnungsDatens(resourceParameters,
+                datenFromRepo.HasNext,
+                datenFromRepo.HasPrevious);
+
+            //DataShape
+            var shapedDatens = daten.ShapeData(resourceParameters.Fields);
+
+            //Links für jede einzelnen Datensatz
+            var shapedDatensWithLinks = shapedDatens.Select(d =>
+            {
+                var datenAsDictionary = d as IDictionary<string, object>;
+                var datenLinks = CreateLinksForBeregnungsDaten((Guid)datenAsDictionary["ID"], resourceParameters.Fields);
+                datenAsDictionary.Add("links", datenLinks);
+                return datenAsDictionary;
+
+            });
+            var linkedCollectionResource = new
+            {
+                value = shapedDatensWithLinks,
+                links = links
+            };
+
+
+            return Ok(linkedCollectionResource);
         }
 
         /// <summary>
@@ -121,6 +146,7 @@ namespace REST.Api.Controllers
                             pageNumber = resourceParameters.PageNumber + 1,
                             pageSize = resourceParameters.PageSize
                         });
+                case ResourceUriType.Current:
                 default:
                     return _urlHelper.Link("GetBergenungsDatens",
                         new
@@ -141,15 +167,27 @@ namespace REST.Api.Controllers
         /// <param name="id">ID des gesuchten BeregnungsDaten.</param>
         /// <returns>OK Code </returns>
         [HttpGet("{id}", Name = "GetBergenungsDaten")]
-        public IActionResult GetBeregnungsDaten(Guid id)
+        public IActionResult GetBeregnungsDaten(Guid id,[FromQuery] string fields)
         {
+            if (!_typeHelperService.TypeHasProperties<BeregnungsDatenDto>(fields))
+            {
+                return BadRequest();
+            }
             var datenFromRepo = _beregnungsRepository.GetBeregnungsDaten(id);
             if (datenFromRepo == null)
             {
                 return NotFound();
             }
             var daten = Mapper.Map<BeregnungsDatenDto>(datenFromRepo);
-            return Ok(daten);
+
+            var links = CreateLinksForBeregnungsDaten(id, fields);
+
+            var linkedResourceToReturn = daten.ShapeData(fields)
+                as IDictionary<string, object>;
+
+            linkedResourceToReturn.Add("links", links);
+
+            return Ok(linkedResourceToReturn);
         }
 
         /// <summary>
@@ -157,7 +195,7 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="beregnungsDaten"> Beregnungsdaten Body</param>
         /// <returns>CreateAtRoute</returns>
-        [HttpPost]
+        [HttpPost(Name = "CreateBeregnungsDaten")]
         public IActionResult CreateBeregnungsDaten([FromBody]BeregnungsDatenForCreationDto beregnungsDaten)
         {
             //Überprüfung ob der Übergabeparameter leer ist
@@ -176,7 +214,7 @@ namespace REST.Api.Controllers
             {
                 ModelState.AddModelError(nameof(BeregnungsDatenForCreationDto), "Wasseruhrstand am Anfang darf nicht größer sein als am Ende");
             }
-            if (beregnungsDaten.Betrieb == string.Empty)
+            if (beregnungsDaten.Betrieb == null)
             {
                 ModelState.AddModelError(nameof(BeregnungsDatenForCreationDto), "Betrieb darf nicht leer sein");
             }
@@ -201,10 +239,17 @@ namespace REST.Api.Controllers
 
             var datenToReturn = Mapper.Map<BeregnungsDatenDto>(datenEntitiy);
 
+            var links = CreateLinksForBeregnungsDaten(datenToReturn.ID, null);
+
+            var linkedResourceToReturn = datenToReturn.ShapeData(null)
+                as IDictionary<string, object>;
+
+            linkedResourceToReturn.Add("links", links);
+
             _ilogger.LogInformation($"CreateBeregnungsDaten erfolgreich ID{datenToReturn.ID}.");
 
             return CreatedAtRoute("GetBergenungsDaten",
-                new { id = datenToReturn.ID }, datenToReturn);
+                new { id = linkedResourceToReturn["ID"] }, linkedResourceToReturn);
 
         }
 
@@ -213,7 +258,7 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">ID des zu löschen Datensatz</param>
         /// <returns>NoContent</returns>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name ="DeleteBeregnungsDaten")]
         public IActionResult DeleteBeregnungsDaten(Guid id)
         {
             //Exisitert BeregnungsDaten?
@@ -246,7 +291,7 @@ namespace REST.Api.Controllers
         /// <param name="id">ID des zu Updatenden Datensatz</param>
         /// <param name="beregnungsDaten">Neue Daten</param>
         /// <returns>NoContent</returns>
-        [HttpPut("{id}")]
+        [HttpPut("{id}",Name = "UpdateBeregnungsDaten")]
         public IActionResult UpdateBeregnungsDaten(Guid id, [FromBody]BeregnungsDatenForUpdateDto beregnungsDaten)
         {
             //Geänderte Daten
@@ -297,7 +342,7 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des zu Updatenen</param>
         /// <param name="patchDoc">Update Body</param>
         /// <returns></returns>
-        [HttpPatch("{id}")]
+        [HttpPatch("{id}",Name = "PartallyUpdateBeregnungsDaten")]
         public IActionResult PartallyUpdateBeregnungsDaten(Guid id,
             [FromBody]JsonPatchDocument<BeregnungsDatenForUpdateDto> patchDoc)
         {
@@ -364,6 +409,81 @@ namespace REST.Api.Controllers
             _ilogger.LogInformation($"Patch BeregnungsDaten mit ID: {beregenungsDatenFromRepo.ID} erfolgreich.");
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// CreateLinksForBeregnungsDaten
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <param name="fields">Fields</param>
+        /// <returns>Links</returns>
+        public IEnumerable<LinkDto> CreateLinksForBeregnungsDaten(Guid id, string fields)
+        {
+            var links = new List<LinkDto>();
+
+            if (string.IsNullOrWhiteSpace(fields))
+            {
+                links.Add( 
+                    new LinkDto(_urlHelper.Link("GetBergenungsDaten", new { id = id }),
+                    "self",
+                    "GET"));
+            }
+            else
+            {
+                links.Add(
+                    new LinkDto(_urlHelper.Link("GetBergenungsDaten", new { id = id, fields = fields }),
+                    "self",
+                    "GET"));
+            }
+            links.Add(
+                    new LinkDto(_urlHelper.Link("DeleteBeregnungsDaten", new { id = id }),
+                    "delete_beregungsdaten",
+                    "DELETE"));
+            links.Add(
+                    new LinkDto(_urlHelper.Link("UpdateBeregnungsDaten", new { id = id }),
+                    "update_beregnungsdaten",
+                    "PUT"));
+            links.Add(
+                    new LinkDto(_urlHelper.Link("PartallyUpdateBeregnungsDaten", new { id = id }),
+                    "partally_update_beregnungsdaten",
+                    "PATCH"));
+
+            return links;
+        }
+
+        /// <summary>
+        /// CreateLinksForBeregnungsDatens
+        /// </summary>
+        /// <param name="beregnungsDatenResourceParameter"></param>
+        /// <param name="hasNext"></param>
+        /// <param name="hasPrevious"></param>
+        /// <returns></returns>
+        private IEnumerable<LinkDto> CreateLinksForBeregnungsDatens(BeregnungsDatenResourceParameter beregnungsDatenResourceParameter, bool hasNext, bool hasPrevious)
+        {
+            var links = new List<LinkDto>();
+
+            // self 
+            links.Add(
+               new LinkDto(CreateBergenungsDatenResourceUri(beregnungsDatenResourceParameter,
+               ResourceUriType.Current)
+               , "self", "GET"));
+
+            if (hasNext)
+            {
+                links.Add(
+                  new LinkDto(CreateBergenungsDatenResourceUri(beregnungsDatenResourceParameter,
+                  ResourceUriType.NextPage),
+                  "nextPage", "GET"));
+            }
+
+            if (hasPrevious)
+            {
+                links.Add(
+                    new LinkDto(CreateBergenungsDatenResourceUri(beregnungsDatenResourceParameter,
+                    ResourceUriType.PreviousPage),
+                    "previousPage", "GET"));
+            }
+            return links;
         }
     }
 }

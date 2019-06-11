@@ -15,7 +15,7 @@ namespace REST.Api.Models
 
         public DateTimeOffset EndDatum { get; set; }
 
-        public string Betrieb { get; set; }
+        public Guid Betrieb { get; set; }
 
         public Guid SchlagID { get; set; }
 

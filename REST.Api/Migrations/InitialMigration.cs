@@ -15,7 +15,7 @@ namespace REST.Api.Migrations
                     StartDatum = table.Column<DateTimeOffset>(nullable: false),
                     StartUhrzeit = table.Column<DateTime>(nullable: false),
                     EndDatum = table.Column<DateTimeOffset>(nullable: false),
-                    Betrieb = table.Column<string>(maxLength: 50, nullable: false),
+                    Betrieb = table.Column<Guid>(maxLength: 50, nullable: false),
                     SchlagId = table.Column<Guid>(nullable: false),
                     Duese = table.Column<string>(maxLength: 50, nullable: false),
                     WasseruhrAnfang = table.Column<int>(maxLength: 50, nullable: false),
