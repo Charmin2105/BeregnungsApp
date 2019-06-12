@@ -7,6 +7,8 @@ namespace REST.Api.Helpers
 {
     public abstract class ResourceParameters
     {
+        public string Fields { get; set; }
+
         const int maxPageSize = 20;
 
         public int PageNumber { get; set; } = 1;

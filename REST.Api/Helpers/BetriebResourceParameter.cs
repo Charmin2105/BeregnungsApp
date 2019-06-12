@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Helpers
 {
-    public class SchlagResourceParameter : ResourceParameters
+    public class BetriebResourceParameter : ResourceParameters
     {
     }
 }

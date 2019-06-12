@@ -15,6 +15,7 @@ namespace REST.Api.Entities
         }
         public DbSet<BeregnungsDaten> BeregnungsDatens { get; set; }
         public DbSet<Schlag> Schlaege { get; set; }
+        public DbSet<Betrieb> Betriebe { get; set; }
     }
 
 }

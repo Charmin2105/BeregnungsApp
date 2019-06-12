@@ -10,6 +10,5 @@ namespace REST.Api.Helpers
         public string IstAbgeschlossen { get; set; }
         public Guid SchlagId { get; set; }
         public string OrderBy { get; set; } = "StartDatum";
-        public string Fields { get; set; }
     }
 }

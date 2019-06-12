@@ -18,7 +18,6 @@ namespace REST.Api.Models
         public Guid Betrieb { get; set; }
 
         [Required(ErrorMessage = "Es muss eine Schlag ID angegben werden")]
-
         public Guid SchlagID { get; set; }
 
         [Required]

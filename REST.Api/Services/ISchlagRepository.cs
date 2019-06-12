@@ -10,7 +10,7 @@ namespace REST.Api.Services
     {
         PagedList<Schlag> GetSchlaege(SchlagResourceParameter schlagResourceParameters);
 
-        Schlag GetSchlaege(Guid guid);
+        Schlag GetSchlag(Guid guid);
 
         IEnumerable<Schlag> GetSchlaege(IEnumerable<Guid> guids);
 

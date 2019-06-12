@@ -147,9 +147,9 @@ namespace REST.Api.Controllers
         /// <param name="id">ID des gesuchten Schlages.</param>
         /// <returns>OK Code </returns>
         [HttpGet("{id}", Name = "GetSchlag")]
-        public IActionResult GetSchlaeg(Guid id, [FromQuery] string fields)
+        public IActionResult GetSchlag(Guid id, [FromQuery] string fields)
         {
-            var schlagfromRepo = _schlagRepository.GetSchlaege(id);
+            var schlagfromRepo = _schlagRepository.GetSchlag(id);
             if (schlagfromRepo == null)
             {
                 return NotFound();
@@ -232,7 +232,7 @@ namespace REST.Api.Controllers
                 return NotFound();
             }
 
-            var schlagFromRepo = _schlagRepository.GetSchlaege(id);
+            var schlagFromRepo = _schlagRepository.GetSchlag(id);
             if (schlagFromRepo == null)
             {
                 return NotFound();
@@ -290,7 +290,7 @@ namespace REST.Api.Controllers
                 return Ok(("GetSchlag",
                     new { id = linkedResourceToReturn["Id"] }, linkedResourceToReturn));
             }
-            var schlagFromRepo = _schlagRepository.GetSchlaege(id);
+            var schlagFromRepo = _schlagRepository.GetSchlag(id);
             //if (schlagFromRepo == null)
             //{
             //    var schlagEntity = Mapper.Map<Schlag>(schlag);
@@ -346,7 +346,7 @@ namespace REST.Api.Controllers
                 return NotFound();
             }
 
-            var schlagFromRepo = _schlagRepository.GetSchlaege(id);
+            var schlagFromRepo = _schlagRepository.GetSchlag(id);
 
             if (schlagFromRepo == null)
             {

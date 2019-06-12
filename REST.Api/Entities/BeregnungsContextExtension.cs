@@ -10,8 +10,9 @@ namespace REST.Api.Entities
         public static void DataForContext(this BeregnungsContext context)
         {
             ////Setzt DB zurück
-            context.BeregnungsDatens.RemoveRange(context.BeregnungsDatens);
+            //context.BeregnungsDatens.RemoveRange(context.BeregnungsDatens);
             //context.Schlaege.RemoveRange(context.Schlaege);
+            context.Betriebe.RemoveRange(context.Betriebe);
             context.SaveChanges();
 
             //var schlaege = new List<Schlag>()
@@ -32,6 +33,19 @@ namespace REST.Api.Entities
             //        Name = "Feld 3"
             //    },
             //};
+            var betrieb = new List<Betrieb>()
+            {
+                new Betrieb()
+                {
+                    ID = new Guid("25320c5e-f58a-4b1f-b63a-8ee07a840bdf"),
+                    Name = "SudiFarm"
+                },
+                new Betrieb()
+                {
+                    ID = new Guid(),
+                    Name = "Maya Bauernhof"
+                }
+            };
             var daten = new List<BeregnungsDaten>()
             {
                 new BeregnungsDaten()
@@ -66,8 +80,9 @@ namespace REST.Api.Entities
 
             };
 
-            context.BeregnungsDatens.AddRange(daten);
+            //context.BeregnungsDatens.AddRange(daten);
             //context.Schlaege.AddRange(context.Schlaege);
+            context.Betriebe.AddRange(betrieb);
             context.SaveChanges();
         }
     }

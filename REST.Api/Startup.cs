@@ -51,6 +51,7 @@ namespace REST.Api
 
             services.AddScoped<ISchlagRepository, SchlagRepository>();
             services.AddScoped<IBeregnungsRepository, BeregnungsRepository>();
+            services.AddScoped<IBetriebRepsoitory, BetriebRepository>();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
@@ -115,6 +116,14 @@ namespace REST.Api
 
                 cfg.CreateMap<Models.SchlagForUpdateDto, Entities.Schlag>();
                 cfg.CreateMap<Entities.Schlag, Models.SchlagForUpdateDto>();
+
+                cfg.CreateMap<Entities.Betrieb, Models.BetriebDto>()
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+                    $"{src.Name}"));
+                cfg.CreateMap<Models.BetriebForCreationDto, Entities.Betrieb>();
+
+                cfg.CreateMap<Models.BetriebForUpdateDto, Entities.Betrieb>();
+                cfg.CreateMap<Entities.Betrieb, Models.BetriebForUpdateDto>();
 
             });
 

@@ -25,9 +25,11 @@ namespace REST.Api.Controllers
         /// <summary>
         /// Ctor
         /// </summary>
-        /// <param name="beregnungsRepository"></param>
-        /// <param name="ilogger"></param>
-        /// <param name="urlHelper"></param>
+        /// <param name="beregnungsRepository">Repository</param>
+        /// <param name="ilogger">Logger</param>
+        /// <param name="urlHelper">UrlHelper</param>
+        /// <param name="propertyMappingService"></param>
+        /// <param name="typeHelperService"></param>
         public BeregnungsDatenController(IBeregnungsRepository beregnungsRepository,
             ILogger<BeregnungsDatenController> ilogger,
             IUrlHelper urlHelper,
@@ -45,10 +47,11 @@ namespace REST.Api.Controllers
         /// Laden aller BeregnungsDaten
         /// </summary>
         /// <param name="resourceParameters">Metadateneinstellungen</param>
-        /// <returns></returns>
+        /// <returns>IEnumerable von BeregnungsDaten</returns>
         [HttpGet(Name = "GetBergenungsDatens")]
-        public IActionResult GetBeregnungsDaten(BeregnungsDatenResourceParameter resourceParameters)
+        public IActionResult GetBeregnungsDatens(BeregnungsDatenResourceParameter resourceParameters)
         {
+            //Mapping für OrderBy ist valid
             if (!_propertyMappingService.ValidMappingExistsFor<BeregnungsDatenDto,
                 BeregnungsDaten>(resourceParameters.OrderBy))
             {
@@ -416,7 +419,7 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">ID</param>
         /// <param name="fields">Fields</param>
-        /// <returns>Links</returns>
+        /// <returns>IEnumerable<LinkDto> links</returns>
         public IEnumerable<LinkDto> CreateLinksForBeregnungsDaten(Guid id, string fields)
         {
             var links = new List<LinkDto>();
@@ -454,24 +457,24 @@ namespace REST.Api.Controllers
         /// <summary>
         /// CreateLinksForBeregnungsDatens
         /// </summary>
-        /// <param name="beregnungsDatenResourceParameter"></param>
-        /// <param name="hasNext"></param>
-        /// <param name="hasPrevious"></param>
-        /// <returns></returns>
-        private IEnumerable<LinkDto> CreateLinksForBeregnungsDatens(BeregnungsDatenResourceParameter beregnungsDatenResourceParameter, bool hasNext, bool hasPrevious)
+        /// <param name="beregnungsDatenResourceParameter">BeregnungsDatenResourceParameter</param>
+        /// <param name="hasNext">Hat nächste Seite Bool</param>
+        /// <param name="hasPrevious">Hat vorherige Seite Bool</param>
+        /// <returns>Links</returns>
+        private IEnumerable<LinkDto> CreateLinksForBeregnungsDatens(BeregnungsDatenResourceParameter resourceParameters, bool hasNext, bool hasPrevious)
         {
             var links = new List<LinkDto>();
 
             // self 
             links.Add(
-               new LinkDto(CreateBergenungsDatenResourceUri(beregnungsDatenResourceParameter,
+               new LinkDto(CreateBergenungsDatenResourceUri(resourceParameters,
                ResourceUriType.Current)
                , "self", "GET"));
 
             if (hasNext)
             {
                 links.Add(
-                  new LinkDto(CreateBergenungsDatenResourceUri(beregnungsDatenResourceParameter,
+                  new LinkDto(CreateBergenungsDatenResourceUri(resourceParameters,
                   ResourceUriType.NextPage),
                   "nextPage", "GET"));
             }
@@ -479,7 +482,7 @@ namespace REST.Api.Controllers
             if (hasPrevious)
             {
                 links.Add(
-                    new LinkDto(CreateBergenungsDatenResourceUri(beregnungsDatenResourceParameter,
+                    new LinkDto(CreateBergenungsDatenResourceUri(resourceParameters,
                     ResourceUriType.PreviousPage),
                     "previousPage", "GET"));
             }

@@ -33,7 +33,7 @@ namespace REST.Api.Services
             return PagedList<Schlag>.Create(collectionBeforPaging, schlagRessource.PageNumber, schlagRessource.PageSize);
         }
 
-        public Schlag GetSchlaege(Guid Id)
+        public Schlag GetSchlag(Guid Id)
         {
             return _context.Schlaege.FirstOrDefault(a => a.ID == Id);
         }
