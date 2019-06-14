@@ -29,8 +29,8 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="beregnungsRepository"></param>
         /// <param name="ilogger"></param>
-        public SchlagController(ISchlagRepository schlagRepository, 
-            ILogger<SchlagController> ilogger, 
+        public SchlagController(ISchlagRepository schlagRepository,
+            ILogger<SchlagController> ilogger,
             IUrlHelper urlHelper,
             IPropertyMappingService propertyMappingService,
             ITypeHelperService typeHelperService)
@@ -51,60 +51,80 @@ namespace REST.Api.Controllers
         /// /// <param name="pageSize">Seitenzahl die Angezeigt werden soll</param>
         /// <returns>OK Code </returns>
         [HttpGet(Name = "GetSchlaege")]
-        public IActionResult GetSchlaege(SchlagResourceParameter resourceParameters)
+        public IActionResult GetSchlaege(SchlagResourceParameter resourceParameters,
+            [FromHeader(Name = "Accept")]string mediaType)
         {
             if (!_typeHelperService.TypeHasProperties<SchlagDto>(resourceParameters.Fields))
             {
                 return BadRequest();
             }
+            //Aus DB laden
             var schlagfromRepo = _schlagRepository.GetSchlaege(resourceParameters);
-
-            //// erstellen der Links
-            //var previousPageLink = schlagfromRepo.HasPrevious ?
-            //    CreateSchlagResourceUri(resourceParameters,
-            //    ResourceUriType.PreviousPage) : null;
-            //var nextPageLink = schlagfromRepo.HasNext ?
-            //    CreateSchlagResourceUri(resourceParameters,
-            //    ResourceUriType.NextPage) : null;
-
-            //erstellen der Metadaten
-            var paginationMetadata = new
-            {
-                totalCount = schlagfromRepo.TotalCount,
-                pageSize = schlagfromRepo.PageSize,
-                currentPage = schlagfromRepo.CurrentPage,
-                totalPages = schlagfromRepo.TotalPages,
-                //previousPage = previousPageLink,
-                //nextPage = nextPageLink
-            };
-            Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
-
             var schlag = Mapper.Map<IEnumerable<SchlagDto>>(schlagfromRepo);
 
-            //Links für alle Daten
-            var links = CreateLinksForschlaege(resourceParameters,
-                schlagfromRepo.HasNext,
-                schlagfromRepo.HasPrevious);
-
-            //DataShape
-            var shapedSchlaege = schlag.ShapeData(resourceParameters.Fields);
-
-            //Links für jede einzelnen Datensatz
-            var shapedSchlaegeWithLinks = shapedSchlaege.Select(s =>
+            //Falls der Header "application/vnd.ostfalia.hateoas+json" werden keine Links im Header mit angegeben. 
+            if (mediaType == "application/vnd.ostfalia.hateoas+json")
             {
-                var schlagAsDictionary = s as IDictionary<string, object>;
-                var schlagLinks = CreateLinksForSchlag((Guid)schlagAsDictionary["ID"], resourceParameters.Fields);
-                schlagAsDictionary.Add("links", schlagLinks);
-                return schlagAsDictionary;
 
-            });
-            var linkedCollectionResource = new
+                //erstellen der Metadaten
+                var paginationMetadata = new
+                {
+                    totalCount = schlagfromRepo.TotalCount,
+                    pageSize = schlagfromRepo.PageSize,
+                    currentPage = schlagfromRepo.CurrentPage,
+                    totalPages = schlagfromRepo.TotalPages,
+                };
+                Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+
+                //Links für alle Daten
+                var links = CreateLinksForschlaege(resourceParameters,
+                    schlagfromRepo.HasNext,
+                    schlagfromRepo.HasPrevious);
+
+                //DataShape
+                var shapedSchlaege = schlag.ShapeData(resourceParameters.Fields);
+
+                //Links für jede einzelnen Datensatz
+                var shapedSchlaegeWithLinks = shapedSchlaege.Select(s =>
+                {
+                    var schlagAsDictionary = s as IDictionary<string, object>;
+                    var schlagLinks = CreateLinksForSchlag((Guid)schlagAsDictionary["ID"], resourceParameters.Fields);
+                    schlagAsDictionary.Add("links", schlagLinks);
+                    return schlagAsDictionary;
+
+                });
+                var linkedCollectionResource = new
+                {
+                    value = shapedSchlaegeWithLinks,
+                    links = links
+                };
+
+                return Ok(linkedCollectionResource);
+            }
+            else
             {
-                value = shapedSchlaegeWithLinks,
-                links = links
-            };
+                // erstellen der Links
+                var previousPageLink = schlagfromRepo.HasPrevious ?
+                    CreateSchlagResourceUri(resourceParameters,
+                    ResourceUriType.PreviousPage) : null;
+                var nextPageLink = schlagfromRepo.HasNext ?
+                    CreateSchlagResourceUri(resourceParameters,
+                    ResourceUriType.NextPage) : null;
 
-            return Ok(linkedCollectionResource);
+                //erstellen der Metadaten
+                var paginationMetadata = new
+                {
+                    totalCount = schlagfromRepo.TotalCount,
+                    pageSize = schlagfromRepo.PageSize,
+                    currentPage = schlagfromRepo.CurrentPage,
+                    totalPages = schlagfromRepo.TotalPages,
+                    previousPage = previousPageLink,
+                    nextPage = nextPageLink
+                };
+                Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+                return Ok(schlag.ShapeData(resourceParameters.Fields));
+            }
+
         }
 
         /// <summary>
@@ -171,7 +191,7 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="schlag">Neuer Schlag.</param>
         /// <returns>CreatedAtRoute </returns>
-        [HttpPost]
+        [HttpPost(Name = "CreatSchlag")]
         public IActionResult CreatSchlag([FromBody]SchlagForCreationDto schlag)
         {
             //Überprüfung ob der Übergabeparameter leer ist
@@ -222,7 +242,7 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">Id des zu löschenden Schlag.</param>
         /// <returns>NoContent  Code</returns>
-        [HttpDelete("{id}",Name = "DeleteSchlag")]
+        [HttpDelete("{id}", Name = "DeleteSchlag")]
         public IActionResult DeleteSchlag(Guid id)
         {
             //Existiert der Schlag?
@@ -254,7 +274,7 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des zu updatenden Schlag.</param>
         /// <param name="schlag">Schlag Entity</param>
         /// <returns>NoContent  Code</returns>
-        [HttpPut("{id}",Name = "UpdateSchlag")]
+        [HttpPut("{id}", Name = "UpdateSchlag")]
         public IActionResult UpdateSchlag(Guid id, [FromBody]SchlagForUpdateDto schlag)
         {
             //geänderte Daten
@@ -330,7 +350,7 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des zu updatenden Schlag.</param>
         /// <param name="patchDoc">Schlag Entity</param>
         /// <returns>NoContent  Code</returns>
-        [HttpPatch("{id}",Name = "PartiallyUpdateSchlag")]
+        [HttpPatch("{id}", Name = "PartiallyUpdateSchlag")]
         public IActionResult PartiallyUpdateSchlag(Guid id,
             [FromBody]JsonPatchDocument<SchlagForUpdateDto> patchDoc)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using REST.Api.Entities;
 using REST.Api.Helpers;
@@ -49,7 +50,8 @@ namespace REST.Api.Controllers
         /// <param name="resourceParameters">Metadateneinstellungen</param>
         /// <returns>IEnumerable von BeregnungsDaten</returns>
         [HttpGet(Name = "GetBergenungsDatens")]
-        public IActionResult GetBeregnungsDatens(BeregnungsDatenResourceParameter resourceParameters)
+        public IActionResult GetBeregnungsDatens(BeregnungsDatenResourceParameter resourceParameters,
+            [FromHeader(Name = "Accept")]string mediaType)
         {
             //Mapping für OrderBy ist valid
             if (!_propertyMappingService.ValidMappingExistsFor<BeregnungsDatenDto,
@@ -63,57 +65,78 @@ namespace REST.Api.Controllers
                 return BadRequest();
             }
 
+            //Aus DB laden
             var datenFromRepo = _beregnungsRepository.GetBeregnungsDatens(resourceParameters);
-
-            ////erstellen der Links für Seiten
-            //var previousPageLink = datenFromRepo.HasPrevious ?
-            //    CreateBergenungsDatenResourceUri(resourceParameters,
-            //    ResourceUriType.PreviousPage) : null;
-
-            //var nextPageLink = datenFromRepo.HasNext ?
-            //    CreateBergenungsDatenResourceUri(resourceParameters,
-            //    ResourceUriType.NextPage) : null;
-
-            //Metadaten erstellen
-            var paginationMetadata = new
-            {
-                totalCount = datenFromRepo.TotalCount,
-                pageSize = datenFromRepo.PageSize,
-                currentPage = datenFromRepo.CurrentPage,
-                totalPage = datenFromRepo.TotalPages,
-                //previousPageLink = previousPageLink,
-                //nextPageLink = nextPageLink
-            };
-            Response.Headers.Add("X-Pagination",
-                Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
-
             var daten = Mapper.Map<IEnumerable<BeregnungsDatenDto>>(datenFromRepo);
 
-            //Links für alle Daten
-            var links = CreateLinksForBeregnungsDatens(resourceParameters,
-                datenFromRepo.HasNext,
-                datenFromRepo.HasPrevious);
 
-            //DataShape
-            var shapedDatens = daten.ShapeData(resourceParameters.Fields);
-
-            //Links für jede einzelnen Datensatz
-            var shapedDatensWithLinks = shapedDatens.Select(d =>
+            //Falls der Header "application/vnd.ostfalia.hateoas+json" werden keine Links im Header mit angegeben. 
+            if (mediaType == "application/vnd.ostfalia.hateoas+json")
             {
-                var datenAsDictionary = d as IDictionary<string, object>;
-                var datenLinks = CreateLinksForBeregnungsDaten((Guid)datenAsDictionary["ID"], resourceParameters.Fields);
-                datenAsDictionary.Add("links", datenLinks);
-                return datenAsDictionary;
+                //Metadaten erstellen
+                var paginationMetadata = new
+                {
+                    totalCount = datenFromRepo.TotalCount,
+                    pageSize = datenFromRepo.PageSize,
+                    currentPage = datenFromRepo.CurrentPage,
+                    totalPage = datenFromRepo.TotalPages,
+                };
+                Response.Headers.Add("X-Pagination",
+                    Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
-            });
-            var linkedCollectionResource = new
+                //Links für alle Daten
+                var links = CreateLinksForBeregnungsDatens(resourceParameters,
+                    datenFromRepo.HasNext,
+                    datenFromRepo.HasPrevious);
+
+                //DataShape
+                var shapedDatens = daten.ShapeData(resourceParameters.Fields);
+
+                //Links für jede einzelnen Datensatz
+                var shapedDatensWithLinks = shapedDatens.Select(d =>
+                {
+                    var datenAsDictionary = d as IDictionary<string, object>;
+                    var datenLinks = CreateLinksForBeregnungsDaten((Guid)datenAsDictionary["ID"], resourceParameters.Fields);
+                    datenAsDictionary.Add("links", datenLinks);
+                    return datenAsDictionary;
+
+                });
+                var linkedCollectionResource = new
+                {
+                    value = shapedDatensWithLinks,
+                    links = links
+                };
+
+                return Ok(linkedCollectionResource);
+            }
+            else
             {
-                value = shapedDatensWithLinks,
-                links = links
-            };
+                //erstellen der Links für Seiten
+                var previousPageLink = datenFromRepo.HasPrevious ?
+                    CreateBergenungsDatenResourceUri(resourceParameters,
+                    ResourceUriType.PreviousPage) : null;
 
+                var nextPageLink = datenFromRepo.HasNext ?
+                    CreateBergenungsDatenResourceUri(resourceParameters,
+                    ResourceUriType.NextPage) : null;
 
-            return Ok(linkedCollectionResource);
+                {
+                    //Metadaten erstellen
+                    var paginationMetadata = new
+                    {
+                        totalCount = datenFromRepo.TotalCount,
+                        pageSize = datenFromRepo.PageSize,
+                        currentPage = datenFromRepo.CurrentPage,
+                        totalPage = datenFromRepo.TotalPages,
+                        previousPageLink = previousPageLink,
+                        nextPageLink = nextPageLink
+                    };
+                    Response.Headers.Add("X-Pagination",
+                        Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+
+                    return Ok(daten.ShapeData(resourceParameters.Fields));
+                }
+            }
         }
 
         /// <summary>
@@ -170,7 +193,7 @@ namespace REST.Api.Controllers
         /// <param name="id">ID des gesuchten BeregnungsDaten.</param>
         /// <returns>OK Code </returns>
         [HttpGet("{id}", Name = "GetBergenungsDaten")]
-        public IActionResult GetBeregnungsDaten(Guid id,[FromQuery] string fields)
+        public IActionResult GetBeregnungsDaten(Guid id, [FromQuery] string fields)
         {
             if (!_typeHelperService.TypeHasProperties<BeregnungsDatenDto>(fields))
             {
@@ -261,7 +284,7 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">ID des zu löschen Datensatz</param>
         /// <returns>NoContent</returns>
-        [HttpDelete("{id}", Name ="DeleteBeregnungsDaten")]
+        [HttpDelete("{id}", Name = "DeleteBeregnungsDaten")]
         public IActionResult DeleteBeregnungsDaten(Guid id)
         {
             //Exisitert BeregnungsDaten?
@@ -294,7 +317,7 @@ namespace REST.Api.Controllers
         /// <param name="id">ID des zu Updatenden Datensatz</param>
         /// <param name="beregnungsDaten">Neue Daten</param>
         /// <returns>NoContent</returns>
-        [HttpPut("{id}",Name = "UpdateBeregnungsDaten")]
+        [HttpPut("{id}", Name = "UpdateBeregnungsDaten")]
         public IActionResult UpdateBeregnungsDaten(Guid id, [FromBody]BeregnungsDatenForUpdateDto beregnungsDaten)
         {
             //Geänderte Daten
@@ -345,7 +368,7 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des zu Updatenen</param>
         /// <param name="patchDoc">Update Body</param>
         /// <returns></returns>
-        [HttpPatch("{id}",Name = "PartallyUpdateBeregnungsDaten")]
+        [HttpPatch("{id}", Name = "PartallyUpdateBeregnungsDaten")]
         public IActionResult PartallyUpdateBeregnungsDaten(Guid id,
             [FromBody]JsonPatchDocument<BeregnungsDatenForUpdateDto> patchDoc)
         {
@@ -426,7 +449,7 @@ namespace REST.Api.Controllers
 
             if (string.IsNullOrWhiteSpace(fields))
             {
-                links.Add( 
+                links.Add(
                     new LinkDto(_urlHelper.Link("GetBergenungsDaten", new { id = id }),
                     "self",
                     "GET"));

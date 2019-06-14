@@ -49,56 +49,84 @@ namespace REST.Api.Controllers
         /// <param name="resourceParameters">resourceParameters</param>
         /// <returns>IEnumerable von Betrieben</returns>
         [HttpGet(Name = "GetBetriebe")]
-        public IActionResult GetBetriebe(BetriebResourceParameter resourceParameters)
+        public IActionResult GetBetriebe(BetriebResourceParameter resourceParameters,
+            [FromHeader(Name = "Accept")]string mediaType)
         {
             if (!_typeHelperService.TypeHasProperties<BetriebDto>(resourceParameters.Fields))
             {
                 return BadRequest();
             }
 
+            //Aus DB laden
             var betriebFromRepo = _betriebsRepository.GetBetriebe(resourceParameters);
-
-            //Metadaten erstellen
-            var paginationMetadata = new
-            {
-                totalCount = betriebFromRepo.TotalCount,
-                pageSize = betriebFromRepo.PageSize,
-                currentPage = betriebFromRepo.CurrentPage,
-                totalPage = betriebFromRepo.TotalPages,
-                //previousPageLink = previousPageLink,
-                //nextPageLink = nextPageLink
-            };
-
-            Response.Headers.Add("X-Pagination",
-                Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
-
             var betrieb = Mapper.Map<IEnumerable<BetriebDto>>(betriebFromRepo);
 
-            //Links für alle Daten
-            var links = CreateLinksForBetriebe(resourceParameters,
-                betriebFromRepo.HasNext,
-                betriebFromRepo.HasPrevious);
-
-            //DataShape
-            var shapedBetrieb = betrieb.ShapeData(resourceParameters.Fields);
-
-            //Links für jeden einzelnen Datensatz
-            var shapedBetriebWithLinks = shapedBetrieb.Select(d =>
+            //Falls der Header "application/vnd.ostfalia.hateoas+json" werden keine Links im Header mit angegeben. 
+            if (mediaType == "application/vnd.ostfalia.hateoas+json")
             {
-                var betriebAsDictionary = d as IDictionary<string, object>;
-                var betriebLinks = CreateLinksForBetrieb((Guid)betriebAsDictionary["ID"], resourceParameters.Fields);
-                betriebAsDictionary.Add("links", betriebLinks);
-                return betriebAsDictionary;
+                //Metadaten erstellen
+                var paginationMetadata = new
+                {
+                    totalCount = betriebFromRepo.TotalCount,
+                    pageSize = betriebFromRepo.PageSize,
+                    currentPage = betriebFromRepo.CurrentPage,
+                    totalPage = betriebFromRepo.TotalPages,
+                };
 
-            });
-            var linkedCollectionResource = new
+                Response.Headers.Add("X-Pagination",
+                    Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+
+                //Links für alle Daten
+                var links = CreateLinksForBetriebe(resourceParameters,
+                    betriebFromRepo.HasNext,
+                    betriebFromRepo.HasPrevious);
+
+                //DataShape
+                var shapedBetrieb = betrieb.ShapeData(resourceParameters.Fields);
+
+                //Links für jeden einzelnen Datensatz
+                var shapedBetriebWithLinks = shapedBetrieb.Select(d =>
+                {
+                    var betriebAsDictionary = d as IDictionary<string, object>;
+                    var betriebLinks = CreateLinksForBetrieb((Guid)betriebAsDictionary["ID"], resourceParameters.Fields);
+                    betriebAsDictionary.Add("links", betriebLinks);
+                    return betriebAsDictionary;
+
+                });
+                var linkedCollectionResource = new
+                {
+                    value = shapedBetriebWithLinks,
+                    links = links
+                };
+
+
+                return Ok(linkedCollectionResource);
+            }
+            else
             {
-                value = shapedBetriebWithLinks,
-                links = links
-            };
+                // erstellen der Links
+                var previousPageLink = betriebFromRepo.HasPrevious ?
+                    CreateBetriebResourceUri(resourceParameters,
+                    ResourceUriType.PreviousPage) : null;
+                var nextPageLink = betriebFromRepo.HasNext ?
+                    CreateBetriebResourceUri(resourceParameters,
+                    ResourceUriType.NextPage) : null;
+
+                //erstellen der Metadaten
+                var paginationMetadata = new
+                {
+                    totalCount = betriebFromRepo.TotalCount,
+                    pageSize = betriebFromRepo.PageSize,
+                    currentPage = betriebFromRepo.CurrentPage,
+                    totalPages = betriebFromRepo.TotalPages,
+                    previousPage = previousPageLink,
+                    nextPage = nextPageLink
+                };
+                Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+                return Ok(betrieb.ShapeData(resourceParameters.Fields));
+            }
 
 
-            return Ok(linkedCollectionResource);
         }
 
         /// <summary>
