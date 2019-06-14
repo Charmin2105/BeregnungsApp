@@ -15,7 +15,7 @@ namespace REST.Api.Entities
         [MaxLength(100)]
         public string Name { get; set; }
 
-        public ICollection<Account> Accounts { get; set; }
-            = new List<Account>();
+        public ICollection<Mitarbeiter> Mitarbeiters { get; set; }
+            = new List<Mitarbeiter>();
     }
 }

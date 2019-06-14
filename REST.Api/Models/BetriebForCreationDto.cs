@@ -7,5 +7,8 @@ namespace REST.Api.Models
 {
     public class BetriebForCreationDto : BetriebForMaipulationDto
     {
+
+        public ICollection<MitarbeiterForCreationDto> Books { get; set; }
+            = new List<MitarbeiterForCreationDto>();
     }
 }

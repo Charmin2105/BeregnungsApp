@@ -207,13 +207,13 @@ namespace REST.Api.Controllers
 
             var links = CreateLinksForSchlag(schlagToReturn.ID, null);
 
-            var linkedResourceToReturn = schlag.ShapeData(null)
+            var linkedResourceToReturn = schlagToReturn.ShapeData(null)
                 as IDictionary<string, object>;
 
             linkedResourceToReturn.Add("links", links);
 
-            return Ok(("GetSchlag",
-                new { id = linkedResourceToReturn["Id"] }, linkedResourceToReturn));
+            return CreatedAtRoute("GetSchlag",
+                new { id = linkedResourceToReturn["ID"] }, linkedResourceToReturn);
 
         }
 
@@ -288,7 +288,7 @@ namespace REST.Api.Controllers
                 linkedResourceToReturn.Add("links", links);
 
                 return Ok(("GetSchlag",
-                    new { id = linkedResourceToReturn["Id"] }, linkedResourceToReturn));
+                    new { id = linkedResourceToReturn["ID"] }, linkedResourceToReturn));
             }
             var schlagFromRepo = _schlagRepository.GetSchlag(id);
             //if (schlagFromRepo == null)

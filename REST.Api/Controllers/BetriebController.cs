@@ -16,7 +16,7 @@ namespace REST.Api.Controllers
     public class BetriebController : Controller
     {
         //Fields
-        private IBetriebRepsoitory _betriebsRepository;
+        private IBetriebRepository _betriebsRepository;
         private ILogger<BetriebController> _ilogger;
         private IUrlHelper _urlHelper;
         private IPropertyMappingService _propertyMappingService;
@@ -30,7 +30,7 @@ namespace REST.Api.Controllers
         /// <param name="urlHelper">urlHelper</param>
         /// <param name="propertyMappingService">propertyMappingService</param>
         /// <param name="typeHelperService">typeHelperService</param>
-        public BetriebController(IBetriebRepsoitory betriebRepsoitory,
+        public BetriebController(IBetriebRepository betriebRepsoitory,
             ILogger<BetriebController> ilogger,
             IUrlHelper urlHelper,
             IPropertyMappingService propertyMappingService,
@@ -80,10 +80,10 @@ namespace REST.Api.Controllers
                 betriebFromRepo.HasPrevious);
 
             //DataShape
-            var shapedDatens = betrieb.ShapeData(resourceParameters.Fields);
+            var shapedBetrieb = betrieb.ShapeData(resourceParameters.Fields);
 
-            //Links für jede einzelnen Datensatz
-            var shapedDatensWithLinks = shapedDatens.Select(d =>
+            //Links für jeden einzelnen Datensatz
+            var shapedBetriebWithLinks = shapedBetrieb.Select(d =>
             {
                 var betriebAsDictionary = d as IDictionary<string, object>;
                 var betriebLinks = CreateLinksForBetrieb((Guid)betriebAsDictionary["ID"], resourceParameters.Fields);
@@ -93,7 +93,7 @@ namespace REST.Api.Controllers
             });
             var linkedCollectionResource = new
             {
-                value = shapedDatensWithLinks,
+                value = shapedBetriebWithLinks,
                 links = links
             };
 
@@ -119,11 +119,11 @@ namespace REST.Api.Controllers
             {
                 return NotFound();
             }
-            var daten = Mapper.Map<BeregnungsDatenDto>(BetriebFromRepo);
+            var betrieb = Mapper.Map<BetriebDto>(BetriebFromRepo);
 
             var links = CreateLinksForBetrieb(id, fields);
 
-            var linkedResourceToReturn = daten.ShapeData(fields)
+            var linkedResourceToReturn = betrieb.ShapeData(fields)
                 as IDictionary<string, object>;
 
             linkedResourceToReturn.Add("links", links);
@@ -149,7 +149,7 @@ namespace REST.Api.Controllers
             if (betrieb.Name == string.Empty)
             {
 
-                ModelState.AddModelError(nameof(BeregnungsDatenForCreationDto), "Bitte einen Namen für den Betrieb eingeben.");
+                ModelState.AddModelError(nameof(BetriebForCreationDto), "Bitte einen Namen für den Betrieb eingeben.");
             }
 
 
@@ -159,6 +159,7 @@ namespace REST.Api.Controllers
                 return new Helpers.UnprocessableEntityObjectResult(ModelState);
             }
 
+            //Mapper
             var betriebEntitiy = Mapper.Map<Betrieb>(betrieb);
             _betriebsRepository.AddBetrieb(betriebEntitiy);
 
@@ -167,7 +168,7 @@ namespace REST.Api.Controllers
                 throw new Exception("Fehler beim speichern eines neuen Betriebs");
             }
 
-            var betriebToReturn = Mapper.Map<BeregnungsDatenDto>(betriebEntitiy);
+            var betriebToReturn = Mapper.Map<BetriebDto>(betriebEntitiy);
 
             var links = CreateLinksForBetrieb(betriebToReturn.ID, null);
 
@@ -176,7 +177,7 @@ namespace REST.Api.Controllers
 
             linkedResourceToReturn.Add("links", links);
 
-            _ilogger.LogInformation($"CreateBeregnungsDaten erfolgreich ID{betriebToReturn.ID}.");
+            _ilogger.LogInformation($"CreateBetrieb erfolgreich ID{betriebToReturn.ID}.");
 
             return CreatedAtRoute("GetBetrieb",
                 new { id = linkedResourceToReturn["ID"] }, linkedResourceToReturn);
@@ -190,7 +191,7 @@ namespace REST.Api.Controllers
         [HttpDelete("{id}", Name = "DeleteBetrieb")]
         public IActionResult DeleteBetrieb(Guid id)
         {
-            //Exisitert BeregnungsDaten?
+            //Exisitert Betrieb?
             if (!_betriebsRepository.BetriebExists(id))
             {
                 return NotFound();
@@ -221,7 +222,7 @@ namespace REST.Api.Controllers
         /// <param name="betrieb">Update body</param>
         /// <returns> No Content Code</returns>
         [HttpPut("{id}", Name = "UpdateBetrieb")]
-        public IActionResult UpdateBetrieb(Guid id, [FromBody]BeregnungsDatenForUpdateDto betrieb)
+        public IActionResult UpdateBetrieb(Guid id, [FromBody]BetriebForUpdateDto betrieb)
         {
             //Geänderte Daten
             if (betrieb == null)
@@ -242,11 +243,11 @@ namespace REST.Api.Controllers
                     throw new Exception($"Upserting schlug fehl");
                 }
 
-                var beregnungsDatenToReturn = Mapper.Map<BetriebDto>(betriebEntity);
+                var betriebToReturn = Mapper.Map<BetriebDto>(betriebEntity);
 
-                return CreatedAtRoute("GetBergenungsDaten",
-                    new { guid = beregnungsDatenToReturn.ID },
-                    beregnungsDatenToReturn);
+                return CreatedAtRoute("GetBetrieb",
+                    new { guid = betriebToReturn.ID },
+                    betriebToReturn);
             }
             var betriebFromRepo = _betriebsRepository.GetBetrieb(id);
 
@@ -377,7 +378,7 @@ namespace REST.Api.Controllers
         /// <summary>
         /// CreateLinksForBetrieb
         /// </summary>
-        /// <param name="beregnungsDatenResourceParameter">BeregnungsDatenResourceParameter</param>
+        /// <param name="ResourceParameter">ResourceParameter</param>
         /// <param name="hasNext">Hat nächste Seite Bool</param>
         /// <param name="hasPrevious">Hat vorherige Seite Bool</param>
         /// <returns>IEnumerable<LinkDto> links</returns>

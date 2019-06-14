@@ -51,7 +51,7 @@ namespace REST.Api
 
             services.AddScoped<ISchlagRepository, SchlagRepository>();
             services.AddScoped<IBeregnungsRepository, BeregnungsRepository>();
-            services.AddScoped<IBetriebRepsoitory, BetriebRepository>();
+            services.AddScoped<IBetriebRepository, BetriebRepository>();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
@@ -101,6 +101,7 @@ namespace REST.Api
 
             AutoMapper.Mapper.Initialize(cfg =>
             {
+                //Mapper Beregnungsdaten
                 cfg.CreateMap<Entities.BeregnungsDaten, Models.BeregnungsDatenDto>()
                     .ForMember(dest => dest.StartDatum, opt => opt.MapFrom(src =>
                     $"{src.StartDatum}"));
@@ -109,6 +110,7 @@ namespace REST.Api
                 cfg.CreateMap<Models.BeregnungsDatenForUpdateDto, Entities.BeregnungsDaten>();
                 cfg.CreateMap<Entities.BeregnungsDaten, Models.BeregnungsDatenForUpdateDto>();
 
+                //Maper Schlag
                 cfg.CreateMap<Entities.Schlag, Models.SchlagDto>()
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                     $"{src.Name}"));
@@ -117,6 +119,7 @@ namespace REST.Api
                 cfg.CreateMap<Models.SchlagForUpdateDto, Entities.Schlag>();
                 cfg.CreateMap<Entities.Schlag, Models.SchlagForUpdateDto>();
 
+                //Mapper Betrieb
                 cfg.CreateMap<Entities.Betrieb, Models.BetriebDto>()
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                     $"{src.Name}"));
@@ -125,6 +128,14 @@ namespace REST.Api
                 cfg.CreateMap<Models.BetriebForUpdateDto, Entities.Betrieb>();
                 cfg.CreateMap<Entities.Betrieb, Models.BetriebForUpdateDto>();
 
+                //Mapper Mitarbeiter
+                cfg.CreateMap<Entities.Mitarbeiter, Models.MitarbeiterDto>()
+                    .ForMember(dest => dest.Nachname, opt => opt.MapFrom(src =>
+                    $"{src.Nachname}"));
+                cfg.CreateMap<Models.MitarbeiterForCreationDto, Entities.Mitarbeiter>();
+
+                cfg.CreateMap<Models.MitarbeiterForUpdateDto, Entities.Mitarbeiter>();
+                cfg.CreateMap<Entities.Mitarbeiter, Models.MitarbeiterForUpdateDto>();
             });
 
             //DbReset
