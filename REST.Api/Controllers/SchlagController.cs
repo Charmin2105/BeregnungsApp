@@ -51,6 +51,7 @@ namespace REST.Api.Controllers
         /// /// <param name="pageSize">Seitenzahl die Angezeigt werden soll</param>
         /// <returns>OK Code </returns>
         [HttpGet(Name = "GetSchlaege")]
+        [HttpHead]
         public IActionResult GetSchlaege(SchlagResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
@@ -471,7 +472,13 @@ namespace REST.Api.Controllers
             return links;
         }
 
-
+        /// <summary>
+        /// CreateLinksForschlaege
+        /// </summary>
+        /// <param name="resourceParameter">Resource Parameter</param>
+        /// <param name="hasNext">Ob es eine nächste Seite gibt</param>
+        /// <param name="hasPrevious">Ob es eine vorherige Seite gibt</param>
+        /// <returns>IEnumerable<LinkDto></returns>
         private IEnumerable<LinkDto> CreateLinksForschlaege(SchlagResourceParameter resourceParameter, bool hasNext, bool hasPrevious)
         {
             var links = new List<LinkDto>();
@@ -498,6 +505,17 @@ namespace REST.Api.Controllers
                     "previousPage", "GET"));
             }
             return links;
+        }
+
+        /// <summary>
+        /// GetSchlagOptions
+        /// </summary>
+        /// <returns>OK</returns>
+        [HttpOptions]
+        public IActionResult GetSchlagOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST,PATCH,PUT,DELETE");
+            return Ok();
         }
 
         #endregion

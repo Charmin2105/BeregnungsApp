@@ -74,6 +74,18 @@ namespace REST.Api
             services.AddTransient<IPropertyMappingService, PropertyMappingService>();
 
             services.AddTransient<ITypeHelperService, TypeHelperService>();
+            services.AddHttpCacheHeaders(
+                (expirationModelOptions)
+                =>
+                {
+                    expirationModelOptions.MaxAge = 600;
+                },
+                (validationModelOptions)
+                =>
+                {
+                    validationModelOptions.MustRevalidate = true;
+                });
+            services.AddResponseCaching();
 
         }
 
@@ -149,6 +161,11 @@ namespace REST.Api
 
             //DbReset
             //beregnungsContext.DataForContext();
+
+            app.UseResponseCaching();
+
+            app.UseHttpCacheHeaders();
+
 
             app.UseMvc();
         }

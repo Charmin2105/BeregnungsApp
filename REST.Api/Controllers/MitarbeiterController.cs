@@ -50,6 +50,7 @@ namespace REST.Api.Controllers
         /// <param name="betriebID">ID des Betriebs</param>
         /// <returns>OK Code</returns>
         [HttpGet(Name = "GetMitarbeiters")]
+        [HttpHead]
         public IActionResult GetMitarbeiters(Guid betriebID)
         {
             if (!_betriebRepository.BetriebExists(betriebID))
@@ -395,6 +396,17 @@ namespace REST.Api.Controllers
                 "GET"));
 
             return mitarbeiterWrapper;
+        }
+
+        /// <summary>
+        /// GetMitarbeiterOptions
+        /// </summary>
+        /// <returns>OK</returns>
+        [HttpOptions]
+        public IActionResult GetMitarbeiterOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST,PATCH,PUT,DELETE");
+            return Ok();
         }
     }
 }

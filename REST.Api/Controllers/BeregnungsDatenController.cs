@@ -50,6 +50,7 @@ namespace REST.Api.Controllers
         /// <param name="resourceParameters">Metadateneinstellungen</param>
         /// <returns>IEnumerable von BeregnungsDaten</returns>
         [HttpGet(Name = "GetBergenungsDatens")]
+        [HttpHead]
         public IActionResult GetBeregnungsDatens(BeregnungsDatenResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
@@ -510,6 +511,17 @@ namespace REST.Api.Controllers
                     "previousPage", "GET"));
             }
             return links;
+        }
+
+        /// <summary>
+        /// GetBeregnungsDatenOptions
+        /// </summary>
+        /// <returns>OK</returns>
+        [HttpOptions]
+        public IActionResult GetBeregnungsDatenOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST,PATCH,PUT,DELETE");
+            return Ok();
         }
     }
 }

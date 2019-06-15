@@ -49,6 +49,7 @@ namespace REST.Api.Controllers
         /// <param name="resourceParameters">resourceParameters</param>
         /// <returns>IEnumerable von Betrieben</returns>
         [HttpGet(Name = "GetBetriebe")]
+        [HttpHead]
         public IActionResult GetBetriebe(BetriebResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
@@ -474,6 +475,17 @@ namespace REST.Api.Controllers
                             pageSize = resourceParameters.PageSize
                         });
             }
+        }
+
+        /// <summary>
+        /// GetBetriebOptions
+        /// </summary>
+        /// <returns>OK</returns>
+        [HttpOptions]
+        public IActionResult GetBetriebOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST,PATCH,PUT,DELETE");
+            return Ok();
         }
     }
 }
