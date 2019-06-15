@@ -12,7 +12,7 @@ namespace REST.Api.Models
     public abstract class BetriebForMaipulationDto
     {
         /// <summary>
-        ///  virtual string Name 
+        ///   Name des Betrieb
         /// </summary>
         [Required(ErrorMessage = "Es ist ein Name erforderlich.")]
         public virtual string Name { get; set; }

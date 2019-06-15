@@ -12,21 +12,21 @@ namespace REST.Api.Models
     public abstract class MitarbeiterForManipulationDto
     {
         /// <summary>
-        /// virtual string Vorname
+        /// Vorname des Mitarbeiter
         /// </summary>
         [Required]
         [MaxLength(100, ErrorMessage ="Bitte nicht mehr wie 100 Zeichen eingeben")]
         public virtual string Vorname { get; set; }
 
         /// <summary>
-        /// virtual string Nachname 
+        /// Nachname  des Mitarbeiter
         /// </summary>
         [Required]
         [MaxLength(100, ErrorMessage = "Bitte nicht mehr wie 100 Zeichen eingeben")]
         public virtual string Nachname { get; set; }
 
         /// <summary>
-        ///  DateTimeOffset GebDatum
+        /// GebDatum  des Mitarbeiter
         /// </summary>
         [Required(ErrorMessage = "Ein Geburtsdatum ist erforderlich.")]
         public DateTimeOffset GebDatum { get; set; }

@@ -9,61 +9,61 @@ namespace REST.Api.Models
     public abstract class BeregnungsDatenForManipulationDto
     {
         /// <summary>
-        /// DateTime StartDatum
+        /// Start Datum der Beregnung
         /// </summary>
         [Required(ErrorMessage = "Ein Startdatum ist erforderlich.")]
         public DateTime StartDatum { get; set; }
 
         /// <summary>
-        /// DateTime StartUhrzeit 
+        /// Start Uhrzeit der Beregnung
         /// </summary>
         [Required(ErrorMessage = "Ein Uhrzeit ist erforderlich.")]
         public DateTime StartUhrzeit { get; set; }
 
         /// <summary>
-        /// DateTime EndDatum
+        /// End Datum der Beregnung
         /// </summary>
         [Required]
         public DateTime EndDatum { get; set; }
 
         /// <summary>
-        ///  Guid Betrieb
+        ///  Betrieb der die Beregnung durchgeführt hat
         /// </summary>
         [Required(ErrorMessage = "Ein Betrieb ist erforderlich.")]
         public Guid Betrieb { get; set; }
 
         /// <summary>
-        /// Guid SchlagID
+        /// Schlag der Beregnet wurde
         /// </summary>
         [Required(ErrorMessage = "Es muss eine Schlag ID angegben werden")]
         public Guid SchlagID { get; set; }
 
         /// <summary>
-        /// string Duese 
+        ///  Duese die Verwendet wurde
         /// </summary>
         [Required]
         [MaxLength(50, ErrorMessage = "Bitte nicht mehr wie 50 Zeichen eingeben.")]
         public string Duese { get; set; }
 
         /// <summary>
-        /// int WasseruhrAnfang 
+        /// Wasseruhr Anfangstand
         /// </summary>
         [Required(ErrorMessage = "Bitte den Anfangsstand der Wasseruhr angeben.")]
         public int WasseruhrAnfang { get; set; }
 
         /// <summary>
-        /// virtual int WasseruhrEnde 
+        /// Wasseruhr Endestand
         /// </summary>
         public virtual int WasseruhrEnde { get; set; }
 
         /// <summary>
-        /// string Vorkomnisse
+        /// Vorkomnisse die Aufgetreten sind
         /// </summary>
         [MaxLength(100, ErrorMessage = "Bitte nicht mehr wie 100 Zeichen eingeben.")]
         public string Vorkomnisse { get; set; }
 
         /// <summary>
-        /// virtual bool IstAbgeschlossen
+        /// Ist Abgeschlossen Beregnung
         /// </summary>
         [Required(ErrorMessage = "Bitte angeben ob es noch in Arbeit ist oder abgeschlossen ist.")]
         public virtual bool IstAbgeschlossen { get; set; }

@@ -12,7 +12,7 @@ namespace REST.Api.Models
     public class BeregnungsDatenForUpdateDto : BeregnungsDatenForManipulationDto
     {
         /// <summary>
-        /// override int WasseruhrEnde
+        /// Wasseruhr Ende
         /// </summary>
         [Required(ErrorMessage = "Bitte den finalen Wasseruhrstand angeben")]
         public override int WasseruhrEnde
@@ -28,7 +28,7 @@ namespace REST.Api.Models
         }
 
         /// <summary>
-        /// override bool IstAbgeschlossen
+        /// Ist Abgeschlossen
         /// </summary>
         [Required(ErrorMessage = "Bitte angeben ob es noch in Arbeit ist oder abgeschlossen ist.")]
         public override bool IstAbgeschlossen

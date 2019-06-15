@@ -101,8 +101,17 @@ namespace REST.Api.Controllers
         /// <param name="betriebID">ID des Betriebs</param>
         /// <param name="mitarbeiter">Mitarbeiter Body</param>
         /// <returns>CreateAtRoute</returns>
+        /// <remarks>
+        /// Beispiel request (Erstellen eines neuen Mitarbeiters)
+        /// POST api/betriebe/{BetriebID}/mitarbeiters
+        /// {	       
+        ///     "vorname": "Nico",
+        ///     "nachname": "Herrmann",
+        ///     "gebDatum": "1993-05-21T00:00:00+00:00",
+        ///	}
+        /// </remarks>
         [HttpPost(Name = "CreateMitarbeiter")]
-        public IActionResult CreateMitarbeiter (Guid betriebID, [FromBody] MitarbeiterForCreationDto mitarbeiter)
+        public IActionResult CreateMitarbeiter(Guid betriebID, [FromBody] MitarbeiterForCreationDto mitarbeiter)
         {
             //Body leer?
             if (mitarbeiter == null)
@@ -111,7 +120,7 @@ namespace REST.Api.Controllers
             }
 
             //Validierung
-            if (mitarbeiter.Vorname ==mitarbeiter.Nachname)
+            if (mitarbeiter.Vorname == mitarbeiter.Nachname)
             {
                 ModelState.AddModelError(nameof(MitarbeiterForCreationDto),
                    "Nachname darf nicht gleich mit Vorname sein.");
@@ -157,7 +166,7 @@ namespace REST.Api.Controllers
         /// <param name="mitarbeiterID">ID des Mitarbeiter</param>
         /// <returns>No Content</returns>
         [HttpDelete("{ID}", Name = "DeleteMitarbeiter")]
-        public  IActionResult DeleteMitarbeiter(Guid betriebID,Guid mitarbeiterID)
+        public IActionResult DeleteMitarbeiter(Guid betriebID, Guid mitarbeiterID)
         {
             //Existiert der Betrieb?
             if (!_betriebRepository.BetriebExists(betriebID))
@@ -189,7 +198,17 @@ namespace REST.Api.Controllers
         /// <param name="mitarbeiterID">ID des Mitarbeiter</param>
         /// <param name="mitarbeiter">Mitarbeiter Body</param>
         /// <returns>No Content</returns>
-        [HttpPut("{ID}", Name ="UpdateMitarbeiter")]
+        /// remarks>
+        /// Beispiel request (Ändern eines  Mitarbeiters)
+        /// PUT api/betriebe/{BetriebID}/mitarbeiters
+        /// {	
+        ///     "id": "414f445d-c0f4-4419-849d-9a22231d524b",
+        ///     "vorname": "Nico",
+        ///     "nachname": "Herrmann",
+        ///     "gebDatum": "1993-05-21T00:00:00+00:00",
+        ///	}
+        /// </remarks>
+        [HttpPut("{ID}", Name = "UpdateMitarbeiter")]
         public IActionResult UpdateMitarbeiter(Guid betriebID, Guid mitarbeiterID,
             [FromBody] MitarbeiterForUpdateDto mitarbeiter)
         {
@@ -258,6 +277,18 @@ namespace REST.Api.Controllers
         /// <param name="mitarbeiterID">ID des Mitarbeiters</param>
         /// <param name="patchDoc">PatchDoc</param>
         /// <returns>NoContent</returns>
+        ///         /// remarks>
+        /// Beispiel request (Ändern eines  Mitarbeiters)
+        /// PATTCH api/betriebe/{BetriebID}/mitarbeiters
+        /// [
+        ///     {
+        ///		    "op" : "replace",
+        ///         "path":"/Nachname",
+        ///         "value" : "Müller"
+        ///
+        ///    }
+        ///]
+        /// </remarks>
         [HttpPatch("{ID}", Name = "PartiallyUpdateMitarbeiter")]
         public IActionResult PartiallyUpdateMitarbeiter(Guid betriebID, Guid mitarbeiterID,
             [FromBody] JsonPatchDocument<MitarbeiterForUpdateDto> patchDoc)
@@ -348,12 +379,12 @@ namespace REST.Api.Controllers
 
         }
 
-       /// <summary>
-            /// Links für Mitarbeiter erstellen
-            /// </summary>
-            /// <param name="mitarbeiter">Jeweiligen Mitarbeiter</param>
-            /// <returns> Mitarbeiter</returns>
-       private MitarbeiterDto CreateLinksForMitarbeiter(MitarbeiterDto mitarbeiter)
+        /// <summary>
+        /// Links für Mitarbeiter erstellen
+        /// </summary>
+        /// <param name="mitarbeiter">Jeweiligen Mitarbeiter</param>
+        /// <returns> Mitarbeiter</returns>
+        private MitarbeiterDto CreateLinksForMitarbeiter(MitarbeiterDto mitarbeiter)
         {
             mitarbeiter.Links.Add(new LinkDto(_urlHelper.Link("GetMitarbeiter",
                 new { id = mitarbeiter.ID }),

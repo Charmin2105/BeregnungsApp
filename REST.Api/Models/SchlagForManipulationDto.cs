@@ -12,7 +12,7 @@ namespace REST.Api.Models
     public abstract class SchlagForManipulationDto
     {
         /// <summary>
-        /// virtual string Name
+        /// Name des Schlags
         /// </summary>
         [Required(ErrorMessage = "Ein Name ist erforderlich.")]
         [MaxLength(100, ErrorMessage = "Bitte nicht mehr wie 100 Zeichen eingeben.")]

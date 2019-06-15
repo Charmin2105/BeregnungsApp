@@ -165,6 +165,13 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="betrieb"> Betrieb body</param>
         /// <returns>CreateAtRoute</returns>
+        /// <remarks>
+        /// Bespiel request (Erstellen eines neuen Betriebes)
+        /// POST /api/betriebe/
+        ///	{
+        ///     "name": "Glückliche Kühe",
+        ///	}
+        /// </remarks>
         [HttpPost(Name = "CreateBetrieb")]
         public IActionResult CreateBetrieb([FromBody]BetriebForCreationDto betrieb)
         {
@@ -250,6 +257,14 @@ namespace REST.Api.Controllers
         /// <param name="id">ID des zu updatenden Betriebs</param>
         /// <param name="betrieb">Update body</param>
         /// <returns> No Content Code</returns>
+        /// <remarks>
+        /// Bespiel request (Ändern eines  Betriebes)
+        /// PUT /api/betriebe/
+        ///	{
+        ///	    "id": "18c9f68d-cee1-4e8f-8227-be1a43a21191",
+        ///     "name": "Glückliche Kühe"
+        ///	}
+        /// </remarks>
         [HttpPut("{id}", Name = "UpdateBetrieb")]
         public IActionResult UpdateBetrieb(Guid id, [FromBody]BetriebForUpdateDto betrieb)
         {
@@ -300,7 +315,19 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">Id des zu änderen Betriebes</param>
         /// <param name="patchDoc">JsonPatchDocument</param>
-        /// <returns></returns>
+        /// <returns>NoContent</returns>
+        ///<remarks>
+        /// Bespiel request (Ändern eines  Betriebes)
+        /// PATCH /api/betriebe/
+        /// [
+        ///     {
+        /// 		"op" : "replace",
+        ///         "path":"/name",
+        ///         "value" : "Zum fröhlichen Huhn"
+        /// 
+        ///     }
+        /// ]
+        /// </remarks>
         [HttpPatch("{id}", Name = "PartallyUpdateBetrieb")]
         public IActionResult PartallyUpdateBetrieb(Guid id,
             [FromBody]JsonPatchDocument<BetriebForUpdateDto> patchDoc)

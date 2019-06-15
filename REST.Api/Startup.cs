@@ -96,7 +96,16 @@ namespace REST.Api
                     new Swashbuckle.AspNetCore.Swagger.Info()
                     {
                         Title = "Beregnungs Api",
-                        Version =  "1"
+                        Version = "1",
+                        Description = "Mit dieser Api können Beregnungsdaten, Schläge, Betriebe " +
+                        "und Mitarbeiter eines Betirebs innerhalb eines Beregnungsvereins erstellt," +
+                        " geändert und gelöscht werden. Diese Api wurde im Rahmen einer Bachelor " +
+                        "Arbeit erstellt.",
+                        Contact = new Swashbuckle.AspNetCore.Swagger.Contact()
+                        {
+                            Name = "Nico Herrmann",
+                            Email = "ni.herrmann@ostfalia.de"                           
+                        }
                     });
 
                 var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

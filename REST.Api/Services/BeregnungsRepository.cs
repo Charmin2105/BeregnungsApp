@@ -79,8 +79,8 @@ namespace REST.Api.Services
                 _context.BeregnungsDatens.ApplySort(datenresourceParameters.OrderBy,
                 _propertyMappingService.GetPropertyMapping<BeregnungsDatenDto,BeregnungsDaten>());
 
-            /// Filter nach abgeschlossenen Daten
-            /// Nicht Filter sondern Suche ist hier gefordert
+            // Filter nach abgeschlossenen Daten
+            // Nicht Filter sondern Suche ist hier gefordert
             //var abgeschlossenForWhereClause = datenresourceParameters.IstAbgeschlossen;
 
             //collectionBeforPaging = collectionBeforPaging

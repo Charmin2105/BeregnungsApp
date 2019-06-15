@@ -192,11 +192,18 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="schlag">Neuer Schlag.</param>
         /// <returns>CreatedAtRoute </returns>
+        /// <remarks>
+        /// Beispiel request (erstellen eines neuen Schlags)
+        /// POST /schlaege/id
+        /// {       
+        ///    "name": "Schlag 23",
+        /// }
+        /// </remarks>
         [HttpPost(Name = "CreatSchlag")]
         public IActionResult CreatSchlag([FromBody]SchlagForCreationDto schlag)
         {
             //Überprüfung ob der Übergabeparameter leer ist
-            /// <returns>BadRequest </returns>
+            // <returns>BadRequest </returns>
             if (schlag == null)
             {
                 return BadRequest();
@@ -247,7 +254,6 @@ namespace REST.Api.Controllers
         public IActionResult DeleteSchlag(Guid id)
         {
             //Existiert der Schlag?
-            /// <returns>NotFound </returns>
             if (!_schlagRepository.SchlagExists(id))
             {
                 return NotFound();
@@ -275,18 +281,26 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des zu updatenden Schlag.</param>
         /// <param name="schlag">Schlag Entity</param>
         /// <returns>NoContent  Code</returns>
+        /// <remarks>
+        /// Beispiel request (ändert den Namen des Schlags)
+        /// PUT /schlaege/id
+        /// {
+        ///    "id": "96337487-31ef-4497-9246-8cc120dc80de",
+        ///    "name": "Schlag 88",
+        ///}
+        /// </remarks>
         [HttpPut("{id}", Name = "UpdateSchlag")]
         public IActionResult UpdateSchlag(Guid id, [FromBody]SchlagForUpdateDto schlag)
         {
             //geänderte Daten
-            /// <returns>BadRequest </returns>
+            // <returns>BadRequest </returns>
             if (schlag == null)
             {
                 return BadRequest();
             }
 
             //Existiert der Schlag?
-            /// <returns>NotFound </returns>
+            // <returns>NotFound </returns>
             if (!_schlagRepository.SchlagExists(id))
             {
                 var schlagEntity = Mapper.Map<Schlag>(schlag);
@@ -351,6 +365,17 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des zu updatenden Schlag.</param>
         /// <param name="patchDoc">Schlag Entity</param>
         /// <returns>NoContent  Code</returns>
+        /// <remarks>
+        /// Beispiel request (ändert den Namen des Schlags)
+        /// PATCH /schlaege/id
+        /// [
+        ///	    {
+        ///		"op" : "replace",
+        ///		"path":"/name",
+        ///		"value" : "13"
+        ///	    }
+        ///]
+        /// </remarks>
         [HttpPatch("{id}", Name = "PartiallyUpdateSchlag")]
         public IActionResult PartiallyUpdateSchlag(Guid id,
             [FromBody]JsonPatchDocument<SchlagForUpdateDto> patchDoc)
@@ -361,7 +386,7 @@ namespace REST.Api.Controllers
                 return BadRequest();
             }
             //Existiert der Schlag?
-            /// <returns>NotFound </returns>
+            // <returns>NotFound </returns>
             if (!_schlagRepository.SchlagExists(id))
             {
                 return NotFound();

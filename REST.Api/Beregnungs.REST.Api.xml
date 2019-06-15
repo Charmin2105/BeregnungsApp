@@ -42,6 +42,22 @@
             </summary>
             <param name="beregnungsDaten"> Beregnungsdaten Body</param>
             <returns>CreateAtRoute</returns>
+             <remarks>
+            Beispiel request (Erstellt eine neuen Beregnungsdatensatz)
+            POST /beregnungsdaten/id
+            {
+               "startDatum": "2019-05-21T00:00:00+02:00",
+               "startUhrzeit": "2019-06-04T00:00:00",
+               "endDatum": "2019-05-23T00:00:00+02:00",
+               "betrieb": "99fcb56d-8eb4-4cac-a208-10d179f35a97",
+               "schlagID": "99fcb56d-8eb4-4cac-a208-10d179f35a97",
+               "duese": "Düsenmaster 3000",
+               "wasseruhrAnfang": 2000,
+               "wasseruhrEnde": 3000,
+               "vorkomnisse": "Alle Tod",
+               "istAbgeschlossen": true,
+            }        
+            </remarks>
         </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.DeleteBeregnungsDaten(System.Guid)">
             <summary>
@@ -57,6 +73,23 @@
             <param name="id">ID des zu Updatenden Datensatz</param>
             <param name="beregnungsDaten">Neue Daten</param>
             <returns>NoContent</returns>
+             <remarks>
+            Beispiel request (Ändern eines Beregnungsdatensatz)
+            PUT /beregnungsdaten/id
+            {
+               "id": "63c2d821-cfe7-4d75-9cfe-33d3df9d224a",
+               "startDatum": "2019-05-21T00:00:00+02:00",
+               "startUhrzeit": "2019-06-04T00:00:00",
+               "endDatum": "2019-05-23T00:00:00+02:00",
+               "betrieb": "99fcb56d-8eb4-4cac-a208-10d179f35a97",
+               "schlagID": "99fcb56d-8eb4-4cac-a208-10d179f35a97",
+               "duese": "Düsenmaster 3000",
+               "wasseruhrAnfang": 2000,
+               "wasseruhrEnde": 3000,
+               "vorkomnisse": "Alle Tod",
+               "istAbgeschlossen": true,
+            }        
+            </remarks>
         </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.PartallyUpdateBeregnungsDaten(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.BeregnungsDatenForUpdateDto})">
             <summary>
@@ -64,7 +97,18 @@
             </summary>
             <param name="id">Id des zu Updatenen</param>
             <param name="patchDoc">Update Body</param>
-            <returns></returns>
+            <returns>NoContent</returns>
+            <remarks>
+            Beispiel request (Ändern eines Beregnungsdatensatz)
+            PATCH /beregnungsdaten/id
+            [
+            	{
+            		"op" : "replace",
+            		"path":"/duese",
+            		"value" : "Düsenmaster 5000"
+            	}
+            ]
+            </remarks>
         </member>
         <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BeregnungsDatenController.CreateLinksForBeregnungsDaten(System.Guid,System.String)" ignoriert -->
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateLinksForBeregnungsDatens(REST.Api.Helpers.BeregnungsDatenResourceParameter,System.Boolean,System.Boolean)">
@@ -113,6 +157,13 @@
             </summary>
             <param name="betrieb"> Betrieb body</param>
             <returns>CreateAtRoute</returns>
+            <remarks>
+            Bespiel request (Erstellen eines neuen Betriebes)
+            POST /api/betriebe/
+            {
+                "name": "Glückliche Kühe",
+            }
+            </remarks>
         </member>
         <member name="M:REST.Api.Controllers.BetriebController.DeleteBetrieb(System.Guid)">
             <summary>
@@ -128,14 +179,34 @@
             <param name="id">ID des zu updatenden Betriebs</param>
             <param name="betrieb">Update body</param>
             <returns> No Content Code</returns>
+            <remarks>
+            Bespiel request (Ändern eines  Betriebes)
+            PUT /api/betriebe/
+            {
+                "id": "18c9f68d-cee1-4e8f-8227-be1a43a21191",
+                "name": "Glückliche Kühe"
+            }
+            </remarks>
         </member>
         <member name="M:REST.Api.Controllers.BetriebController.PartallyUpdateBetrieb(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.BetriebForUpdateDto})">
-            <summary>
-            Teilupdate eines Betriebes
-            </summary>
-            <param name="id">Id des zu änderen Betriebes</param>
-            <param name="patchDoc">JsonPatchDocument</param>
-            <returns></returns>
+             <summary>
+             Teilupdate eines Betriebes
+             </summary>
+             <param name="id">Id des zu änderen Betriebes</param>
+             <param name="patchDoc">JsonPatchDocument</param>
+             <returns>NoContent</returns>
+            <remarks>
+             Bespiel request (Ändern eines  Betriebes)
+             PATCH /api/betriebe/
+             [
+                 {
+             		"op" : "replace",
+                     "path":"/name",
+                     "value" : "Zum fröhlichen Huhn"
+             
+                 }
+             ]
+             </remarks>
         </member>
         <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BetriebController.CreateLinksForBetrieb(System.Guid,System.String)" ignoriert -->
         <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BetriebController.CreateLinksForBetriebe(REST.Api.Helpers.BetriebResourceParameter,System.Boolean,System.Boolean)" ignoriert -->
@@ -185,6 +256,15 @@
             <param name="betriebID">ID des Betriebs</param>
             <param name="mitarbeiter">Mitarbeiter Body</param>
             <returns>CreateAtRoute</returns>
+            <remarks>
+            Beispiel request (Erstellen eines neuen Mitarbeiters)
+            POST api/betriebe/{BetriebID}/mitarbeiters
+            {	       
+                "vorname": "Nico",
+                "nachname": "Herrmann",
+                "gebDatum": "1993-05-21T00:00:00+00:00",
+            }
+            </remarks>
         </member>
         <member name="M:REST.Api.Controllers.MitarbeiterController.DeleteMitarbeiter(System.Guid,System.Guid)">
             <summary>
@@ -194,24 +274,8 @@
             <param name="mitarbeiterID">ID des Mitarbeiter</param>
             <returns>No Content</returns>
         </member>
-        <member name="M:REST.Api.Controllers.MitarbeiterController.UpdateMitarbeiter(System.Guid,System.Guid,REST.Api.Models.MitarbeiterForUpdateDto)">
-            <summary>
-            Update eines Mitarbeiters
-            </summary>
-            <param name="betriebID">ID des Betriebs</param>
-            <param name="mitarbeiterID">ID des Mitarbeiter</param>
-            <param name="mitarbeiter">Mitarbeiter Body</param>
-            <returns>No Content</returns>
-        </member>
-        <member name="M:REST.Api.Controllers.MitarbeiterController.PartiallyUpdateMitarbeiter(System.Guid,System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.MitarbeiterForUpdateDto})">
-            <summary>
-            Teilupdate eines Mitarbeiters
-            </summary>
-            <param name="betriebID">ID des Betriebs</param>
-            <param name="mitarbeiterID">ID des Mitarbeiters</param>
-            <param name="patchDoc">PatchDoc</param>
-            <returns>NoContent</returns>
-        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.MitarbeiterController.UpdateMitarbeiter(System.Guid,System.Guid,REST.Api.Models.MitarbeiterForUpdateDto)" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.MitarbeiterController.PartiallyUpdateMitarbeiter(System.Guid,System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.MitarbeiterForUpdateDto})" ignoriert -->
         <member name="M:REST.Api.Controllers.MitarbeiterController.CreateLinksForMitarbeiter(REST.Api.Models.MitarbeiterDto)">
             <summary>
             Links für Mitarbeiter erstellen
@@ -268,6 +332,13 @@
             </summary>
             <param name="schlag">Neuer Schlag.</param>
             <returns>CreatedAtRoute </returns>
+            <remarks>
+            Beispiel request (erstellen eines neuen Schlags)
+            POST /schlaege/id
+            {       
+               "name": "Schlag 23",
+            }
+            </remarks>
         </member>
         <member name="M:REST.Api.Controllers.SchlagController.DeleteSchlag(System.Guid)">
             <summary>
@@ -283,6 +354,14 @@
              <param name="id">Id des zu updatenden Schlag.</param>
              <param name="schlag">Schlag Entity</param>
              <returns>NoContent  Code</returns>
+             <remarks>
+             Beispiel request (ändert den Namen des Schlags)
+             PUT /schlaege/id
+             {
+                "id": "96337487-31ef-4497-9246-8cc120dc80de",
+                "name": "Schlag 88",
+            }
+             </remarks>
         </member>
         <member name="M:REST.Api.Controllers.SchlagController.PartiallyUpdateSchlag(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.SchlagForUpdateDto})">
             <summary>
@@ -291,6 +370,17 @@
              <param name="id">Id des zu updatenden Schlag.</param>
              <param name="patchDoc">Schlag Entity</param>
              <returns>NoContent  Code</returns>
+             <remarks>
+             Beispiel request (ändert den Namen des Schlags)
+             PATCH /schlaege/id
+             [
+            	    {
+            		"op" : "replace",
+            		"path":"/name",
+            		"value" : "13"
+            	    }
+            ]
+             </remarks>
         </member>
         <member name="M:REST.Api.Controllers.SchlagController.CreateLinksForSchlag(System.Guid,System.String)">
             <summary>
@@ -630,57 +720,57 @@
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.ID">
             <summary>
-            Guid ID
+             ID 
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.StartDatum">
             <summary>
-            DateTimeOffset StartDatum 
+             Start Datum der Beregnung
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.StartUhrzeit">
             <summary>
-            DateTime StartUhrzeit 
+             Start Uhrzeit der Beregnung
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.EndDatum">
             <summary>
-            DateTimeOffset EndDatum 
+             End Datum der Beregnung
             </summary>
         </member>
-        <member name="P:REST.Api.Models.BeregnungsDatenDto.Betrieb">
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.BetriebID">
             <summary>
-             Guid Betrieb 
+              ID des Betriebs der die Beregnung durchgeführt hat
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.SchlagID">
             <summary>
-            Guid SchlagID
+             ID des Schlages  
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.Duese">
             <summary>
-            string Duese
+             Duese die verwendet wurde
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.WasseruhrAnfang">
             <summary>
-            int WasseruhrAnfang
+             Wasseruhr Anfangsstand
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.WasseruhrEnde">
             <summary>
-            int WasseruhrEnde
+             Wasseruhr Endestand
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.Vorkomnisse">
             <summary>
-            string Vorkomnisse
+             Vorkomnisse
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenDto.IstAbgeschlossen">
             <summary>
-            bool IstAbgeschlossen
+             Ob die Beregnung abgeschlossen ist
             </summary>
         </member>
         <member name="T:REST.Api.Models.BeregnungsDatenForCreationDto">
@@ -695,52 +785,52 @@
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.StartDatum">
             <summary>
-            DateTime StartDatum
+            Start Datum der Beregnung
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.StartUhrzeit">
             <summary>
-            DateTime StartUhrzeit 
+            Start Uhrzeit der Beregnung
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.EndDatum">
             <summary>
-            DateTime EndDatum
+            End Datum der Beregnung
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.Betrieb">
             <summary>
-             Guid Betrieb
+             Betrieb der die Beregnung durchgeführt hat
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.SchlagID">
             <summary>
-            Guid SchlagID
+            Schlag der Beregnet wurde
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.Duese">
             <summary>
-            string Duese 
+             Duese die Verwendet wurde
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.WasseruhrAnfang">
             <summary>
-            int WasseruhrAnfang 
+            Wasseruhr Anfangstand
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.WasseruhrEnde">
             <summary>
-            virtual int WasseruhrEnde 
+            Wasseruhr Endestand
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.Vorkomnisse">
             <summary>
-            string Vorkomnisse
+            Vorkomnisse die Aufgetreten sind
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.IstAbgeschlossen">
             <summary>
-            virtual bool IstAbgeschlossen
+            Ist Abgeschlossen Beregnung
             </summary>
         </member>
         <member name="T:REST.Api.Models.BeregnungsDatenForUpdateDto">
@@ -750,12 +840,12 @@
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForUpdateDto.WasseruhrEnde">
             <summary>
-            override int WasseruhrEnde
+            Wasseruhr Ende
             </summary>
         </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForUpdateDto.IstAbgeschlossen">
             <summary>
-            override bool IstAbgeschlossen
+            Ist Abgeschlossen
             </summary>
         </member>
         <member name="T:REST.Api.Models.BetriebDto">
@@ -765,12 +855,12 @@
         </member>
         <member name="P:REST.Api.Models.BetriebDto.ID">
             <summary>
-            Guid ID
+             ID
             </summary>
         </member>
         <member name="P:REST.Api.Models.BetriebDto.Name">
             <summary>
-            string Name
+             Name des Betriebs 
             </summary>
         </member>
         <member name="T:REST.Api.Models.BetriebForCreationDto">
@@ -790,7 +880,7 @@
         </member>
         <member name="P:REST.Api.Models.BetriebForMaipulationDto.Name">
             <summary>
-             virtual string Name 
+              Name des Betrieb
             </summary>
         </member>
         <member name="T:REST.Api.Models.BetriebForUpdateDto">
@@ -851,22 +941,22 @@
         </member>
         <member name="P:REST.Api.Models.MitarbeiterDto.ID">
             <summary>
-            Guid ID 
+             ID 
             </summary>
         </member>
         <member name="P:REST.Api.Models.MitarbeiterDto.Vorname">
             <summary>
-            string Vorname
+            Vorname des Mitarbeiters
             </summary>
         </member>
         <member name="P:REST.Api.Models.MitarbeiterDto.Nachname">
             <summary>
-            string Nachname
+             Nachname des Mitarbeiters
             </summary>
         </member>
         <member name="P:REST.Api.Models.MitarbeiterDto.GebDatum">
             <summary>
-            DateTimeOffset GebDatum 
+             GebDatum des Mitarbeiters
             </summary>
         </member>
         <member name="T:REST.Api.Models.MitarbeiterForCreationDto">
@@ -881,17 +971,17 @@
         </member>
         <member name="P:REST.Api.Models.MitarbeiterForManipulationDto.Vorname">
             <summary>
-            virtual string Vorname
+            Vorname des Mitarbeiter
             </summary>
         </member>
         <member name="P:REST.Api.Models.MitarbeiterForManipulationDto.Nachname">
             <summary>
-            virtual string Nachname 
+            Nachname  des Mitarbeiter
             </summary>
         </member>
         <member name="P:REST.Api.Models.MitarbeiterForManipulationDto.GebDatum">
             <summary>
-             DateTimeOffset GebDatum
+            GebDatum  des Mitarbeiter
             </summary>
         </member>
         <member name="T:REST.Api.Models.MitarbeiterForUpdateDto">
@@ -906,12 +996,12 @@
         </member>
         <member name="P:REST.Api.Models.SchlagDto.ID">
             <summary>
-            Guid ID
+             ID
             </summary>
         </member>
         <member name="P:REST.Api.Models.SchlagDto.Name">
             <summary>
-            string Name 
+             Name des Schlags
             </summary>
         </member>
         <member name="T:REST.Api.Models.SchlagForCreationDto">
@@ -926,7 +1016,7 @@
         </member>
         <member name="P:REST.Api.Models.SchlagForManipulationDto.Name">
             <summary>
-            virtual string Name
+            Name des Schlags
             </summary>
         </member>
         <member name="T:REST.Api.Models.SchlagForUpdateDto">

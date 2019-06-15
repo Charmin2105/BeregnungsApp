@@ -222,6 +222,22 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="beregnungsDaten"> Beregnungsdaten Body</param>
         /// <returns>CreateAtRoute</returns>
+        ///  <remarks>
+        /// Beispiel request (Erstellt eine neuen Beregnungsdatensatz)
+        /// POST /beregnungsdaten/id
+        /// {
+        ///    "startDatum": "2019-05-21T00:00:00+02:00",
+        ///    "startUhrzeit": "2019-06-04T00:00:00",
+        ///    "endDatum": "2019-05-23T00:00:00+02:00",
+        ///    "betrieb": "99fcb56d-8eb4-4cac-a208-10d179f35a97",
+        ///    "schlagID": "99fcb56d-8eb4-4cac-a208-10d179f35a97",
+        ///    "duese": "Düsenmaster 3000",
+        ///    "wasseruhrAnfang": 2000,
+        ///    "wasseruhrEnde": 3000,
+        ///    "vorkomnisse": "Alle Tod",
+        ///    "istAbgeschlossen": true,
+        /// }        
+        /// </remarks>
         [HttpPost(Name = "CreateBeregnungsDaten")]
         public IActionResult CreateBeregnungsDaten([FromBody]BeregnungsDatenForCreationDto beregnungsDaten)
         {
@@ -318,6 +334,23 @@ namespace REST.Api.Controllers
         /// <param name="id">ID des zu Updatenden Datensatz</param>
         /// <param name="beregnungsDaten">Neue Daten</param>
         /// <returns>NoContent</returns>
+        ///  <remarks>
+        /// Beispiel request (Ändern eines Beregnungsdatensatz)
+        /// PUT /beregnungsdaten/id
+        /// {
+        ///    "id": "63c2d821-cfe7-4d75-9cfe-33d3df9d224a",
+        ///    "startDatum": "2019-05-21T00:00:00+02:00",
+        ///    "startUhrzeit": "2019-06-04T00:00:00",
+        ///    "endDatum": "2019-05-23T00:00:00+02:00",
+        ///    "betrieb": "99fcb56d-8eb4-4cac-a208-10d179f35a97",
+        ///    "schlagID": "99fcb56d-8eb4-4cac-a208-10d179f35a97",
+        ///    "duese": "Düsenmaster 3000",
+        ///    "wasseruhrAnfang": 2000,
+        ///    "wasseruhrEnde": 3000,
+        ///    "vorkomnisse": "Alle Tod",
+        ///    "istAbgeschlossen": true,
+        /// }        
+        /// </remarks>
         [HttpPut("{id}", Name = "UpdateBeregnungsDaten")]
         public IActionResult UpdateBeregnungsDaten(Guid id, [FromBody]BeregnungsDatenForUpdateDto beregnungsDaten)
         {
@@ -368,10 +401,21 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">Id des zu Updatenen</param>
         /// <param name="patchDoc">Update Body</param>
-        /// <returns></returns>
+        /// <returns>NoContent</returns>
+        /// <remarks>
+        /// Beispiel request (Ändern eines Beregnungsdatensatz)
+        /// PATCH /beregnungsdaten/id
+        /// [
+        /// 	{
+        /// 		"op" : "replace",
+        /// 		"path":"/duese",
+        /// 		"value" : "Düsenmaster 5000"
+        /// 	}
+        /// ]
+        /// </remarks>
         [HttpPatch("{id}", Name = "PartallyUpdateBeregnungsDaten")]
         public IActionResult PartallyUpdateBeregnungsDaten(Guid id,
-            [FromBody]JsonPatchDocument<BeregnungsDatenForUpdateDto> patchDoc)
+                [FromBody]JsonPatchDocument<BeregnungsDatenForUpdateDto> patchDoc)
         {
             //Eingabe nicht null
             if (patchDoc == null)
