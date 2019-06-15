@@ -444,7 +444,7 @@ namespace REST.Api.Controllers
         /// <param name="id">ID</param>
         /// <param name="fields">Fields</param>
         /// <returns>IEnumerable<LinkDto> links</returns>
-        public IEnumerable<LinkDto> CreateLinksForBeregnungsDaten(Guid id, string fields)
+        private IEnumerable<LinkDto> CreateLinksForBeregnungsDaten(Guid id, string fields)
         {
             var links = new List<LinkDto>();
 

@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Models
 {
+    /// <summary>
+    /// BetriebForUpdateDto
+    /// </summary>
     public class BetriebForUpdateDto : BetriebForMaipulationDto
     {
+        /// <summary>
+        /// override string Name
+        /// </summary>
         [Required(ErrorMessage = "Ein Name ist erforderlich.")]
         public override string Name
         {

@@ -429,7 +429,7 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="schlag">Übergabe eines SchlagDto</param>
         /// <returns>SchlagDto mit Links </returns>
-        public IEnumerable<LinkDto> CreateLinksForSchlag(Guid id, string fields)
+        private IEnumerable<LinkDto> CreateLinksForSchlag(Guid id, string fields)
         {
             var links = new List<LinkDto>();
 

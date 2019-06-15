@@ -295,6 +295,12 @@ namespace REST.Api.Controllers
 
         }
 
+        /// <summary>
+        /// Teilupdate eines Betriebes
+        /// </summary>
+        /// <param name="id">Id des zu änderen Betriebes</param>
+        /// <param name="patchDoc">JsonPatchDocument</param>
+        /// <returns></returns>
         [HttpPatch("{id}", Name = "PartallyUpdateBetrieb")]
         public IActionResult PartallyUpdateBetrieb(Guid id,
             [FromBody]JsonPatchDocument<BetriebForUpdateDto> patchDoc)

@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Helpers
 {
+    /// <summary>
+    /// PagedList
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PagedList<T> : List<T>
     {
         public int CurrentPage { get; private set; }

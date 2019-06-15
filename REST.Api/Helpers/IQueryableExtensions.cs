@@ -7,8 +7,19 @@ using System.Linq.Dynamic.Core;
 
 namespace REST.Api.Helpers
 {
+    /// <summary>
+    /// IQueryableExtensions
+    /// </summary>
     public static class IQueryableExtensions
     {
+        /// <summary>
+        /// ApplySort
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="mappingDictionary"></param>
+        /// <returns></returns>
         public static IQueryable<T> ApplySort<T>(this IQueryable<T> source,
             string orderBy, Dictionary<string, PropertyMappingValue> mappingDictionary)
         {

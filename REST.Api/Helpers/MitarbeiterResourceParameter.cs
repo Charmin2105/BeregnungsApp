@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Helpers
 {
+    /// <summary>
+    /// MitarbeiterResourceParameter
+    /// </summary>
     public class MitarbeiterResourceParameter : ResourceParameters
     {
     }

@@ -19,11 +19,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Reflection;
+using System.IO;
 
 namespace REST.Api
 {
     public class Startup
     {
+        private string swaggername = "BeregnungsOpenApiSpecification";
 
         public IConfiguration Configuration { get; }
 
@@ -86,6 +89,22 @@ namespace REST.Api
                     validationModelOptions.MustRevalidate = true;
                 });
             services.AddResponseCaching();
+
+            services.AddSwaggerGen(setupAction =>
+            {
+                setupAction.SwaggerDoc(swaggername,
+                    new Swashbuckle.AspNetCore.Swagger.Info()
+                    {
+                        Title = "Beregnungs Api",
+                        Version =  "1"
+                    });
+
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+                setupAction.IncludeXmlComments(xmlCommentsFullPath);
+            });
+
 
         }
 
@@ -161,6 +180,16 @@ namespace REST.Api
 
             //DbReset
             //beregnungsContext.DataForContext();
+
+            //app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint($"/swagger/{swaggername}/swagger.json",
+                    "Beregnungs Api");
+            });
 
             app.UseResponseCaching();
 

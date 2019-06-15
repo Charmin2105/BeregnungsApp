@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Models
 {
+    /// <summary>
+    /// class MitarbeiterForUpdateDto
+    /// </summary>
     public class MitarbeiterForUpdateDto : MitarbeiterForManipulationDto
     {
-        
-
-  
     }
 }

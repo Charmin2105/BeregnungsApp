@@ -7,9 +7,18 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Helpers
 {
+    /// <summary>
+    /// IEnumerableExtensions
+    /// </summary>
     public static class IEnumerableExtensions
     {
-
+        /// <summary>
+        /// ShapeData
+        /// </summary>
+        /// <typeparam name="TSource">TSource</typeparam>
+        /// <param name="source">Source Daten</param>
+        /// <param name="fields">Field Parameter</param>
+        /// <returns></returns>
         public static IEnumerable<ExpandoObject> ShapeData<TSource>(this IEnumerable<TSource> source, string fields)
         {
             if (source == null)

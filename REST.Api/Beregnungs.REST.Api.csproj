@@ -6,11 +6,16 @@
     <UserSecretsId>aac64979-678e-4beb-9ccc-91ddaf9a6dbc</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>Beregnungs.REST.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Remove="nlog.config" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

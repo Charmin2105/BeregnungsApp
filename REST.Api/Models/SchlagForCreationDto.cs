@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Models
 {
+    /// <summary>
+    /// class SchlagForCreationDto
+    /// </summary>
     public class SchlagForCreationDto : SchlagForManipulationDto
     {
 

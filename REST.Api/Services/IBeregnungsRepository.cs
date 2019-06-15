@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace REST.Api.Services
 {
+    /// <summary>
+    /// interface IBeregnungsRepository
+    /// </summary>
     public interface IBeregnungsRepository
     {
         PagedList<BeregnungsDaten> GetBeregnungsDatens(BeregnungsDatenResourceParameter datenresourceParameters);

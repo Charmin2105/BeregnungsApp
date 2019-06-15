@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Helpers
 {
+    /// <summary>
+    /// ResourceUriType
+    /// </summary>
     public enum ResourceUriType
     {
         PreviousPage,

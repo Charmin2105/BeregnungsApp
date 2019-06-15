@@ -7,8 +7,18 @@ using System.Reflection;
 
 namespace REST.Api.Helpers
 {
+    /// <summary>
+    /// ObjectExtensions
+    /// </summary>
     public static class ObjectExtensions
     {
+        /// <summary>
+        /// ShapeData
+        /// </summary>
+        /// <typeparam name="TSource">TSource</typeparam>
+        /// <param name="source"> Source Daten</param>
+        /// <param name="fields">Fields</param>
+        /// <returns></returns>
         public static ExpandoObject ShapeData<TSource>(this TSource source, string fields)
         {
             if (source == null)

@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Models
 {
+    /// <summary>
+    /// BetriebForMaipulationDto
+    /// </summary>
     public abstract class BetriebForMaipulationDto
     {
+        /// <summary>
+        ///  virtual string Name 
+        /// </summary>
         [Required(ErrorMessage = "Es ist ein Name erforderlich.")]
         public virtual string Name { get; set; }
     }

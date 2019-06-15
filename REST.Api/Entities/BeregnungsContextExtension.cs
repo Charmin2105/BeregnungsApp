@@ -5,8 +5,16 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Entities
 {
+    /// <summary>
+    /// BeregnungsContextExtension
+    /// Zum Testen erstmalig Daten in DB 
+    /// </summary>
     public static class BeregnungsContextExtension
     {
+        /// <summary>
+        /// DataForContext
+        /// </summary>
+        /// <param name="context">BeregnungsContext</param>
         public static void DataForContext(this BeregnungsContext context)
         {
             ////Setzt DB zurück

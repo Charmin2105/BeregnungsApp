@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace REST.Api.Services
 {
+    /// <summary>
+    /// interface IBetriebRepository
+    /// </summary>
     public interface IBetriebRepository
     {
         PagedList<Betrieb> GetBetriebe(BetriebResourceParameter resourcePrameter);

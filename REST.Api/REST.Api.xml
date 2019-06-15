@@ -1,0 +1,1190 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Beregnungs.REST.Api</name>
+    </assembly>
+    <members>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.#ctor(REST.Api.Services.IBeregnungsRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.BeregnungsDatenController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="beregnungsRepository">Repository</param>
+            <param name="ilogger">Logger</param>
+            <param name="urlHelper">UrlHelper</param>
+            <param name="propertyMappingService"></param>
+            <param name="typeHelperService"></param>
+        </member>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.GetBeregnungsDatens(REST.Api.Helpers.BeregnungsDatenResourceParameter,System.String)">
+            <summary>
+            Laden aller BeregnungsDaten
+            </summary>
+            <param name="resourceParameters">Metadateneinstellungen</param>
+            <returns>IEnumerable von BeregnungsDaten</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateBergenungsDatenResourceUri(REST.Api.Helpers.BeregnungsDatenResourceParameter,REST.Api.Helpers.ResourceUriType)">
+            <summary>
+            CreateBergenungsDatenResourceUri
+            </summary>
+            <param name="ressourceParameters">Übergabe der RessourceParameter</param>
+            <param name="type">Übergabe der ResourceUriType </param>
+            <returns>string</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.GetBeregnungsDaten(System.Guid,System.String)">
+            <summary>
+            Laden einer bestimmten BeregnungsDaten.
+            </summary>
+            <param name="id">ID des gesuchten BeregnungsDaten.</param>
+            <returns>OK Code </returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateBeregnungsDaten(REST.Api.Models.BeregnungsDatenForCreationDto)">
+            <summary>
+            Hinzufügen einer neuen BeregnungsDaten
+            </summary>
+            <param name="beregnungsDaten"> Beregnungsdaten Body</param>
+            <returns>CreateAtRoute</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.DeleteBeregnungsDaten(System.Guid)">
+            <summary>
+            Löschen einer BeregnungsDaten
+            </summary>
+            <param name="id">ID des zu löschen Datensatz</param>
+            <returns>NoContent</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.UpdateBeregnungsDaten(System.Guid,REST.Api.Models.BeregnungsDatenForUpdateDto)">
+            <summary>
+            Update von BeregnungsDaten
+            </summary>
+            <param name="id">ID des zu Updatenden Datensatz</param>
+            <param name="beregnungsDaten">Neue Daten</param>
+            <returns>NoContent</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.PartallyUpdateBeregnungsDaten(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.BeregnungsDatenForUpdateDto})">
+            <summary>
+            Patch Update von BeregnungsDaten
+            </summary>
+            <param name="id">Id des zu Updatenen</param>
+            <param name="patchDoc">Update Body</param>
+            <returns></returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BeregnungsDatenController.CreateLinksForBeregnungsDaten(System.Guid,System.String)" ignoriert -->
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateLinksForBeregnungsDatens(REST.Api.Helpers.BeregnungsDatenResourceParameter,System.Boolean,System.Boolean)">
+            <summary>
+            CreateLinksForBeregnungsDatens
+            </summary>
+            <param name="beregnungsDatenResourceParameter">BeregnungsDatenResourceParameter</param>
+            <param name="hasNext">Hat nächste Seite Bool</param>
+            <param name="hasPrevious">Hat vorherige Seite Bool</param>
+            <returns>Links</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.GetBeregnungsDatenOptions">
+            <summary>
+            GetBeregnungsDatenOptions
+            </summary>
+            <returns>OK</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BetriebController.#ctor(REST.Api.Services.IBetriebRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.BetriebController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
+            <summary>
+            ctor
+            </summary>
+            <param name="betriebRepsoitory">betriebRepsoitory</param>
+            <param name="ilogger">ilogger</param>
+            <param name="urlHelper">urlHelper</param>
+            <param name="propertyMappingService">propertyMappingService</param>
+            <param name="typeHelperService">typeHelperService</param>
+        </member>
+        <member name="M:REST.Api.Controllers.BetriebController.GetBetriebe(REST.Api.Helpers.BetriebResourceParameter,System.String)">
+            <summary>
+            Laden aller Betriebe
+            </summary>
+            <param name="resourceParameters">resourceParameters</param>
+            <returns>IEnumerable von Betrieben</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BetriebController.GetBetrieb(System.Guid,System.String)">
+            <summary>
+            Laden eines bestimmten Betriebs
+            </summary>
+            <param name="id">Id des gesuchten Betriebs</param>
+            <param name="fields">fields parameter</param>
+            <returns>Ok Status Code</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BetriebController.CreateBetrieb(REST.Api.Models.BetriebForCreationDto)">
+            <summary>
+            Hinzufügen eines neuen Betriebs
+            </summary>
+            <param name="betrieb"> Betrieb body</param>
+            <returns>CreateAtRoute</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BetriebController.DeleteBetrieb(System.Guid)">
+            <summary>
+            Betrieb löschen
+            </summary>
+            <param name="id">ID des zu löschenden Betriebs</param>
+            <returns>No Content Code</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BetriebController.UpdateBetrieb(System.Guid,REST.Api.Models.BetriebForUpdateDto)">
+            <summary>
+            Update eines Betriebs
+            </summary>
+            <param name="id">ID des zu updatenden Betriebs</param>
+            <param name="betrieb">Update body</param>
+            <returns> No Content Code</returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BetriebController.CreateLinksForBetrieb(System.Guid,System.String)" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BetriebController.CreateLinksForBetriebe(REST.Api.Helpers.BetriebResourceParameter,System.Boolean,System.Boolean)" ignoriert -->
+        <member name="M:REST.Api.Controllers.BetriebController.CreateBetriebResourceUri(REST.Api.Helpers.BetriebResourceParameter,REST.Api.Helpers.ResourceUriType)">
+            <summary>
+            CreateBetriebResourceUri
+            </summary>
+            <param name="ressourceParameters">Übergabe der RessourceParameter</param>
+            <param name="type">Übergabe der ResourceUriType </param>
+            <returns>string</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.BetriebController.GetBetriebOptions">
+            <summary>
+            GetBetriebOptions
+            </summary>
+            <returns>OK</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.#ctor(REST.Api.Services.IBetriebRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.MitarbeiterController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
+            <summary>
+            ctor
+            </summary>
+            <param name="mitarbeiterRepository">mitarbeiterRepsoitory</param>
+            <param name="ilogger">ilogger</param>
+            <param name="urlHelper">urlHelper</param>
+            <param name="propertyMappingService">propertyMappingService</param>
+            <param name="typeHelperService">typeHelperService</param>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.GetMitarbeiters(System.Guid)">
+            <summary>
+            Alle Mitarbeiter eines Betriebes 
+            </summary>
+            <param name="betriebID">ID des Betriebs</param>
+            <returns>OK Code</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.GetMitarbeiter(System.Guid,System.Guid)">
+            <summary>
+            Einen bestimmten Mitarbeiter laden
+            </summary>
+            <param name="betriebID">Id des Betriebs</param>
+            <param name="mitarbeiterID">ID des Mitarbeiters</param>
+            <returns>OK Code</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.CreateMitarbeiter(System.Guid,REST.Api.Models.MitarbeiterForCreationDto)">
+            <summary>
+            Create Mitarbeiter
+            </summary>
+            <param name="betriebID">ID des Betriebs</param>
+            <param name="mitarbeiter">Mitarbeiter Body</param>
+            <returns>CreateAtRoute</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.DeleteMitarbeiter(System.Guid,System.Guid)">
+            <summary>
+            Löschen eines Mitarbeiters von einem Betrieb
+            </summary>
+            <param name="betriebID">ID des Betriebs</param>
+            <param name="mitarbeiterID">ID des Mitarbeiter</param>
+            <returns>No Content</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.UpdateMitarbeiter(System.Guid,System.Guid,REST.Api.Models.MitarbeiterForUpdateDto)">
+            <summary>
+            Update eines Mitarbeiters
+            </summary>
+            <param name="betriebID">ID des Betriebs</param>
+            <param name="mitarbeiterID">ID des Mitarbeiter</param>
+            <param name="mitarbeiter">Mitarbeiter Body</param>
+            <returns>No Content</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.PartiallyUpdateMitarbeiter(System.Guid,System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.MitarbeiterForUpdateDto})">
+            <summary>
+            Teilupdate eines Mitarbeiters
+            </summary>
+            <param name="betriebID">ID des Betriebs</param>
+            <param name="mitarbeiterID">ID des Mitarbeiters</param>
+            <param name="patchDoc">PatchDoc</param>
+            <returns>NoContent</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.CreateLinksForMitarbeiter(REST.Api.Models.MitarbeiterDto)">
+            <summary>
+            Links für Mitarbeiter erstellen
+            </summary>
+            <param name="mitarbeiter">Jeweiligen Mitarbeiter</param>
+            <returns> Mitarbeiter</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.CreateLinksForMitarbeiter(REST.Api.Models.LinkedCollectionResourceWrapperDto{REST.Api.Models.MitarbeiterDto})">
+            <summary>
+            WrapperLinks für Mitarbeiter
+            </summary>
+            <param name="mitarbeiterWrapper"></param>
+            <returns>LinkedCollectionResourceWrapperDto</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.MitarbeiterController.GetMitarbeiterOptions">
+            <summary>
+            GetMitarbeiterOptions
+            </summary>
+            <returns>OK</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.#ctor(REST.Api.Services.ISchlagRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.SchlagController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="beregnungsRepository"></param>
+            <param name="ilogger"></param>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.GetSchlaege(REST.Api.Helpers.SchlagResourceParameter,System.String)">
+            <summary>
+            Laden aller Schläge.
+            </summary>
+            <param name="pageNumber">Anzahl der Ausgaben.</param>
+            /// <param name="pageSize">Seitenzahl die Angezeigt werden soll</param>
+            <returns>OK Code </returns>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.CreateSchlagResourceUri(REST.Api.Helpers.SchlagResourceParameter,REST.Api.Helpers.ResourceUriType)">
+            <summary>
+            CreateSchlagResourceUri
+            </summary>
+            <param name="schlagRessourceParameters">Übergabe der RessourceParameter</param>
+            <param name="type">Übergabe der ResourceUriType </param>
+            <returns>Link</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.GetSchlag(System.Guid,System.String)">
+            <summary>
+            Laden eines bestimmten Schlages.
+            </summary>
+            <param name="id">ID des gesuchten Schlages.</param>
+            <returns>OK Code </returns>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.CreatSchlag(REST.Api.Models.SchlagForCreationDto)">
+            <summary>
+            Hinzufügen eines Schlages.
+            </summary>
+            <param name="schlag">Neuer Schlag.</param>
+            <returns>CreatedAtRoute </returns>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.DeleteSchlag(System.Guid)">
+            <summary>
+             Löschen eines Schlages.
+             </summary>
+             <param name="id">Id des zu löschenden Schlag.</param>
+             <returns>NoContent  Code</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.UpdateSchlag(System.Guid,REST.Api.Models.SchlagForUpdateDto)">
+            <summary>
+             Update eines Schlages.
+             </summary>
+             <param name="id">Id des zu updatenden Schlag.</param>
+             <param name="schlag">Schlag Entity</param>
+             <returns>NoContent  Code</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.PartiallyUpdateSchlag(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.SchlagForUpdateDto})">
+            <summary>
+             Teilupdate eines Schlages.
+             </summary>
+             <param name="id">Id des zu updatenden Schlag.</param>
+             <param name="patchDoc">Schlag Entity</param>
+             <returns>NoContent  Code</returns>
+        </member>
+        <member name="M:REST.Api.Controllers.SchlagController.CreateLinksForSchlag(System.Guid,System.String)">
+            <summary>
+            CreateLinksForSchlag
+            </summary>
+            <param name="schlag">Übergabe eines SchlagDto</param>
+            <returns>SchlagDto mit Links </returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.SchlagController.CreateLinksForschlaege(REST.Api.Helpers.SchlagResourceParameter,System.Boolean,System.Boolean)" ignoriert -->
+        <member name="M:REST.Api.Controllers.SchlagController.GetSchlagOptions">
+            <summary>
+            GetSchlagOptions
+            </summary>
+            <returns>OK</returns>
+        </member>
+        <member name="T:REST.Api.Entities.BeregnungsContext">
+            <summary>
+            BeregnungsContext
+            </summary>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Entities.BeregnungsContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{REST.Api.Entities.BeregnungsContext})" ignoriert -->
+        <member name="P:REST.Api.Entities.BeregnungsContext.BeregnungsDatens">
+            <summary>
+            BeregnungsDatens
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsContext.Schlaege">
+            <summary>
+            Schlaege
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsContext.Betriebe">
+            <summary>
+            Betriebe
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsContext.Mitarbeiters">
+            <summary>
+            Mitarbeiters
+            </summary>
+        </member>
+        <member name="T:REST.Api.Entities.BeregnungsContextExtension">
+            <summary>
+            BeregnungsContextExtension
+            Zum Testen erstmalig Daten in DB 
+            </summary>
+        </member>
+        <member name="M:REST.Api.Entities.BeregnungsContextExtension.DataForContext(REST.Api.Entities.BeregnungsContext)">
+            <summary>
+            DataForContext
+            </summary>
+            <param name="context">BeregnungsContext</param>
+        </member>
+        <member name="T:REST.Api.Entities.BeregnungsDaten">
+            <summary>
+            BeregnungsDaten
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.StartDatum">
+            <summary>
+            DateTimeOffset StartDatum
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.StartUhrzeit">
+            <summary>
+            DateTime StartUhrzeit 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.EndDatum">
+            <summary>
+            DateTimeOffset EndDatum
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.Betrieb">
+            <summary>
+            Guid Betrieb 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.SchlagID">
+            <summary>
+            Guid SchlagID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.Duese">
+            <summary>
+            string Duese
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.WasseruhrAnfang">
+            <summary>
+            int WasseruhrAnfang
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.WasseruhrEnde">
+            <summary>
+            int WasseruhrEnde
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.Vorkomnisse">
+            <summary>
+            string Vorkomnisse
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.IstAbgeschlossen">
+            <summary>
+            bool IstAbgeschlossen
+            </summary>
+        </member>
+        <member name="T:REST.Api.Entities.Betrieb">
+            <summary>
+            Betrieb
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Betrieb.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Betrieb.Name">
+            <summary>
+            string Name
+            </summary>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "P:REST.Api.Entities.Betrieb.Mitarbeiters" ignoriert -->
+        <member name="T:REST.Api.Entities.Mitarbeiter">
+            <summary>
+            Mitarbeiter
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Mitarbeiter.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Mitarbeiter.Vorname">
+            <summary>
+            string Vorname
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Mitarbeiter.Nachname">
+            <summary>
+            string Nachname
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Mitarbeiter.Geburtstag">
+            <summary>
+             DateTimeOffset Geburtstag
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Mitarbeiter.BetriebID">
+            <summary>
+            Guid BetriebID
+            </summary>
+        </member>
+        <member name="T:REST.Api.Entities.Schlag">
+            <summary>
+            class Schlag
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Schlag.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Schlag.Name">
+            <summary>
+            string Name
+            </summary>
+        </member>
+        <member name="T:REST.Api.Helpers.BeregnungsDatenResourceParameter">
+            <summary>
+            BeregnungsDatenResourceParameter
+            </summary>
+        </member>
+        <member name="P:REST.Api.Helpers.BeregnungsDatenResourceParameter.IstAbgeschlossen">
+            <summary>
+            string IstAbgeschlossen
+            </summary>
+        </member>
+        <member name="P:REST.Api.Helpers.BeregnungsDatenResourceParameter.SchlagId">
+            <summary>
+            Guid SchlagId
+            </summary>
+        </member>
+        <member name="P:REST.Api.Helpers.BeregnungsDatenResourceParameter.OrderBy">
+            <summary>
+            string OrderBy
+            </summary>
+        </member>
+        <member name="T:REST.Api.Helpers.BetriebResourceParameter">
+            <summary>
+            BetriebResourceParameter
+            </summary>
+        </member>
+        <member name="T:REST.Api.Helpers.IEnumerableExtensions">
+            <summary>
+            IEnumerableExtensions
+            </summary>
+        </member>
+        <member name="M:REST.Api.Helpers.IEnumerableExtensions.ShapeData``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            ShapeData
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">Source Daten</param>
+            <param name="fields">Field Parameter</param>
+            <returns></returns>
+        </member>
+        <member name="T:REST.Api.Helpers.IQueryableExtensions">
+            <summary>
+            IQueryableExtensions
+            </summary>
+        </member>
+        <member name="M:REST.Api.Helpers.IQueryableExtensions.ApplySort``1(System.Linq.IQueryable{``0},System.String,System.Collections.Generic.Dictionary{System.String,REST.Api.Services.PropertyMappingValue})">
+            <summary>
+            ApplySort
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="orderBy"></param>
+            <param name="mappingDictionary"></param>
+            <returns></returns>
+        </member>
+        <member name="T:REST.Api.Helpers.MitarbeiterResourceParameter">
+            <summary>
+            MitarbeiterResourceParameter
+            </summary>
+        </member>
+        <member name="T:REST.Api.Helpers.ObjectExtensions">
+            <summary>
+            ObjectExtensions
+            </summary>
+        </member>
+        <member name="M:REST.Api.Helpers.ObjectExtensions.ShapeData``1(``0,System.String)">
+            <summary>
+            ShapeData
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source"> Source Daten</param>
+            <param name="fields">Fields</param>
+            <returns></returns>
+        </member>
+        <member name="T:REST.Api.Helpers.PagedList`1">
+            <summary>
+            PagedList
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:REST.Api.Helpers.PagedList`1.HasPrevious">
+            <summary>
+            Abfrage ob es eine vorherige Seite gibt
+            </summary>
+        </member>
+        <member name="P:REST.Api.Helpers.PagedList`1.HasNext">
+            <summary>
+            Abfrage ob es eine nachfolger Seite gibt
+            </summary>
+        </member>
+        <member name="M:REST.Api.Helpers.PagedList`1.#ctor(System.Collections.Generic.List{`0},System.Int32,System.Int32,System.Int32)">
+            <summary>
+            ctor
+            </summary>
+            <param name="items">ListItems</param>
+            <param name="count">Seiten Anzahl</param>
+            <param name="pageNumber">Seitenzahl</param>
+            <param name="pageSize">Inhalte Pro Seite</param>
+        </member>
+        <member name="M:REST.Api.Helpers.PagedList`1.Create(System.Linq.IQueryable{`0},System.Int32,System.Int32)">
+            <summary>
+            Create PageList
+            </summary>
+            <param name="source">IQueryable</param>
+            <param name="pageNumber">Seitenzahl</param>
+            <param name="pageSize">Inhalt Pro Seite</param>
+            <returns></returns>
+        </member>
+        <member name="T:REST.Api.Helpers.ResourceParameters">
+            <summary>
+            class ResourceParameters
+            </summary>
+        </member>
+        <member name="P:REST.Api.Helpers.ResourceParameters.Fields">
+            <summary>
+            string Fields
+            </summary>
+        </member>
+        <member name="F:REST.Api.Helpers.ResourceParameters.maxPageSize">
+            <summary>
+            int maxPageSize
+            </summary>
+        </member>
+        <member name="P:REST.Api.Helpers.ResourceParameters.PageNumber">
+            <summary>
+            int PageNumber
+            </summary>
+        </member>
+        <member name="F:REST.Api.Helpers.ResourceParameters._pageSize">
+            <summary>
+             int _pageSize
+            </summary>
+        </member>
+        <member name="P:REST.Api.Helpers.ResourceParameters.PageSize">
+            <summary>
+            int PageSize
+            </summary>
+        </member>
+        <member name="P:REST.Api.Helpers.ResourceParameters.searchQuery">
+            <summary>
+            string searchQuery
+            </summary>
+        </member>
+        <member name="T:REST.Api.Helpers.ResourceUriType">
+            <summary>
+            ResourceUriType
+            </summary>
+        </member>
+        <member name="T:REST.Api.Helpers.SchlagResourceParameter">
+            <summary>
+            SchlagResourceParameter
+            </summary>
+        </member>
+        <member name="M:REST.Api.Helpers.UnprocessableEntityObjectResult.#ctor(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)">
+            <summary>
+            UnprocessableEntityObjectResult
+            </summary>
+            <param name="modelState"></param>
+        </member>
+        <member name="T:REST.Api.Models.BeregnungsDatenDto">
+            <summary>
+            class BeregnungsDatenDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.StartDatum">
+            <summary>
+            DateTimeOffset StartDatum 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.StartUhrzeit">
+            <summary>
+            DateTime StartUhrzeit 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.EndDatum">
+            <summary>
+            DateTimeOffset EndDatum 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.Betrieb">
+            <summary>
+             Guid Betrieb 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.SchlagID">
+            <summary>
+            Guid SchlagID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.Duese">
+            <summary>
+            string Duese
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.WasseruhrAnfang">
+            <summary>
+            int WasseruhrAnfang
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.WasseruhrEnde">
+            <summary>
+            int WasseruhrEnde
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.Vorkomnisse">
+            <summary>
+            string Vorkomnisse
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenDto.IstAbgeschlossen">
+            <summary>
+            bool IstAbgeschlossen
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.BeregnungsDatenForCreationDto">
+            <summary>
+            BeregnungsDatenForCreationDto
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.BeregnungsDatenForManipulationDto">
+            <summary>
+             class BeregnungsDatenForManipulationDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.StartDatum">
+            <summary>
+            DateTime StartDatum
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.StartUhrzeit">
+            <summary>
+            DateTime StartUhrzeit 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.EndDatum">
+            <summary>
+            DateTime EndDatum
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.Betrieb">
+            <summary>
+             Guid Betrieb
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.SchlagID">
+            <summary>
+            Guid SchlagID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.Duese">
+            <summary>
+            string Duese 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.WasseruhrAnfang">
+            <summary>
+            int WasseruhrAnfang 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.WasseruhrEnde">
+            <summary>
+            virtual int WasseruhrEnde 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.Vorkomnisse">
+            <summary>
+            string Vorkomnisse
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.IstAbgeschlossen">
+            <summary>
+            virtual bool IstAbgeschlossen
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.BeregnungsDatenForUpdateDto">
+            <summary>
+            BeregnungsDatenForUpdateDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForUpdateDto.WasseruhrEnde">
+            <summary>
+            override int WasseruhrEnde
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenForUpdateDto.IstAbgeschlossen">
+            <summary>
+            override bool IstAbgeschlossen
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.BetriebDto">
+            <summary>
+            class BetriebDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BetriebDto.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BetriebDto.Name">
+            <summary>
+            string Name
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.BetriebForCreationDto">
+            <summary>
+            class BetriebForCreationDto 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BetriebForCreationDto.Mitarbeiters">
+            <summary>
+            Mitarbeiters
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.BetriebForMaipulationDto">
+            <summary>
+            BetriebForMaipulationDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BetriebForMaipulationDto.Name">
+            <summary>
+             virtual string Name 
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.BetriebForUpdateDto">
+            <summary>
+            BetriebForUpdateDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BetriebForUpdateDto.Name">
+            <summary>
+            override string Name
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.LinkDto">
+            <summary>
+            LinkDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.LinkDto.Href">
+            <summary>
+            string Href
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.LinkDto.Rel">
+            <summary>
+            string Rel
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.LinkDto.Method">
+            <summary>
+            string Method
+            </summary>
+        </member>
+        <member name="M:REST.Api.Models.LinkDto.#ctor(System.String,System.String,System.String)">
+            <summary>
+            LinkDto
+            </summary>
+            <param name="href">href zur Ressource</param>
+            <param name="rel">Name der Anfrage</param>
+            <param name="method">Methoden Typ</param>
+        </member>
+        <member name="T:REST.Api.Models.LinkedCollectionResourceWrapperDto`1">
+            <summary>
+            LinkedCollectionResourceWrapperDto
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Models.LinkedCollectionResourceWrapperDto`1.#ctor(System.Collections.Generic.IEnumerable{`0})" ignoriert -->
+        <member name="T:REST.Api.Models.LinkedResourceBaseDto">
+            <summary>
+            LinkedResourceBaseDto
+            </summary>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "P:REST.Api.Models.LinkedResourceBaseDto.Links" ignoriert -->
+        <member name="T:REST.Api.Models.MitarbeiterDto">
+            <summary>
+            MitarbeiterDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.MitarbeiterDto.ID">
+            <summary>
+            Guid ID 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.MitarbeiterDto.Vorname">
+            <summary>
+            string Vorname
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.MitarbeiterDto.Nachname">
+            <summary>
+            string Nachname
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.MitarbeiterDto.GebDatum">
+            <summary>
+            DateTimeOffset GebDatum 
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.MitarbeiterForCreationDto">
+            <summary>
+            class MitarbeiterForCreationDto 
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.MitarbeiterForManipulationDto">
+            <summary>
+            abstract class MitarbeiterForManipulationDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.MitarbeiterForManipulationDto.Vorname">
+            <summary>
+            virtual string Vorname
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.MitarbeiterForManipulationDto.Nachname">
+            <summary>
+            virtual string Nachname 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.MitarbeiterForManipulationDto.GebDatum">
+            <summary>
+             DateTimeOffset GebDatum
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.MitarbeiterForUpdateDto">
+            <summary>
+            class MitarbeiterForUpdateDto
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.SchlagDto">
+            <summary>
+            class SchlagDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.SchlagDto.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.SchlagDto.Name">
+            <summary>
+            string Name 
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.SchlagForCreationDto">
+            <summary>
+            class SchlagForCreationDto
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.SchlagForManipulationDto">
+            <summary>
+             class SchlagForManipulationDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.SchlagForManipulationDto.Name">
+            <summary>
+            virtual string Name
+            </summary>
+        </member>
+        <member name="T:REST.Api.Models.SchlagForUpdateDto">
+            <summary>
+            class SchlagForUpdateDto
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.SchlagForUpdateDto.Name">
+            <summary>
+            override string Name
+            </summary>
+        </member>
+        <member name="T:REST.Api.Services.BeregnungsRepository">
+            <summary>
+            Daten verarbeiten
+            </summary>
+        </member>
+        <member name="M:REST.Api.Services.BeregnungsRepository.#ctor(REST.Api.Entities.BeregnungsContext,REST.Api.Services.IPropertyMappingService)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="context">Datenbank Inhalt</param>
+        </member>
+        <member name="M:REST.Api.Services.BeregnungsRepository.AddBeregnungsDaten(REST.Api.Entities.BeregnungsDaten)">
+            <summary>
+            Hinzufügen neuer Daten
+            </summary>
+            <param name="daten">Neue Daten</param>
+        </member>
+        <member name="M:REST.Api.Services.BeregnungsRepository.BeregnungsDatenExists(System.Guid)">
+            <summary>
+            Abfrage ob eine bestimmte Daten existieren
+            </summary>
+            <param name="guid">Abzufragende Daten</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:REST.Api.Services.BeregnungsRepository.DeleteBeregnungsDaten(REST.Api.Entities.BeregnungsDaten)">
+            <summary>
+            Daten löschen
+            </summary>
+            <param name="daten">Zu löschende Daten</param>
+        </member>
+        <member name="M:REST.Api.Services.BeregnungsRepository.GetBeregnungsDaten(System.Guid)">
+            <summary>
+            Eine bestimmte Daten anzeigen
+            </summary>
+            <param name="guid">ID des Daten</param>
+            <returns></returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.BeregnungsRepository.GetBeregnungsDatens(REST.Api.Helpers.BeregnungsDatenResourceParameter)" ignoriert -->
+        <member name="M:REST.Api.Services.BeregnungsRepository.GetBeregnungsDatens(System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            GetDaten
+            </summary>
+            <param name="guids">IEnumerable der IDs</param>
+            <returns>IEnumerable</returns>
+        </member>
+        <member name="M:REST.Api.Services.BeregnungsRepository.Save">
+            <summary>
+            Abfrage ob gespeichert wurde
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="T:REST.Api.Services.BetriebRepository">
+            <summary>
+            BetriebRepository
+            </summary>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.#ctor(REST.Api.Entities.BeregnungsContext)">
+            <summary>
+            BetriebRepository
+            </summary>
+            <param name="context">BeregnungsContext</param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.AddBetrieb(REST.Api.Entities.Betrieb)">
+            <summary>
+            AddBetrieb
+            </summary>
+            <param name="betrieb">Betrieb</param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.DeleteBetrieb(REST.Api.Entities.Betrieb)">
+            <summary>
+            DeleteBetrieb
+            </summary>
+            <param name="betrieb">Betrieb</param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.GetBetrieb(System.Guid)">
+            <summary>
+            GetBetrieb
+            </summary>
+            <param name="id">Guid</param>
+            <returns></returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.BetriebRepository.GetBetriebe(REST.Api.Helpers.BetriebResourceParameter)" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.BetriebRepository.GetBetriebe(System.Collections.Generic.IEnumerable{System.Guid})" ignoriert -->
+        <member name="M:REST.Api.Services.BetriebRepository.UpdateBetrieb(REST.Api.Entities.Betrieb)">
+            <summary>
+            UpdateBetrieb
+            </summary>
+            <param name="betrieb">Betrieb</param>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.BetriebRepository.BetriebExists(System.Guid)" ignoriert -->
+        <member name="M:REST.Api.Services.BetriebRepository.Save">
+            <summary>
+            Save
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.AddMitarbeiter(System.Guid,REST.Api.Entities.Mitarbeiter)">
+            <summary>
+            Mitarbeiter hinzufügen
+            </summary>
+            <param name="betriebId">BetriebID</param>
+            <param name="mitarbeiter">Mitarbeiter</param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.DeleteMitarbeiter(REST.Api.Entities.Mitarbeiter)">
+            <summary>
+            Mitarbeiter löschen
+            </summary>
+            <param name="mitarbeiter"></param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.GetMitarbeiter(System.Guid,System.Guid)">
+            <summary>
+            Einen bestimmten Mitarbeiter eines Betriebs
+            </summary>
+            <param name="betriebId">Betrieb ID</param>
+            <param name="id"> Mitarbeiter ID</param>
+            <returns> Mitarbeiter</returns>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.MitarbeiterExists(System.Guid)">
+            <summary>
+            Mitarbeiter exisitiert
+            </summary>
+            <param name="betriebId"></param>
+            <param name="id"></param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.GetMitarbeiters(System.Guid)">
+            <summary>
+            Alle Mitarbeiter eines Betriebsladen
+            </summary>
+            <param name="betriebId">ID des Betriebs</param>
+            <returns>IEnumerable von Mitarbeitern</returns>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.UpdateMitarbeiter(REST.Api.Entities.Mitarbeiter)">
+            <summary>
+            Update Mitarbeiter
+            </summary>
+            <param name="mitarbeiter"></param>
+        </member>
+        <member name="T:REST.Api.Services.IBeregnungsRepository">
+            <summary>
+            interface IBeregnungsRepository
+            </summary>
+        </member>
+        <member name="T:REST.Api.Services.IBetriebRepository">
+            <summary>
+            interface IBetriebRepository
+            </summary>
+        </member>
+        <member name="T:REST.Api.Services.ISchlagRepository">
+            <summary>
+            interface ISchlagRepository
+            </summary>
+        </member>
+        <member name="T:REST.Api.Services.MitarbeiterRepository">
+            <summary>
+            class MitarbeiterRepository
+            </summary>
+        </member>
+        <member name="M:REST.Api.Services.MitarbeiterRepository.#ctor(REST.Api.Entities.BeregnungsContext)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="context">BeregnungsContext</param>
+        </member>
+        <member name="M:REST.Api.Services.MitarbeiterRepository.AddMitarbeiter(REST.Api.Entities.Mitarbeiter)">
+            <summary>
+            AddMitarbeiter
+            </summary>
+            <param name="mitarbeiter">Mitarbeiter</param>
+        </member>
+        <member name="M:REST.Api.Services.MitarbeiterRepository.DeleteMitarbeiter(REST.Api.Entities.Mitarbeiter)">
+            <summary>
+            DeleteMitarbeiter
+            </summary>
+            <param name="mitarbeiter">Mitarbeiter</param>
+        </member>
+        <member name="M:REST.Api.Services.MitarbeiterRepository.GetMitarbeiter(System.Guid)">
+            <summary>
+            GetMitarbeiter
+            </summary>
+            <param name="id">Guid</param>
+            <returns></returns>
+        </member>
+        <member name="M:REST.Api.Services.MitarbeiterRepository.MitarbeiterExists(System.Guid)">
+            <summary>
+            MitarbeiterExists
+            </summary>
+            <param name="id">Guid</param>
+            <returns>bool</returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.MitarbeiterRepository.GetMitarbeiters(REST.Api.Helpers.MitarbeiterResourceParameter)" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.MitarbeiterRepository.GetMitarbeiters(System.Collections.Generic.IEnumerable{System.Guid})" ignoriert -->
+        <member name="M:REST.Api.Services.MitarbeiterRepository.Save">
+            <summary>
+            Save
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="M:REST.Api.Services.MitarbeiterRepository.UpdateMitarbeiter(REST.Api.Entities.Mitarbeiter)">
+            <summary>
+            UpdateMitarbeiter
+            </summary>
+            <param name="mitarbeiter">Mitarbeiter</param>
+        </member>
+        <member name="T:REST.Api.Services.SchlagRepository">
+            <summary>
+            SchlagRepository
+            </summary>
+        </member>
+        <member name="M:REST.Api.Services.SchlagRepository.#ctor(REST.Api.Entities.BeregnungsContext)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:REST.Api.Services.SchlagRepository.AddSchlag(REST.Api.Entities.Schlag)">
+            <summary>
+            AddSchlag
+            </summary>
+            <param name="schlag">Schlag</param>
+        </member>
+        <member name="M:REST.Api.Services.SchlagRepository.DeleteSchlag(REST.Api.Entities.Schlag)">
+            <summary>
+            DeleteSchlag
+            </summary>
+            <param name="schlag">Schlag</param>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.SchlagRepository.GetSchlaege(REST.Api.Helpers.SchlagResourceParameter)" ignoriert -->
+        <member name="M:REST.Api.Services.SchlagRepository.GetSchlag(System.Guid)">
+            <summary>
+            GetSchlag
+            </summary>
+            <param name="Id">Guid</param>
+            <returns>Schlag</returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.SchlagRepository.GetSchlaege(System.Collections.Generic.IEnumerable{System.Guid})" ignoriert -->
+        <member name="M:REST.Api.Services.SchlagRepository.Save">
+            <summary>
+            Save
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="M:REST.Api.Services.SchlagRepository.SchlagExists(System.Guid)">
+            <summary>
+            SchlagExists
+            </summary>
+            <param name="schlagId">Guid</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:REST.Api.Services.SchlagRepository.UpdateSchlag(REST.Api.Entities.Schlag)">
+            <summary>
+            UpdateSchlag
+            </summary>
+            <param name="schlag">Schlag</param>
+        </member>
+    </members>
+</doc>
