@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -50,9 +51,11 @@ namespace REST.Api.Controllers
         /// <param name="pageNumber">Anzahl der Ausgaben.</param>
         /// /// <param name="pageSize">Seitenzahl die Angezeigt werden soll</param>
         /// <returns>OK Code </returns>
+        /// <response code="200">Returns alle Schläge</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet(Name = "GetSchlaege")]
         [HttpHead]
-        public IActionResult GetSchlaege(SchlagResourceParameter resourceParameters,
+        public ActionResult<Schlag> GetSchlaege(SchlagResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
             if (!_typeHelperService.TypeHasProperties<SchlagDto>(resourceParameters.Fields))
@@ -167,8 +170,11 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">ID des gesuchten Schlages.</param>
         /// <returns>OK Code </returns>
+        /// <response code="200">Returns einen bestimmten Schlag</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id}", Name = "GetSchlag")]
-        public IActionResult GetSchlag(Guid id, [FromQuery] string fields)
+        public ActionResult<Schlag> GetSchlag(Guid id, [FromQuery] string fields)
         {
             var schlagfromRepo = _schlagRepository.GetSchlag(id);
             if (schlagfromRepo == null)
@@ -199,8 +205,11 @@ namespace REST.Api.Controllers
         ///    "name": "Schlag 23",
         /// }
         /// </remarks>
+        /// <response code="201">Returns Schlag erstellt</response>
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost(Name = "CreatSchlag")]
-        public IActionResult CreatSchlag([FromBody]SchlagForCreationDto schlag)
+        public ActionResult<Schlag> CreatSchlag([FromBody]SchlagForCreationDto schlag)
         {
             //Überprüfung ob der Übergabeparameter leer ist
             // <returns>BadRequest </returns>
@@ -250,8 +259,10 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">Id des zu löschenden Schlag.</param>
         /// <returns>NoContent  Code</returns>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{id}", Name = "DeleteSchlag")]
-        public IActionResult DeleteSchlag(Guid id)
+        public ActionResult<Schlag> DeleteSchlag(Guid id)
         {
             //Existiert der Schlag?
             if (!_schlagRepository.SchlagExists(id))
@@ -289,8 +300,11 @@ namespace REST.Api.Controllers
         ///    "name": "Schlag 88",
         ///}
         /// </remarks>
+        /// <response code="201">Returns Schlag erstellt</response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}", Name = "UpdateSchlag")]
-        public IActionResult UpdateSchlag(Guid id, [FromBody]SchlagForUpdateDto schlag)
+        public ActionResult<Schlag> UpdateSchlag(Guid id, [FromBody]SchlagForUpdateDto schlag)
         {
             //geänderte Daten
             // <returns>BadRequest </returns>
@@ -376,8 +390,13 @@ namespace REST.Api.Controllers
         ///	    }
         ///]
         /// </remarks>
+        /// <response code="201">Returns Schlag erstellt</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPatch("{id}", Name = "PartiallyUpdateSchlag")]
-        public IActionResult PartiallyUpdateSchlag(Guid id,
+        public ActionResult<Schlag> PartiallyUpdateSchlag(Guid id,
             [FromBody]JsonPatchDocument<SchlagForUpdateDto> patchDoc)
         {
             //Eingabe ist nicht null

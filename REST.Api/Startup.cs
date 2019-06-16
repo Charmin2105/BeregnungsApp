@@ -40,6 +40,12 @@ namespace REST.Api
         {
             services.AddMvc(setupAction =>
             {
+                setupAction.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+                setupAction.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
+                setupAction.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
                 setupAction.ReturnHttpNotAcceptable = true;
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
@@ -90,6 +96,13 @@ namespace REST.Api
                 });
             services.AddResponseCaching();
 
+            services.AddApiVersioning(setupAction =>
+            {
+                setupAction.AssumeDefaultVersionWhenUnspecified = true;
+                setupAction.DefaultApiVersion = new ApiVersion(1, 0);
+                setupAction.ReportApiVersions = true;
+            });
+
             services.AddSwaggerGen(setupAction =>
             {
                 setupAction.SwaggerDoc(swaggername,
@@ -104,7 +117,7 @@ namespace REST.Api
                         Contact = new Swashbuckle.AspNetCore.Swagger.Contact()
                         {
                             Name = "Nico Herrmann",
-                            Email = "ni.herrmann@ostfalia.de"                           
+                            Email = "ni.herrmann@ostfalia.de"
                         }
                     });
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -49,9 +50,11 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="resourceParameters">Metadateneinstellungen</param>
         /// <returns>IEnumerable von BeregnungsDaten</returns>
+        /// <response code="200">Returns alle Beregnungs Daten</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet(Name = "GetBergenungsDatens")]
         [HttpHead]
-        public IActionResult GetBeregnungsDatens(BeregnungsDatenResourceParameter resourceParameters,
+        public ActionResult<BeregnungsDaten> GetBeregnungsDatens(BeregnungsDatenResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
             //Mapping für OrderBy ist valid
@@ -193,8 +196,11 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">ID des gesuchten BeregnungsDaten.</param>
         /// <returns>OK Code </returns>
+        /// <response code="200">Returns einer bestimmten Beregnungs Daten</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id}", Name = "GetBergenungsDaten")]
-        public IActionResult GetBeregnungsDaten(Guid id, [FromQuery] string fields)
+        public ActionResult<BeregnungsDaten> GetBeregnungsDaten(Guid id, [FromQuery] string fields)
         {
             if (!_typeHelperService.TypeHasProperties<BeregnungsDatenDto>(fields))
             {
@@ -238,8 +244,11 @@ namespace REST.Api.Controllers
         ///    "istAbgeschlossen": true,
         /// }        
         /// </remarks>
+        /// <response code="201">Returns Beregnungs Daten erstellt</response>
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost(Name = "CreateBeregnungsDaten")]
-        public IActionResult CreateBeregnungsDaten([FromBody]BeregnungsDatenForCreationDto beregnungsDaten)
+        public ActionResult<BeregnungsDaten> CreateBeregnungsDaten([FromBody]BeregnungsDatenForCreationDto beregnungsDaten)
         {
             //Überprüfung ob der Übergabeparameter leer ist
             if (beregnungsDaten == null)
@@ -301,8 +310,10 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">ID des zu löschen Datensatz</param>
         /// <returns>NoContent</returns>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{id}", Name = "DeleteBeregnungsDaten")]
-        public IActionResult DeleteBeregnungsDaten(Guid id)
+        public ActionResult<BeregnungsDaten> DeleteBeregnungsDaten(Guid id)
         {
             //Exisitert BeregnungsDaten?
             if (!_beregnungsRepository.BeregnungsDatenExists(id))
@@ -351,8 +362,11 @@ namespace REST.Api.Controllers
         ///    "istAbgeschlossen": true,
         /// }        
         /// </remarks>
+        /// <response code="201">Returns Beregnungs Daten erstellt</response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}", Name = "UpdateBeregnungsDaten")]
-        public IActionResult UpdateBeregnungsDaten(Guid id, [FromBody]BeregnungsDatenForUpdateDto beregnungsDaten)
+        public ActionResult<BeregnungsDaten> UpdateBeregnungsDaten(Guid id, [FromBody]BeregnungsDatenForUpdateDto beregnungsDaten)
         {
             //Geänderte Daten
             if (beregnungsDaten == null)
@@ -413,8 +427,13 @@ namespace REST.Api.Controllers
         /// 	}
         /// ]
         /// </remarks>
+        /// <response code="201">Returns Beregnungs Daten erstellt</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPatch("{id}", Name = "PartallyUpdateBeregnungsDaten")]
-        public IActionResult PartallyUpdateBeregnungsDaten(Guid id,
+        public ActionResult<BeregnungsDaten> PartallyUpdateBeregnungsDaten(Guid id,
                 [FromBody]JsonPatchDocument<BeregnungsDatenForUpdateDto> patchDoc)
         {
             //Eingabe nicht null

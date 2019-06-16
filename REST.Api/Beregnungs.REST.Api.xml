@@ -20,6 +20,7 @@
             </summary>
             <param name="resourceParameters">Metadateneinstellungen</param>
             <returns>IEnumerable von BeregnungsDaten</returns>
+            <response code="200">Returns alle Beregnungs Daten</response>
         </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateBergenungsDatenResourceUri(REST.Api.Helpers.BeregnungsDatenResourceParameter,REST.Api.Helpers.ResourceUriType)">
             <summary>
@@ -35,6 +36,7 @@
             </summary>
             <param name="id">ID des gesuchten BeregnungsDaten.</param>
             <returns>OK Code </returns>
+            <response code="200">Returns einer bestimmten Beregnungs Daten</response>
         </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateBeregnungsDaten(REST.Api.Models.BeregnungsDatenForCreationDto)">
             <summary>
@@ -58,6 +60,7 @@
                "istAbgeschlossen": true,
             }        
             </remarks>
+            <response code="201">Returns Beregnungs Daten erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.DeleteBeregnungsDaten(System.Guid)">
             <summary>
@@ -90,6 +93,7 @@
                "istAbgeschlossen": true,
             }        
             </remarks>
+            <response code="201">Returns Beregnungs Daten erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.PartallyUpdateBeregnungsDaten(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.BeregnungsDatenForUpdateDto})">
             <summary>
@@ -109,6 +113,7 @@
             	}
             ]
             </remarks>
+            <response code="201">Returns Beregnungs Daten erstellt</response>
         </member>
         <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BeregnungsDatenController.CreateLinksForBeregnungsDaten(System.Guid,System.String)" ignoriert -->
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateLinksForBeregnungsDatens(REST.Api.Helpers.BeregnungsDatenResourceParameter,System.Boolean,System.Boolean)">
@@ -142,6 +147,7 @@
             </summary>
             <param name="resourceParameters">resourceParameters</param>
             <returns>IEnumerable von Betrieben</returns>
+            <response code="200">Returns alle Betriebe</response>
         </member>
         <member name="M:REST.Api.Controllers.BetriebController.GetBetrieb(System.Guid,System.String)">
             <summary>
@@ -150,6 +156,7 @@
             <param name="id">Id des gesuchten Betriebs</param>
             <param name="fields">fields parameter</param>
             <returns>Ok Status Code</returns>
+            <response code="200">Returns den angeforderten Betrieb</response>
         </member>
         <member name="M:REST.Api.Controllers.BetriebController.CreateBetrieb(REST.Api.Models.BetriebForCreationDto)">
             <summary>
@@ -164,6 +171,7 @@
                 "name": "Glückliche Kühe",
             }
             </remarks>
+            <response code="201">Returns Betrieb erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.BetriebController.DeleteBetrieb(System.Guid)">
             <summary>
@@ -187,6 +195,7 @@
                 "name": "Glückliche Kühe"
             }
             </remarks>
+            <response code="201">Returns Betrieb erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.BetriebController.PartallyUpdateBetrieb(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.BetriebForUpdateDto})">
              <summary>
@@ -207,6 +216,7 @@
                  }
              ]
              </remarks>
+             <response code="201">Returns Betrieb erstellt</response>
         </member>
         <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BetriebController.CreateLinksForBetrieb(System.Guid,System.String)" ignoriert -->
         <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.BetriebController.CreateLinksForBetriebe(REST.Api.Helpers.BetriebResourceParameter,System.Boolean,System.Boolean)" ignoriert -->
@@ -240,6 +250,7 @@
             </summary>
             <param name="betriebID">ID des Betriebs</param>
             <returns>OK Code</returns>
+            <response code="200">Returns alle Mitarbeiter eines Betriebes</response>
         </member>
         <member name="M:REST.Api.Controllers.MitarbeiterController.GetMitarbeiter(System.Guid,System.Guid)">
             <summary>
@@ -248,6 +259,7 @@
             <param name="betriebID">Id des Betriebs</param>
             <param name="mitarbeiterID">ID des Mitarbeiters</param>
             <returns>OK Code</returns>
+            <response code="200">Returns einen bestimmten Mitarbeiter eines Betriebes</response>
         </member>
         <member name="M:REST.Api.Controllers.MitarbeiterController.CreateMitarbeiter(System.Guid,REST.Api.Models.MitarbeiterForCreationDto)">
             <summary>
@@ -265,6 +277,7 @@
                 "gebDatum": "1993-05-21T00:00:00+00:00",
             }
             </remarks>
+            <response code="201">Returns Mitarbeiter für einen Betrieb  erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.MitarbeiterController.DeleteMitarbeiter(System.Guid,System.Guid)">
             <summary>
@@ -310,6 +323,7 @@
             <param name="pageNumber">Anzahl der Ausgaben.</param>
             /// <param name="pageSize">Seitenzahl die Angezeigt werden soll</param>
             <returns>OK Code </returns>
+            <response code="200">Returns alle Schläge</response>
         </member>
         <member name="M:REST.Api.Controllers.SchlagController.CreateSchlagResourceUri(REST.Api.Helpers.SchlagResourceParameter,REST.Api.Helpers.ResourceUriType)">
             <summary>
@@ -325,6 +339,7 @@
             </summary>
             <param name="id">ID des gesuchten Schlages.</param>
             <returns>OK Code </returns>
+            <response code="200">Returns einen bestimmten Schlag</response>
         </member>
         <member name="M:REST.Api.Controllers.SchlagController.CreatSchlag(REST.Api.Models.SchlagForCreationDto)">
             <summary>
@@ -339,6 +354,7 @@
                "name": "Schlag 23",
             }
             </remarks>
+            <response code="201">Returns Schlag erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.SchlagController.DeleteSchlag(System.Guid)">
             <summary>
@@ -362,6 +378,7 @@
                 "name": "Schlag 88",
             }
              </remarks>
+             <response code="201">Returns Schlag erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.SchlagController.PartiallyUpdateSchlag(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.SchlagForUpdateDto})">
             <summary>
@@ -381,6 +398,7 @@
             	    }
             ]
              </remarks>
+             <response code="201">Returns Schlag erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.SchlagController.CreateLinksForSchlag(System.Guid,System.String)">
             <summary>

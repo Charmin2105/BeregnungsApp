@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -49,9 +50,11 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="betriebID">ID des Betriebs</param>
         /// <returns>OK Code</returns>
+        /// <response code="200">Returns alle Mitarbeiter eines Betriebes</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet(Name = "GetMitarbeiters")]
         [HttpHead]
-        public IActionResult GetMitarbeiters(Guid betriebID)
+        public ActionResult<Mitarbeiter> GetMitarbeiters(Guid betriebID)
         {
             if (!_betriebRepository.BetriebExists(betriebID))
             {
@@ -78,8 +81,11 @@ namespace REST.Api.Controllers
         /// <param name="betriebID">Id des Betriebs</param>
         /// <param name="mitarbeiterID">ID des Mitarbeiters</param>
         /// <returns>OK Code</returns>
+        /// <response code="200">Returns einen bestimmten Mitarbeiter eines Betriebes</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{ID}", Name = "GetMitarbeiter")]
-        public IActionResult GetMitarbeiter(Guid betriebID, Guid mitarbeiterID)
+        public ActionResult<Mitarbeiter> GetMitarbeiter(Guid betriebID, Guid mitarbeiterID)
         {
             if (!_betriebRepository.BetriebExists(betriebID))
             {
@@ -110,8 +116,11 @@ namespace REST.Api.Controllers
         ///     "gebDatum": "1993-05-21T00:00:00+00:00",
         ///	}
         /// </remarks>
+        /// <response code="201">Returns Mitarbeiter für einen Betrieb  erstellt</response>
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost(Name = "CreateMitarbeiter")]
-        public IActionResult CreateMitarbeiter(Guid betriebID, [FromBody] MitarbeiterForCreationDto mitarbeiter)
+        public ActionResult<Mitarbeiter> CreateMitarbeiter(Guid betriebID, [FromBody] MitarbeiterForCreationDto mitarbeiter)
         {
             //Body leer?
             if (mitarbeiter == null)
@@ -165,8 +174,10 @@ namespace REST.Api.Controllers
         /// <param name="betriebID">ID des Betriebs</param>
         /// <param name="mitarbeiterID">ID des Mitarbeiter</param>
         /// <returns>No Content</returns>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{ID}", Name = "DeleteMitarbeiter")]
-        public IActionResult DeleteMitarbeiter(Guid betriebID, Guid mitarbeiterID)
+        public ActionResult<Mitarbeiter> DeleteMitarbeiter(Guid betriebID, Guid mitarbeiterID)
         {
             //Existiert der Betrieb?
             if (!_betriebRepository.BetriebExists(betriebID))
@@ -208,8 +219,11 @@ namespace REST.Api.Controllers
         ///     "gebDatum": "1993-05-21T00:00:00+00:00",
         ///	}
         /// </remarks>
+        /// <response code="201">Returns Mitarbeiter für einen Betrieb  erstellt</response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{ID}", Name = "UpdateMitarbeiter")]
-        public IActionResult UpdateMitarbeiter(Guid betriebID, Guid mitarbeiterID,
+        public ActionResult<Mitarbeiter> UpdateMitarbeiter(Guid betriebID, Guid mitarbeiterID,
             [FromBody] MitarbeiterForUpdateDto mitarbeiter)
         {
             //Body null?
@@ -289,8 +303,13 @@ namespace REST.Api.Controllers
         ///    }
         ///]
         /// </remarks>
+        /// <response code="201">Returns Mitarbeiter für einen Betrieb  erstellt</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPatch("{ID}", Name = "PartiallyUpdateMitarbeiter")]
-        public IActionResult PartiallyUpdateMitarbeiter(Guid betriebID, Guid mitarbeiterID,
+        public ActionResult<Mitarbeiter> PartiallyUpdateMitarbeiter(Guid betriebID, Guid mitarbeiterID,
             [FromBody] JsonPatchDocument<MitarbeiterForUpdateDto> patchDoc)
         {
             if (patchDoc == null)

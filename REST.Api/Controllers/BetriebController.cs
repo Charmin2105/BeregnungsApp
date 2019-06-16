@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -48,9 +49,11 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="resourceParameters">resourceParameters</param>
         /// <returns>IEnumerable von Betrieben</returns>
+        /// <response code="200">Returns alle Betriebe</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet(Name = "GetBetriebe")]
         [HttpHead]
-        public IActionResult GetBetriebe(BetriebResourceParameter resourceParameters,
+        public ActionResult<Betrieb> GetBetriebe(BetriebResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
             if (!_typeHelperService.TypeHasProperties<BetriebDto>(resourceParameters.Fields))
@@ -136,8 +139,11 @@ namespace REST.Api.Controllers
         /// <param name="id">Id des gesuchten Betriebs</param>
         /// <param name="fields">fields parameter</param>
         /// <returns>Ok Status Code</returns>
+        /// <response code="200">Returns den angeforderten Betrieb</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id}", Name = "GetBetrieb")]
-        public IActionResult GetBetrieb(Guid id, [FromQuery] string fields)
+        public ActionResult<Betrieb> GetBetrieb(Guid id, [FromQuery] string fields)
         {
             if (!_typeHelperService.TypeHasProperties<BetriebDto>(fields))
             {
@@ -172,8 +178,11 @@ namespace REST.Api.Controllers
         ///     "name": "Glückliche Kühe",
         ///	}
         /// </remarks>
+        /// <response code="201">Returns Betrieb erstellt</response>
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost(Name = "CreateBetrieb")]
-        public IActionResult CreateBetrieb([FromBody]BetriebForCreationDto betrieb)
+        public ActionResult<Betrieb> CreateBetrieb([FromBody]BetriebForCreationDto betrieb)
         {
             //Überprüfung ob der Übergabeparameter leer ist
             if (betrieb == null)
@@ -224,8 +233,10 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="id">ID des zu löschenden Betriebs</param>
         /// <returns>No Content Code</returns>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{id}", Name = "DeleteBetrieb")]
-        public IActionResult DeleteBetrieb(Guid id)
+        public ActionResult<Betrieb> DeleteBetrieb(Guid id)
         {
             //Exisitert Betrieb?
             if (!_betriebsRepository.BetriebExists(id))
@@ -265,8 +276,11 @@ namespace REST.Api.Controllers
         ///     "name": "Glückliche Kühe"
         ///	}
         /// </remarks>
+        /// <response code="201">Returns Betrieb erstellt</response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}", Name = "UpdateBetrieb")]
-        public IActionResult UpdateBetrieb(Guid id, [FromBody]BetriebForUpdateDto betrieb)
+        public ActionResult<Betrieb> UpdateBetrieb(Guid id, [FromBody]BetriebForUpdateDto betrieb)
         {
             //Geänderte Daten
             if (betrieb == null)
@@ -328,8 +342,13 @@ namespace REST.Api.Controllers
         ///     }
         /// ]
         /// </remarks>
+        /// <response code="201">Returns Betrieb erstellt</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPatch("{id}", Name = "PartallyUpdateBetrieb")]
-        public IActionResult PartallyUpdateBetrieb(Guid id,
+        public ActionResult<Betrieb> PartallyUpdateBetrieb(Guid id,
             [FromBody]JsonPatchDocument<BetriebForUpdateDto> patchDoc)
         {
             //Eingabe nicht null
