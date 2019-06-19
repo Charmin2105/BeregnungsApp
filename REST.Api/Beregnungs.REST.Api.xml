@@ -257,7 +257,7 @@
             Einen bestimmten Mitarbeiter laden
             </summary>
             <param name="betriebID">Id des Betriebs</param>
-            <param name="mitarbeiterID">ID des Mitarbeiters</param>
+            <param name="id">ID des Mitarbeiters</param>
             <returns>OK Code</returns>
             <response code="200">Returns einen bestimmten Mitarbeiter eines Betriebes</response>
         </member>
@@ -284,7 +284,7 @@
             Löschen eines Mitarbeiters von einem Betrieb
             </summary>
             <param name="betriebID">ID des Betriebs</param>
-            <param name="mitarbeiterID">ID des Mitarbeiter</param>
+            <param name="id">ID des Mitarbeiter</param>
             <returns>No Content</returns>
         </member>
         <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Controllers.MitarbeiterController.UpdateMitarbeiter(System.Guid,System.Guid,REST.Api.Models.MitarbeiterForUpdateDto)" ignoriert -->

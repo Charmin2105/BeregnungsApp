@@ -79,20 +79,20 @@ namespace REST.Api.Controllers
         /// Einen bestimmten Mitarbeiter laden
         /// </summary>
         /// <param name="betriebID">Id des Betriebs</param>
-        /// <param name="mitarbeiterID">ID des Mitarbeiters</param>
+        /// <param name="id">ID des Mitarbeiters</param>
         /// <returns>OK Code</returns>
         /// <response code="200">Returns einen bestimmten Mitarbeiter eines Betriebes</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [HttpGet("{ID}", Name = "GetMitarbeiter")]
-        public ActionResult<Mitarbeiter> GetMitarbeiter(Guid betriebID, Guid mitarbeiterID)
+        [HttpGet("{id}", Name = "GetMitarbeiter")]
+        public ActionResult<Mitarbeiter> GetMitarbeiter(Guid betriebID, Guid id)
         {
             if (!_betriebRepository.BetriebExists(betriebID))
             {
                 return NotFound();
             }
 
-            var mitarbeiterFromRepo = _betriebRepository.GetMitarbeiter(betriebID, mitarbeiterID);
+            var mitarbeiterFromRepo = _betriebRepository.GetMitarbeiter(betriebID, id);
             if (mitarbeiterFromRepo == null)
             {
                 return NotFound();
@@ -172,12 +172,12 @@ namespace REST.Api.Controllers
         /// Löschen eines Mitarbeiters von einem Betrieb
         /// </summary>
         /// <param name="betriebID">ID des Betriebs</param>
-        /// <param name="mitarbeiterID">ID des Mitarbeiter</param>
+        /// <param name="id">ID des Mitarbeiter</param>
         /// <returns>No Content</returns>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpDelete("{ID}", Name = "DeleteMitarbeiter")]
-        public ActionResult<Mitarbeiter> DeleteMitarbeiter(Guid betriebID, Guid mitarbeiterID)
+        [HttpDelete("{id}", Name = "DeleteMitarbeiter")]
+        public ActionResult<Mitarbeiter> DeleteMitarbeiter(Guid betriebID, Guid id)
         {
             //Existiert der Betrieb?
             if (!_betriebRepository.BetriebExists(betriebID))
@@ -185,7 +185,7 @@ namespace REST.Api.Controllers
                 return NotFound();
             }
 
-            var mitarbeiterFromRepo = _betriebRepository.GetMitarbeiter(betriebID, mitarbeiterID);
+            var mitarbeiterFromRepo = _betriebRepository.GetMitarbeiter(betriebID, id);
             if (mitarbeiterFromRepo == null)
             {
                 return NotFound();
@@ -206,7 +206,7 @@ namespace REST.Api.Controllers
         /// Update eines Mitarbeiters
         /// </summary>
         /// <param name="betriebID">ID des Betriebs</param>
-        /// <param name="mitarbeiterID">ID des Mitarbeiter</param>
+        /// <param name="id">ID des Mitarbeiter</param>
         /// <param name="mitarbeiter">Mitarbeiter Body</param>
         /// <returns>No Content</returns>
         /// remarks>
@@ -222,8 +222,8 @@ namespace REST.Api.Controllers
         /// <response code="201">Returns Mitarbeiter für einen Betrieb  erstellt</response>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpPut("{ID}", Name = "UpdateMitarbeiter")]
-        public ActionResult<Mitarbeiter> UpdateMitarbeiter(Guid betriebID, Guid mitarbeiterID,
+        [HttpPut("{id}", Name = "UpdateMitarbeiter")]
+        public ActionResult<Mitarbeiter> UpdateMitarbeiter(Guid betriebID, Guid id,
             [FromBody] MitarbeiterForUpdateDto mitarbeiter)
         {
             //Body null?
@@ -257,11 +257,11 @@ namespace REST.Api.Controllers
 
             // Mitarbeiter aus DB laden
             // Falls nicht vorhanden wird erstellt
-            var mitarbeiterFromRepo = _betriebRepository.GetMitarbeiter(betriebID, mitarbeiterID);
+            var mitarbeiterFromRepo = _betriebRepository.GetMitarbeiter(betriebID, id);
             if (mitarbeiterFromRepo == null)
             {
                 var mitarbeiterToAdd = Mapper.Map<Mitarbeiter>(mitarbeiter);
-                mitarbeiterToAdd.ID = mitarbeiterID;
+                mitarbeiterToAdd.ID = id;
 
                 _betriebRepository.AddMitarbeiter(betriebID, mitarbeiterToAdd);
 
@@ -288,7 +288,7 @@ namespace REST.Api.Controllers
         /// Teilupdate eines Mitarbeiters
         /// </summary>
         /// <param name="betriebID">ID des Betriebs</param>
-        /// <param name="mitarbeiterID">ID des Mitarbeiters</param>
+        /// <param name="id">ID des Mitarbeiters</param>
         /// <param name="patchDoc">PatchDoc</param>
         /// <returns>NoContent</returns>
         ///         /// remarks>
@@ -308,8 +308,8 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [HttpPatch("{ID}", Name = "PartiallyUpdateMitarbeiter")]
-        public ActionResult<Mitarbeiter> PartiallyUpdateMitarbeiter(Guid betriebID, Guid mitarbeiterID,
+        [HttpPatch("{id}", Name = "PartiallyUpdateMitarbeiter")]
+        public ActionResult<Mitarbeiter> PartiallyUpdateMitarbeiter(Guid betriebID, Guid id,
             [FromBody] JsonPatchDocument<MitarbeiterForUpdateDto> patchDoc)
         {
             if (patchDoc == null)
@@ -323,7 +323,7 @@ namespace REST.Api.Controllers
             }
 
             // Mitarbeiter aus DB laden
-            var mitarbeiterFromRepo = _betriebRepository.GetMitarbeiter(betriebID, mitarbeiterID);
+            var mitarbeiterFromRepo = _betriebRepository.GetMitarbeiter(betriebID, id);
             if (mitarbeiterFromRepo == null)
             {
                 var mitarbeiterDto = new MitarbeiterForUpdateDto();
@@ -348,7 +348,7 @@ namespace REST.Api.Controllers
                     return new Helpers.UnprocessableEntityObjectResult(ModelState);
                 }
                 var mitarbeiterToAdd = Mapper.Map<Mitarbeiter>(mitarbeiterDto);
-                mitarbeiterToAdd.ID = mitarbeiterID;
+                mitarbeiterToAdd.ID = id;
 
                 _betriebRepository.AddMitarbeiter(betriebID, mitarbeiterToAdd);
 
