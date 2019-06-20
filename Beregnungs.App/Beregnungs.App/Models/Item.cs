@@ -58,5 +58,11 @@ namespace Beregnungs.App.Models
         ///  Ob die Beregnung abgeschlossen ist
         /// </summary>
         public bool IstAbgeschlossen { get; set; }
+
+        public string StartDatumString => StartDatum.ToString();
+        public string StartUhrzeitString => StartUhrzeit.ToString();
+        public string EndDatumString => EndDatum.ToString();
+        public string BetriebIDString => BetriebID.ToString();
+        public string SchlagIDString => SchlagID.ToString();
     }
 }
