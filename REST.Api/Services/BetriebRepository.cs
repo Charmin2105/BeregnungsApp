@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using REST.Api.Entities;
 using REST.Api.Helpers;
+using REST.Api.Models;
 
 namespace REST.Api.Services
 {
@@ -13,14 +14,16 @@ namespace REST.Api.Services
     public class BetriebRepository : IBetriebRepository
     {
         private BeregnungsContext _context;
+        private IPropertyMappingService _propertyMappingService;
 
         #region Betrieb
         /// <summary>
         /// BetriebRepository
         /// </summary>
         /// <param name="context">BeregnungsContext</param>
-        public BetriebRepository(BeregnungsContext context)
+        public BetriebRepository(BeregnungsContext context, IPropertyMappingService propertyMappingService)
         {
+            _propertyMappingService = propertyMappingService;
             _context = context;
         }
 
@@ -172,10 +175,115 @@ namespace REST.Api.Services
         /// Update Mitarbeiter
         /// </summary>
         /// <param name="mitarbeiter"></param>
-        public void UpdateMitarbeiter( Mitarbeiter mitarbeiter)
+        public void UpdateMitarbeiter(Mitarbeiter mitarbeiter)
         {
             //throw new NotImplementedException();
-        } 
+        }
         #endregion
+
+        /// <summary>
+        /// Hinzufügen neuer Daten
+        /// </summary>
+        /// <param name="daten">Neue Daten</param>
+        public void AddBeregnungsDaten(Guid betriebId, BeregnungsDaten daten)
+        {
+            var betrieb = GetBetrieb(betriebId);
+            if (betrieb != null)
+            {
+                // if there isn't an id filled out (ie: we're not upserting),
+                // we should generate one
+                if (daten.ID == Guid.Empty)
+                {
+                    daten.ID = Guid.NewGuid();
+                }
+                betrieb.BeregnungsDaten.Add(daten);
+            }
+        }
+
+        /// <summary>
+        /// Abfrage ob eine bestimmte Daten existieren
+        /// </summary>
+        /// <param name="guid">Abzufragende Daten</param>
+        /// <returns>bool</returns>
+        public bool BeregnungsDatenExists(Guid guid)
+        {
+            return _context.BeregnungsDatens.Any(a => a.ID == guid);
+        }
+
+        /// <summary>
+        /// Daten löschen
+        /// </summary>
+        /// <param name="daten">Zu löschende Daten</param>
+        public void DeleteBeregnungsDaten(BeregnungsDaten daten)
+        {
+            _context.BeregnungsDatens.Remove(daten);
+        }
+
+        /// <summary>
+        /// Eine bestimmte Daten anzeigen
+        /// </summary>
+        /// <param name="guid">ID des Daten</param>
+        /// <returns></returns>
+        public BeregnungsDaten GetBeregnungsDaten(Guid betriebId, Guid id)
+        {
+            return _context.BeregnungsDatens
+                        .Where(b => b.Betrieb.ID == betriebId && b.ID == id).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// GetDaten mit Seiten
+        /// </summary>
+        /// <param name="datenresourceParameters">Seiteneinstellungen</param>
+        /// <returns> PagedList<Daten></returns>
+        public PagedList<BeregnungsDaten> GetBeregnungsDatens(Guid betriebId,BeregnungsDatenResourceParameter datenresourceParameters)
+        {
+            //var collectionBeforPaging = _context.BeregnungsDatens.OrderBy(a =>
+            //a.StartDatum).AsQueryable();
+            var collectionBeforPaging =
+                _context.BeregnungsDatens.ApplySort(datenresourceParameters.OrderBy,
+                _propertyMappingService.GetPropertyMapping<BeregnungsDatenDto, BeregnungsDaten>());
+
+            // Filter nach abgeschlossenen Daten
+            // Nicht Filter sondern Suche ist hier gefordert
+            //var abgeschlossenForWhereClause = datenresourceParameters.IstAbgeschlossen;
+
+            //collectionBeforPaging = collectionBeforPaging
+            //    .Where(a =>
+            //    a.IstAbgeschlossen == abgeschlossenForWhereClause&!abgeschlossenForWhereClause);
+
+            //Filter nach SchlagId
+            if (datenresourceParameters.SchlagId != new Guid("00000000-0000-0000-0000-000000000000"))
+            {
+                var schlagIdForWhereClause = datenresourceParameters.SchlagId;
+                collectionBeforPaging = collectionBeforPaging.Where(a =>
+                a.SchlagID == schlagIdForWhereClause);
+            }
+
+            //Suche nach abgeschlossenen Daten
+            if (!string.IsNullOrEmpty(datenresourceParameters.IstAbgeschlossen))
+            {
+                var abgeschlossenForWhereClause = bool.Parse(datenresourceParameters.IstAbgeschlossen);
+                collectionBeforPaging = collectionBeforPaging.Where(a =>
+                a.IstAbgeschlossen == abgeschlossenForWhereClause);
+            }
+
+
+            return PagedList<BeregnungsDaten>.Create(collectionBeforPaging, datenresourceParameters.PageNumber, datenresourceParameters.PageSize);
+        }
+
+        /// <summary>
+        /// GetDaten
+        /// </summary>
+        /// <param name="guids">IEnumerable der IDs</param>
+        /// <returns>IEnumerable</returns>
+        public IEnumerable<BeregnungsDaten> GetBeregnungsDatens(Guid betriebId)
+        {
+            return _context.BeregnungsDatens.Where(b => b.Betrieb.ID == betriebId).ToList();
+        }
+
+        public void UpdateBeregnungsDaten(BeregnungsDaten daten)
+        {
+            // throw new NotImplementedException();
+        }
     }
 }

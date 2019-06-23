@@ -1,15 +1,12 @@
-﻿using REST.Api.Entities;
+﻿using REST.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace REST.Api.Models
+namespace Beregnungs.REST.Api.Models
 {
-    /// <summary>
-    /// class BeregnungsDatenDto
-    /// </summary>
-    public class BeregnungsDatenDto
+    public class BeregnungsDatenMitBetriebDto 
     {
         /// <summary>
         ///  ID 
@@ -65,6 +62,11 @@ namespace REST.Api.Models
         ///  Ob die Beregnung abgeschlossen ist
         /// </summary>
         public bool IstAbgeschlossen { get; set; }
+
+        /// <summary>
+        ///  Name des Betriebs 
+        /// </summary>
+        public string BetriebName { get; set; }
 
     }
 }

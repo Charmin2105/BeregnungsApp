@@ -18,7 +18,7 @@ namespace REST.Api.Entities
         public static void DataForContext(this BeregnungsContext context)
         {
             ////Setzt DB zurück
-            //context.BeregnungsDatens.RemoveRange(context.BeregnungsDatens);
+            context.BeregnungsDatens.RemoveRange(context.BeregnungsDatens);
             //context.Schlaege.RemoveRange(context.Schlaege);
             context.Betriebe.RemoveRange(context.Betriebe);
             context.SaveChanges();
@@ -47,6 +47,22 @@ namespace REST.Api.Entities
                 {
                     ID = new Guid("25320c5e-f58a-4b1f-b63a-8ee07a840bdf"),
                     Name = "SudiFarm",
+                    BeregnungsDaten = new List<BeregnungsDaten>
+                    {
+                        new BeregnungsDaten()
+                        {
+                            ID = new Guid("25320c5e-f58a-4b1f-b63a-8ee07a840bdf"),
+                            StartDatum = new DateTimeOffset(new DateTime(2019, 5, 21)),
+                            StartUhrzeit = DateTime.Today,
+                            EndDatum = new DateTimeOffset(new DateTime(2019, 5, 23)),
+                            SchlagID = new Guid("51004c54-3a86-4f55-b1a7-c6caeb8ca532"),
+                            Duese = "Düsenmaster 3000",
+                            WasseruhrAnfang=0,
+                            WasseruhrEnde=2000,
+                            Vorkomnisse = "Keine",
+                            IstAbgeschlossen= true
+                        },
+                    },
                     Mitarbeiters = new List<Mitarbeiter>()
                     {
                         new Mitarbeiter()

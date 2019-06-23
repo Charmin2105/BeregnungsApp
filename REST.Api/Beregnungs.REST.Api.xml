@@ -4,7 +4,7 @@
         <name>Beregnungs.REST.Api</name>
     </assembly>
     <members>
-        <member name="M:REST.Api.Controllers.BeregnungsDatenController.#ctor(REST.Api.Services.IBeregnungsRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.BeregnungsDatenController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.#ctor(REST.Api.Services.IBetriebRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.BeregnungsDatenController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
             <summary>
             Ctor
             </summary>
@@ -14,7 +14,7 @@
             <param name="propertyMappingService"></param>
             <param name="typeHelperService"></param>
         </member>
-        <member name="M:REST.Api.Controllers.BeregnungsDatenController.GetBeregnungsDatens(REST.Api.Helpers.BeregnungsDatenResourceParameter,System.String)">
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.GetBeregnungsDatens(System.Guid,REST.Api.Helpers.BeregnungsDatenResourceParameter,System.String)">
             <summary>
             Laden aller BeregnungsDaten
             </summary>
@@ -30,7 +30,7 @@
             <param name="type">Übergabe der ResourceUriType </param>
             <returns>string</returns>
         </member>
-        <member name="M:REST.Api.Controllers.BeregnungsDatenController.GetBeregnungsDaten(System.Guid,System.String)">
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.GetBeregnungsDaten(System.Guid,System.Guid,System.String)">
             <summary>
             Laden einer bestimmten BeregnungsDaten.
             </summary>
@@ -38,7 +38,7 @@
             <returns>OK Code </returns>
             <response code="200">Returns einer bestimmten Beregnungs Daten</response>
         </member>
-        <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateBeregnungsDaten(REST.Api.Models.BeregnungsDatenForCreationDto)">
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.CreateBeregnungsDaten(System.Guid,REST.Api.Models.BeregnungsDatenForCreationDto)">
             <summary>
             Hinzufügen einer neuen BeregnungsDaten
             </summary>
@@ -62,14 +62,14 @@
             </remarks>
             <response code="201">Returns Beregnungs Daten erstellt</response>
         </member>
-        <member name="M:REST.Api.Controllers.BeregnungsDatenController.DeleteBeregnungsDaten(System.Guid)">
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.DeleteBeregnungsDaten(System.Guid,System.Guid)">
             <summary>
             Löschen einer BeregnungsDaten
             </summary>
             <param name="id">ID des zu löschen Datensatz</param>
             <returns>NoContent</returns>
         </member>
-        <member name="M:REST.Api.Controllers.BeregnungsDatenController.UpdateBeregnungsDaten(System.Guid,REST.Api.Models.BeregnungsDatenForUpdateDto)">
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.UpdateBeregnungsDaten(System.Guid,System.Guid,REST.Api.Models.BeregnungsDatenForUpdateDto)">
             <summary>
             Update von BeregnungsDaten
             </summary>
@@ -95,7 +95,7 @@
             </remarks>
             <response code="201">Returns Beregnungs Daten erstellt</response>
         </member>
-        <member name="M:REST.Api.Controllers.BeregnungsDatenController.PartallyUpdateBeregnungsDaten(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.BeregnungsDatenForUpdateDto})">
+        <member name="M:REST.Api.Controllers.BeregnungsDatenController.PartallyUpdateBeregnungsDaten(System.Guid,System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.BeregnungsDatenForUpdateDto})">
             <summary>
             Patch Update von BeregnungsDaten
             </summary>
@@ -479,6 +479,11 @@
         </member>
         <member name="P:REST.Api.Entities.BeregnungsDaten.Betrieb">
             <summary>
+            Betrieb 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsDaten.BetriebID">
+            <summary>
             Guid Betrieb 
             </summary>
         </member>
@@ -528,6 +533,7 @@
             </summary>
         </member>
         <!-- Ungültiger XML-Kommentar wurde für den Member "P:REST.Api.Entities.Betrieb.Mitarbeiters" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "P:REST.Api.Entities.Betrieb.BeregnungsDaten" ignoriert -->
         <member name="T:REST.Api.Entities.Mitarbeiter">
             <summary>
             Mitarbeiter
@@ -1103,7 +1109,7 @@
             BetriebRepository
             </summary>
         </member>
-        <member name="M:REST.Api.Services.BetriebRepository.#ctor(REST.Api.Entities.BeregnungsContext)">
+        <member name="M:REST.Api.Services.BetriebRepository.#ctor(REST.Api.Entities.BeregnungsContext,REST.Api.Services.IPropertyMappingService)">
             <summary>
             BetriebRepository
             </summary>
@@ -1184,6 +1190,40 @@
             Update Mitarbeiter
             </summary>
             <param name="mitarbeiter"></param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.AddBeregnungsDaten(System.Guid,REST.Api.Entities.BeregnungsDaten)">
+            <summary>
+            Hinzufügen neuer Daten
+            </summary>
+            <param name="daten">Neue Daten</param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.BeregnungsDatenExists(System.Guid)">
+            <summary>
+            Abfrage ob eine bestimmte Daten existieren
+            </summary>
+            <param name="guid">Abzufragende Daten</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.DeleteBeregnungsDaten(REST.Api.Entities.BeregnungsDaten)">
+            <summary>
+            Daten löschen
+            </summary>
+            <param name="daten">Zu löschende Daten</param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.GetBeregnungsDaten(System.Guid,System.Guid)">
+            <summary>
+            Eine bestimmte Daten anzeigen
+            </summary>
+            <param name="guid">ID des Daten</param>
+            <returns></returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.BetriebRepository.GetBeregnungsDatens(System.Guid,REST.Api.Helpers.BeregnungsDatenResourceParameter)" ignoriert -->
+        <member name="M:REST.Api.Services.BetriebRepository.GetBeregnungsDatens(System.Guid)">
+            <summary>
+            GetDaten
+            </summary>
+            <param name="guids">IEnumerable der IDs</param>
+            <returns>IEnumerable</returns>
         </member>
         <member name="T:REST.Api.Services.IBeregnungsRepository">
             <summary>
@@ -1301,6 +1341,66 @@
             UpdateSchlag
             </summary>
             <param name="schlag">Schlag</param>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.ID">
+            <summary>
+             ID 
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.StartDatum">
+            <summary>
+             Start Datum der Beregnung
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.StartUhrzeit">
+            <summary>
+             Start Uhrzeit der Beregnung
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.EndDatum">
+            <summary>
+             End Datum der Beregnung
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebID">
+            <summary>
+              ID des Betriebs der die Beregnung durchgeführt hat
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.SchlagID">
+            <summary>
+             ID des Schlages  
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.Duese">
+            <summary>
+             Duese die verwendet wurde
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrAnfang">
+            <summary>
+             Wasseruhr Anfangsstand
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrEnde">
+            <summary>
+             Wasseruhr Endestand
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.Vorkomnisse">
+            <summary>
+             Vorkomnisse
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.IstAbgeschlossen">
+            <summary>
+             Ob die Beregnung abgeschlossen ist
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebName">
+            <summary>
+             Name des Betriebs 
+            </summary>
         </member>
     </members>
 </doc>

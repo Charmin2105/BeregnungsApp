@@ -18,13 +18,26 @@ namespace REST.Api.Services
         void AddBetrieb(Betrieb betrieb);
         void DeleteBetrieb(Betrieb betrieb);
         void UpdateBetrieb(Betrieb betrieb);
-        Mitarbeiter GetMitarbeiter(Guid betriebId,Guid mitarbeiterId);
+
+        #region Mitarbeiter
+        Mitarbeiter GetMitarbeiter(Guid betriebId, Guid mitarbeiterId);
         IEnumerable<Mitarbeiter> GetMitarbeiters(Guid betriebId);
-        void AddMitarbeiter(Guid betriebId,Mitarbeiter mitarbeiter);
+        void AddMitarbeiter(Guid betriebId, Mitarbeiter mitarbeiter);
         void DeleteMitarbeiter(Mitarbeiter mitarbeiter);
         void UpdateMitarbeiter(Mitarbeiter mitarbeiter);
         bool MitarbeiterExists(Guid mitarbeiterId);
-        bool BetriebExists(Guid betriebId);
+        #endregion
+        #region BeregnungsDaten
+        PagedList<BeregnungsDaten> GetBeregnungsDatens(Guid betriebId, BeregnungsDatenResourceParameter datenresourceParameters);
+        BeregnungsDaten GetBeregnungsDaten(Guid betriebId, Guid id);
+        IEnumerable<BeregnungsDaten> GetBeregnungsDatens(Guid betriebId);
+        void AddBeregnungsDaten(Guid betriebId, BeregnungsDaten daten);
+        void DeleteBeregnungsDaten(BeregnungsDaten daten);
+        void UpdateBeregnungsDaten(BeregnungsDaten daten);
+        bool BeregnungsDatenExists(Guid guid);
+        bool BetriebExists(Guid betriebId); 
+        #endregion
+
         bool Save();
     }
 }

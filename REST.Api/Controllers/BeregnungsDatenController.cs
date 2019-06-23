@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Beregnungs.REST.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,11 @@ using REST.Api.Services;
 
 namespace REST.Api.Controllers
 {
-    [Route("api/beregnungsdaten")]
+    [Route("api/betriebe/{BetriebID}/beregnungsdaten")]
     public class BeregnungsDatenController : Controller
     {
         //Fields
-        private IBeregnungsRepository _beregnungsRepository;
+        private IBetriebRepository _betriebsRepository;
         private ILogger<BeregnungsDatenController> _ilogger;
         private IUrlHelper _urlHelper;
         private IPropertyMappingService _propertyMappingService;
@@ -32,14 +33,14 @@ namespace REST.Api.Controllers
         /// <param name="urlHelper">UrlHelper</param>
         /// <param name="propertyMappingService"></param>
         /// <param name="typeHelperService"></param>
-        public BeregnungsDatenController(IBeregnungsRepository beregnungsRepository,
+        public BeregnungsDatenController(IBetriebRepository beregnungsRepository,
             ILogger<BeregnungsDatenController> ilogger,
             IUrlHelper urlHelper,
             IPropertyMappingService propertyMappingService,
             ITypeHelperService typeHelperService)
         {
             _ilogger = ilogger;
-            _beregnungsRepository = beregnungsRepository;
+            _betriebsRepository = beregnungsRepository;
             _urlHelper = urlHelper;
             _propertyMappingService = propertyMappingService;
             _typeHelperService = typeHelperService;
@@ -54,7 +55,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet(Name = "GetBergenungsDatens")]
         [HttpHead]
-        public ActionResult<BeregnungsDaten> GetBeregnungsDatens(BeregnungsDatenResourceParameter resourceParameters,
+        public ActionResult<BeregnungsDaten> GetBeregnungsDatens(Guid betriebID, BeregnungsDatenResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
             //Mapping für OrderBy ist valid
@@ -64,14 +65,14 @@ namespace REST.Api.Controllers
                 return BadRequest();
             }
 
-            if (!_typeHelperService.TypeHasProperties<BeregnungsDatenDto>(resourceParameters.Fields))
+            if (!_typeHelperService.TypeHasProperties<BeregnungsDatenMitBetriebDto>(resourceParameters.Fields))
             {
                 return BadRequest();
             }
 
             //Aus DB laden
-            var datenFromRepo = _beregnungsRepository.GetBeregnungsDatens(resourceParameters);
-            var daten = Mapper.Map<IEnumerable<BeregnungsDatenDto>>(datenFromRepo);
+            var datenFromRepo = _betriebsRepository.GetBeregnungsDatens(betriebID, resourceParameters);
+            var daten = Mapper.Map<IEnumerable<BeregnungsDatenMitBetriebDto>>(datenFromRepo);
 
 
             //Falls der Header "application/vnd.ostfalia.hateoas+json" werden keine Links im Header mit angegeben. 
@@ -200,13 +201,13 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id}", Name = "GetBergenungsDaten")]
-        public ActionResult<BeregnungsDaten> GetBeregnungsDaten(Guid id, [FromQuery] string fields)
+        public ActionResult<BeregnungsDaten> GetBeregnungsDaten(Guid betriebID, Guid id, [FromQuery] string fields)
         {
             if (!_typeHelperService.TypeHasProperties<BeregnungsDatenDto>(fields))
             {
                 return BadRequest();
             }
-            var datenFromRepo = _beregnungsRepository.GetBeregnungsDaten(id);
+            var datenFromRepo = _betriebsRepository.GetBeregnungsDaten(betriebID, id);
             if (datenFromRepo == null)
             {
                 return NotFound();
@@ -248,7 +249,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost(Name = "CreateBeregnungsDaten")]
-        public ActionResult<BeregnungsDaten> CreateBeregnungsDaten([FromBody]BeregnungsDatenForCreationDto beregnungsDaten)
+        public ActionResult<BeregnungsDaten> CreateBeregnungsDaten(Guid betriebID, [FromBody]BeregnungsDatenForCreationDto beregnungsDaten)
         {
             //Überprüfung ob der Übergabeparameter leer ist
             if (beregnungsDaten == null)
@@ -282,9 +283,9 @@ namespace REST.Api.Controllers
             }
 
             var datenEntitiy = Mapper.Map<BeregnungsDaten>(beregnungsDaten);
-            _beregnungsRepository.AddBeregnungsDaten(datenEntitiy);
+            _betriebsRepository.AddBeregnungsDaten(betriebID, datenEntitiy);
 
-            if (!_beregnungsRepository.Save())
+            if (!_betriebsRepository.Save())
             {
                 throw new Exception("Fehler beim speichern einer neuen Beregnungsdaten");
             }
@@ -313,23 +314,23 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{id}", Name = "DeleteBeregnungsDaten")]
-        public ActionResult<BeregnungsDaten> DeleteBeregnungsDaten(Guid id)
+        public ActionResult<BeregnungsDaten> DeleteBeregnungsDaten(Guid betriebID, Guid id)
         {
             //Exisitert BeregnungsDaten?
-            if (!_beregnungsRepository.BeregnungsDatenExists(id))
+            if (!_betriebsRepository.BeregnungsDatenExists(id))
             {
                 return NotFound();
             }
 
-            var beregnungsDatenFromRepo = _beregnungsRepository.GetBeregnungsDaten(id);
+            var beregnungsDatenFromRepo = _betriebsRepository.GetBeregnungsDaten(betriebID, id);
             if (beregnungsDatenFromRepo == null)
             {
                 return NotFound();
             }
 
-            _beregnungsRepository.DeleteBeregnungsDaten(beregnungsDatenFromRepo);
+            _betriebsRepository.DeleteBeregnungsDaten(beregnungsDatenFromRepo);
 
-            if (!_beregnungsRepository.Save())
+            if (!_betriebsRepository.Save())
             {
                 throw new Exception($"Löschen der BeregnungsDaten mit der ID: {id} schlug fehl");
             }
@@ -366,7 +367,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}", Name = "UpdateBeregnungsDaten")]
-        public ActionResult<BeregnungsDaten> UpdateBeregnungsDaten(Guid id, [FromBody]BeregnungsDatenForUpdateDto beregnungsDaten)
+        public ActionResult<BeregnungsDaten> UpdateBeregnungsDaten(Guid betriebID, Guid id, [FromBody]BeregnungsDatenForUpdateDto beregnungsDaten)
         {
             //Geänderte Daten
             if (beregnungsDaten == null)
@@ -374,15 +375,15 @@ namespace REST.Api.Controllers
                 return BadRequest();
             }
             //Existiert Daten?
-            if (!_beregnungsRepository.BeregnungsDatenExists(id))
+            if (!_betriebsRepository.BeregnungsDatenExists(id))
             {
                 //Falls nicht wird neu erstellt
                 var beregnungsDatenEntity = Mapper.Map<BeregnungsDaten>(beregnungsDaten);
                 beregnungsDatenEntity.ID = id;
 
-                _beregnungsRepository.AddBeregnungsDaten(beregnungsDatenEntity);
+                _betriebsRepository.AddBeregnungsDaten(betriebID, beregnungsDatenEntity);
 
-                if (!_beregnungsRepository.Save())
+                if (!_betriebsRepository.Save())
                 {
                     throw new Exception($"Upserting schlug fehl");
                 }
@@ -393,13 +394,13 @@ namespace REST.Api.Controllers
                     new { guid = beregnungsDatenToReturn.ID },
                     beregnungsDatenToReturn);
             }
-            var beregnungsDatenFromRepo = _beregnungsRepository.GetBeregnungsDaten(id);
+            var beregnungsDatenFromRepo = _betriebsRepository.GetBeregnungsDaten(betriebID, id);
 
             Mapper.Map(beregnungsDaten, beregnungsDatenFromRepo);
 
-            _beregnungsRepository.UpdateBeregnungsDaten(beregnungsDatenFromRepo);
+            _betriebsRepository.UpdateBeregnungsDaten(beregnungsDatenFromRepo);
 
-            if (!_beregnungsRepository.Save())
+            if (!_betriebsRepository.Save())
             {
                 throw new Exception($"Fehler beim Speichern ");
             }
@@ -428,12 +429,14 @@ namespace REST.Api.Controllers
         /// ]
         /// </remarks>
         /// <response code="201">Returns Beregnungs Daten erstellt</response>
+        #region HTTP
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPatch("{id}", Name = "PartallyUpdateBeregnungsDaten")]
-        public ActionResult<BeregnungsDaten> PartallyUpdateBeregnungsDaten(Guid id,
+        #endregion
+        public ActionResult<BeregnungsDaten> PartallyUpdateBeregnungsDaten(Guid betriebID, Guid id,
                 [FromBody]JsonPatchDocument<BeregnungsDatenForUpdateDto> patchDoc)
         {
             //Eingabe nicht null
@@ -443,12 +446,12 @@ namespace REST.Api.Controllers
             }
 
             //Datenexisieren?
-            if (!_beregnungsRepository.BeregnungsDatenExists(id))
+            if (!_betriebsRepository.BeregnungsDatenExists(id))
             {
                 return NotFound();
             }
 
-            var beregenungsDatenFromRepo = _beregnungsRepository.GetBeregnungsDaten(id);
+            var beregenungsDatenFromRepo = _betriebsRepository.GetBeregnungsDaten(betriebID, id);
 
             if (beregenungsDatenFromRepo == null)
             {
@@ -465,9 +468,9 @@ namespace REST.Api.Controllers
                 var beregnungsDatenToAdd = Mapper.Map<BeregnungsDaten>(beregnungsDatenDto);
                 beregnungsDatenToAdd.ID = id;
 
-                _beregnungsRepository.AddBeregnungsDaten(beregnungsDatenToAdd);
+                _betriebsRepository.AddBeregnungsDaten(betriebID, beregnungsDatenToAdd);
 
-                if (!_beregnungsRepository.Save())
+                if (!_betriebsRepository.Save())
                 {
                     throw new Exception($"Fehler beim Speichern ");
                 }
@@ -491,8 +494,8 @@ namespace REST.Api.Controllers
             }
 
             Mapper.Map(beregnunsDatenToPatch, beregenungsDatenFromRepo);
-            _beregnungsRepository.UpdateBeregnungsDaten(beregenungsDatenFromRepo);
-            if (!_beregnungsRepository.Save())
+            _betriebsRepository.UpdateBeregnungsDaten(beregenungsDatenFromRepo);
+            if (!_betriebsRepository.Save())
             {
                 throw new Exception($"Fehler beim Speichern ");
             }

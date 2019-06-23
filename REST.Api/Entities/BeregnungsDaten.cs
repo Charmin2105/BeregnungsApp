@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace REST.Api.Entities
 {
@@ -32,10 +33,15 @@ namespace REST.Api.Entities
         public DateTimeOffset EndDatum { get; set; }
 
         /// <summary>
+        /// Betrieb 
+        /// </summary>
+        [ForeignKey("BetriebID")]
+        public Betrieb Betrieb { get; set; }
+
+        /// <summary>
         /// Guid Betrieb 
         /// </summary>
-        [Required]
-        public Guid Betrieb { get; set; }
+        public Guid BetriebID { get; set; }
 
         /// <summary>
         /// Guid SchlagID
@@ -74,6 +80,7 @@ namespace REST.Api.Entities
         /// </summary>
         [Required]
         public bool IstAbgeschlossen { get; set; }
+
 
     }
 }
