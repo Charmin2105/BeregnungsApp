@@ -822,11 +822,6 @@
             End Datum der Beregnung
             </summary>
         </member>
-        <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.Betrieb">
-            <summary>
-             Betrieb der die Beregnung durchgeführt hat
-            </summary>
-        </member>
         <member name="P:REST.Api.Models.BeregnungsDatenForManipulationDto.SchlagID">
             <summary>
             Schlag der Beregnet wurde

@@ -267,10 +267,6 @@ namespace REST.Api.Controllers
             {
                 ModelState.AddModelError(nameof(BeregnungsDatenForCreationDto), "Wasseruhrstand am Anfang darf nicht größer sein als am Ende");
             }
-            if (beregnungsDaten.Betrieb == null)
-            {
-                ModelState.AddModelError(nameof(BeregnungsDatenForCreationDto), "Betrieb darf nicht leer sein");
-            }
             if (beregnungsDaten.Duese == string.Empty)
             {
                 ModelState.AddModelError(nameof(BeregnungsDatenForCreationDto), "Bitte eine Düse angeben");

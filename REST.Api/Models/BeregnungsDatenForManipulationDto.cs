@@ -26,11 +26,6 @@ namespace REST.Api.Models
         [Required]
         public DateTime EndDatum { get; set; }
 
-        /// <summary>
-        ///  Betrieb der die Beregnung durchgeführt hat
-        /// </summary>
-        [Required(ErrorMessage = "Ein Betrieb ist erforderlich.")]
-        public Guid Betrieb { get; set; }
 
         /// <summary>
         /// Schlag der Beregnet wurde
