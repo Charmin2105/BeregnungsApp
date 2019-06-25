@@ -24,7 +24,7 @@ namespace Beregnungs.App.Views
         {
             InitializeComponent();
 
-            var item = new Item()
+            var beregnungsDaten = new BeregnungsDaten()
             {
                 ID = new Guid(),
                 StartDatum = new DateTimeOffset(new DateTime(2019, 5, 21)),
@@ -35,11 +35,11 @@ namespace Beregnungs.App.Views
                 Duese = "Düsenmaster 3000",
                 WasseruhrAnfang = 0,
                 WasseruhrEnde = 2000,
-                Vorkomnisse = "Keine",
+                Vorkomnisse = "Alle Tod",
                 IstAbgeschlossen = true
             };
 
-            viewModel = new ItemDetailViewModel(item);
+            viewModel = new ItemDetailViewModel(beregnungsDaten);
             BindingContext = viewModel;
         }
     }

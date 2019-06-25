@@ -10,12 +10,12 @@ using Beregnungs.App.Views;
 
 namespace Beregnungs.App.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class BeregnungsDatensViewModel : BaseViewModel
     {
         #region Fields
         //Fields
-        public ObservableCollection<Item> Items { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
+        public Command LoadBeregnungsDatensCommand { get; set; }
         string start = string.Empty;
         string uhrzeit = string.Empty;
         string ende = string.Empty;
@@ -75,7 +75,7 @@ namespace Beregnungs.App.ViewModels
 
         #region Ctor
         // Ctor
-        public ItemsViewModel()
+        public BeregnungsDatensViewModel()
         {
             Title = "Beregnungsdaten";
             StartTitel = "Tag der Beregnung";
@@ -88,14 +88,14 @@ namespace Beregnungs.App.ViewModels
             WasseruhrEndeTitel = "Wasseruhrstand Ende";
             VorkomnisseTitel = "Vorkomnisse";
 
-            Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            BeregnungsDatens = new ObservableCollection<BeregnungsDaten>();
+            LoadBeregnungsDatensCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            MessagingCenter.Subscribe<NewItemPage, BeregnungsDaten>(this, "AddBeregnungsDaten", async (obj, daten) =>
             {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
+                var newDaten = daten as BeregnungsDaten;
+                BeregnungsDatens.Add(newDaten);
+                await DataStore.AddAsync(newDaten);
             });
         }
         #endregion
@@ -111,11 +111,11 @@ namespace Beregnungs.App.ViewModels
 
             try
             {
-                Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                BeregnungsDatens.Clear();
+                var items = await DataStore.GetsAsync(true);
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    BeregnungsDatens.Add(item);
                 }
             }
             catch (Exception ex)

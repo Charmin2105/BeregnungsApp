@@ -14,20 +14,20 @@ using Beregnungs.App.ViewModels;
 namespace Beregnungs.App.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ItemsPage : ContentPage
+    public partial class BeregnungsDatensPage : ContentPage
     {
-        ItemsViewModel viewModel;
+        BeregnungsDatensViewModel viewModel;
 
-        public ItemsPage()
+        public BeregnungsDatensPage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new ItemsViewModel();
+            BindingContext = viewModel = new BeregnungsDatensViewModel();
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Item;
+            var item = args.SelectedItem as BeregnungsDaten;
             if (item == null)
                 return;
 
@@ -46,8 +46,8 @@ namespace Beregnungs.App.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            if (viewModel.BeregnungsDatens.Count == 0)
+                viewModel.LoadBeregnungsDatensCommand.Execute(null);
         }
     }
 }

@@ -6,11 +6,11 @@ namespace Beregnungs.App.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        public Item Item { get; set; }
-        public ItemDetailViewModel(Item item = null)
+        public BeregnungsDaten BeregnungsDaten { get; set; }
+        public ItemDetailViewModel(BeregnungsDaten beregnungsDaten = null)
         {
-            Title = "Item";
-            Item = item;
+            Title = "Beregnungsdaten";
+            BeregnungsDaten = beregnungsDaten;
         }
     }
 }

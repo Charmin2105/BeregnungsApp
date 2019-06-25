@@ -12,7 +12,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem Text="Save" Clicked="Save_Clicked">
+        <ToolbarItem Text="Save" Command="{Binding SaveNewBeregnungsDatensCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="save.png"/>
@@ -22,11 +22,59 @@
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Text" FontSize="Medium" />
-            <Entry Text="{Binding Item.Text}" FontSize="Small" />
-            <Label Text="Description" FontSize="Medium" />
-            <Editor Text="{Binding Item.Description}" FontSize="Small" Margin="0" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Spacing="20" Padding="15" PropertyChanged="StackLayout_PropertyChanged">
+            <Label Text="Tag der Bergnung:" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource TitleStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding StartDatum}" Placeholder="Start" PlaceholderColor="Olive" />
+                <Label Text="Beginn der Beregnung:" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource TitleStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding Uhrzeit}" Placeholder="Uhrzeit" PlaceholderColor="Olive" />
+                <Label Text="Ende der Beregnung:" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemDetailTextStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding EndDatum}" Placeholder="Ende" PlaceholderColor="Olive" />
+                <Label Text="Schlag: " 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemDetailTextStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding Schlag}" Placeholder="Schlag" PlaceholderColor="Olive" />
+                <Label Text="Wasseruhrstand Beginn:" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemTextStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding WasseruhrStart}" Placeholder="Wasseruhr Anfang" PlaceholderColor="Olive" />
+                <Label Text="Wasseruhrstand Ende:" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemTextStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding WasseruhrEnde}" Placeholder="Wasseruhr Ende" PlaceholderColor="Olive" />
+                <Label Text="Betrieb: " 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemTextStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding Betrieb}" Placeholder="Betrieb" PlaceholderColor="Olive" />
+                <Label Text="Verwendete Düse" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemTextStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding Duese}" Placeholder="Düse" PlaceholderColor="Olive" />
+                <Label Text="Vorkommnisse" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemTextStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding Vorkommnisse}" Placeholder="Vorkommnisse" PlaceholderColor="Olive" />
+                <Label Text="Ist beendet" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemTextStyle}" 
+                Font="Bold,14" />
+                <Switch IsToggled="{Binding IstAbgeschlossen}"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

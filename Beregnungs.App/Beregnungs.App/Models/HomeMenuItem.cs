@@ -6,7 +6,10 @@ namespace Beregnungs.App.Models
 {
     public enum MenuItemType
     {
-        Browse,
+        Beregnungsdaten,
+        Schlage,
+        Betrieb,
+        Mitarbeiter,
         About
     }
     public class HomeMenuItem

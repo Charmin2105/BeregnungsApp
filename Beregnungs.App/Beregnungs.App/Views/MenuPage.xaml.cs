@@ -18,7 +18,10 @@ namespace Beregnungs.App.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
+                new HomeMenuItem {Id = MenuItemType.Beregnungsdaten, Title="Beregnungsdaten" },
+                new HomeMenuItem {Id = MenuItemType.Schlage, Title="Schläge" },
+                new HomeMenuItem {Id = MenuItemType.Betrieb, Title="Betrieb" },
+                new HomeMenuItem {Id = MenuItemType.Mitarbeiter, Title="Mitarbeiter" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" }
             };
 

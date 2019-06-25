@@ -2,7 +2,7 @@
 
 namespace Beregnungs.App.Models
 {
-    public class Item
+    public class BeregnungsDaten
     {
         /// <summary>
         ///  ID 

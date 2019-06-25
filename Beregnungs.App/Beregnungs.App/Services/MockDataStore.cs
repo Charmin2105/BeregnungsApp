@@ -6,16 +6,16 @@ using Beregnungs.App.Models;
 
 namespace Beregnungs.App.Services
 {
-    public class MockDataStore : IDataStore<Item>
+    public class MockDataStore //: IDataStore<BeregnungsDaten>
     {
-        List<Item> items;
+        List<BeregnungsDaten> items;
 
         public MockDataStore()
         {
-            items = new List<Item>();
-            var mockItems = new List<Item>
+            items = new List<BeregnungsDaten>();
+            var mockItems = new List<BeregnungsDaten>
             {
-                    new Item()
+                    new BeregnungsDaten()
                     {
                         ID = new Guid(),
                         StartDatum = new DateTimeOffset(new DateTime(2019, 5, 21)),
@@ -38,16 +38,16 @@ namespace Beregnungs.App.Services
             }
         }
 
-        public async Task<bool> AddItemAsync(Item item)
+        public async Task<bool> AddItemAsync(BeregnungsDaten item)
         {
             items.Add(item);
 
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> UpdateItemAsync(Item item)
+        public async Task<bool> UpdateItemAsync(BeregnungsDaten item)
         {
-            var oldItem = items.Where((Item arg) => arg.ID == item.ID).FirstOrDefault();
+            var oldItem = items.Where((BeregnungsDaten arg) => arg.ID == item.ID).FirstOrDefault();
             items.Remove(oldItem);
             items.Add(item);
 
@@ -56,18 +56,18 @@ namespace Beregnungs.App.Services
 
         public async Task<bool> DeleteItemAsync(Guid id)
         {
-            var oldItem = items.Where((Item arg) => arg.ID == id).FirstOrDefault();
+            var oldItem = items.Where((BeregnungsDaten arg) => arg.ID == id).FirstOrDefault();
             items.Remove(oldItem);
 
             return await Task.FromResult(true);
         }
 
-        public async Task<Item> GetItemAsync(Guid id)
+        public async Task<BeregnungsDaten> GetItemAsync(Guid id)
         {
             return await Task.FromResult(items.FirstOrDefault(s => s.ID == id));
         }
 
-        public async Task<IEnumerable<Item>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<BeregnungsDaten>> GetItemsAsync(bool forceRefresh = false)
         {
             return await Task.FromResult(items);
         }
