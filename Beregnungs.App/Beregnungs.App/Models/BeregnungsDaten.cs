@@ -59,10 +59,29 @@ namespace Beregnungs.App.Models
         /// </summary>
         public bool IstAbgeschlossen { get; set; }
 
-        public string StartDatumString => StartDatum.ToString();
-        public string StartUhrzeitString => StartUhrzeit.ToString();
-        public string EndDatumString => EndDatum.ToString();
-        public string BetriebIDString => BetriebID.ToString();
-        public string SchlagIDString => SchlagID.ToString();
+        public string StartDatumString
+        { get { return StartDatum.ToString(); }
+            set { StartDatum = DateTimeOffset.Parse(value); }
+        }
+        public string StartUhrzeitString
+        {
+            get { return StartUhrzeit.ToString(); }
+            set { StartUhrzeit = DateTime.Parse(value); }
+        }
+        public string EndDatumString
+        {
+            get { return EndDatum.ToString(); }
+            set { EndDatum = DateTimeOffset.Parse(value); }
+        }
+        public string BetriebIDString
+        {
+            get { return BetriebID.ToString(); }
+            set { BetriebID = Guid.Parse(value); }
+        }
+        public string SchlagIDString
+        {
+            get { return SchlagID.ToString(); }
+            set { SchlagID = Guid.Parse(value); }
+        }
     }
 }

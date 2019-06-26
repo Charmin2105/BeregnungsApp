@@ -18,5 +18,11 @@
     <Compile Update="Views\BeregnungsDatensPage.xaml.cs">
       <DependentUpon>BeregnungsDatensPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\BeregnungsDatenDetailPage.xaml.cs">
+      <DependentUpon>BeregnungsDatenDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NewBeregnungsDatenPage.xaml.cs">
+      <DependentUpon>NewBeregnungsDatenPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

@@ -91,7 +91,7 @@ namespace Beregnungs.App.ViewModels
             BeregnungsDatens = new ObservableCollection<BeregnungsDaten>();
             LoadBeregnungsDatensCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<NewItemPage, BeregnungsDaten>(this, "AddBeregnungsDaten", async (obj, daten) =>
+            MessagingCenter.Subscribe<NewBeregnungsDatenPage, BeregnungsDaten>(this, "AddBeregnungsDaten", async (obj, daten) =>
             {
                 var newDaten = daten as BeregnungsDaten;
                 BeregnungsDatens.Add(newDaten);

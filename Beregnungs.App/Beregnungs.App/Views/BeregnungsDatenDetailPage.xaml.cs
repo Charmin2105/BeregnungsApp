@@ -9,18 +9,20 @@ using Beregnungs.App.ViewModels;
 namespace Beregnungs.App.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ItemDetailPage : ContentPage
+    public partial class BeregnungsDatenDetailPage : ContentPage
     {
-        ItemDetailViewModel viewModel;
+        public BeregnungsDaten BeregnungsDaten { get; set; }
+        BeregnungsDatenDetailViewModel viewModel;
+        public Command SaveBeregnungsDatensCommand;
 
-        public ItemDetailPage(ItemDetailViewModel viewModel)
+        public BeregnungsDatenDetailPage(BeregnungsDatenDetailViewModel viewModel)
         {
             InitializeComponent();
 
             BindingContext = this.viewModel = viewModel;
         }
 
-        public ItemDetailPage()
+        public BeregnungsDatenDetailPage()
         {
             InitializeComponent();
 
@@ -39,7 +41,7 @@ namespace Beregnungs.App.Views
                 IstAbgeschlossen = true
             };
 
-            viewModel = new ItemDetailViewModel(beregnungsDaten);
+            viewModel = new BeregnungsDatenDetailViewModel(beregnungsDaten);
             BindingContext = viewModel;
         }
     }

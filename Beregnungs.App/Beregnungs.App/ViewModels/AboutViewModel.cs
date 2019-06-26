@@ -9,7 +9,7 @@ namespace Beregnungs.App.ViewModels
     {
         public AboutViewModel()
         {
-            Title = "About";
+            Title = "Über diese App";
 
             OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://xamarin.com/platform")));
         }

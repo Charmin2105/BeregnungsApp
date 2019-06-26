@@ -103,6 +103,8 @@ namespace Beregnungs.App.ViewModels
             };
            await  DataStore.AddAsync(beregnungsDaten);
 
+            await DataStore.GetsAsync(true);
+
         }
     }
 }

@@ -33,9 +33,14 @@ namespace Beregnungs.App.Services
             return response.IsSuccessStatusCode;
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            if (false)
+                return false;
+
+            var response = await _client.DeleteAsync($"api/betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/beregnungsdaten/{id}");
+
+            return response.IsSuccessStatusCode;
         }
 
         public Task<BeregnungsDaten> GetAsync(Guid id)
@@ -45,6 +50,8 @@ namespace Beregnungs.App.Services
 
         public async Task<IEnumerable<BeregnungsDaten>> GetsAsync(bool forceRefresh = false)
         {
+            beregnungsDatens = null;
+
             if (forceRefresh)
             {
                 var response = await _client.GetAsync($"api/betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/beregnungsdaten");
@@ -61,9 +68,16 @@ namespace Beregnungs.App.Services
             return beregnungsDatens;
         }
 
-        public Task<bool> UpdateAsync(BeregnungsDaten item)
+        public async Task<bool> UpdateAsync(BeregnungsDaten daten)
         {
-            throw new NotImplementedException();
+            if (daten == null)
+            {
+                return false;
+            }
+
+            var serializedItem = JsonConvert.SerializeObject(daten);
+            var response = await _client.PutAsync($"api/betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/beregnungsdaten/{daten.ID.ToString()}", new StringContent(serializedItem, Encoding.UTF8, "application/json"));
+            return response.IsSuccessStatusCode;
         }
     }
 }

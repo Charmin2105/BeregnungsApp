@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 namespace Beregnungs.App.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NewItemPage : ContentPage
+    public partial class NewBeregnungsDatenPage : ContentPage
     {
         public BeregnungsDaten BeregnungsDaten { get; set; }
-        public Command SaveBeregnungsDatensCommand;
+        public Command SaveNewBeregnungsDatensCommand;
         private NewBeregnungsDatenViewModel viewModel;
 
-        public NewItemPage()
+        public NewBeregnungsDatenPage()
         {
             InitializeComponent();
             BindingContext = viewModel = new NewBeregnungsDatenViewModel();

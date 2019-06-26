@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Beregnungs.App.Views.BeregnungsDatenDetailPage"
+             Title="{Binding Title}">
+    <ScrollView>
+        <StackLayout Spacing="5" Padding="15">
+            <Label Text="Tag der Bergnung:" 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource TitleStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding StartDatum}" 
+                   Style=""/>
+            <Label Text="Beginn der Beregnung:" 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource TitleStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding StartUhrzeit}" 
+                   Style=""/>
+            <Label Text="Ende der Beregnung:" 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource ListItemDetailTextStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding EndDatum}" 
+                   Style=""/>
+            <Label Text="Schlag: " 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource ListItemDetailTextStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding SchlagID}" 
+                   Style=""
+                   IsEnabled="False"/>
+            <Label Text="Wasseruhrstand Beginn:" 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource ListItemTextStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding WasseruhrAnfang}" 
+                   Style=""
+                   IsEnabled="False"/>
+            <Label Text="Wasseruhrstand Ende:" 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource ListItemTextStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding WasseruhrEnde}" 
+                   Style=""/>
+            <Label Text="Betrieb: " 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource ListItemTextStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding BetriebID}" 
+                   Style=""
+                   IsEnabled="False"/>
+            <Label Text="Verwendete Düse" 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource ListItemTextStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding Duese}" 
+                   Style=""/>
+            <Label Text="Vorkommnisse" 
+            LineBreakMode="NoWrap" 
+            Style="{DynamicResource ListItemTextStyle}" 
+            Font="Bold,14" />
+            <Entry Text="{Binding Vorkommnisse}" 
+                   Style=""/>
+            <Switch IsToggled="{Binding IstAbgeschlossen}"/>
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="Löschen" 
+                         Command="{Binding DeleteBeregnungsDatensCommand}"
+                    HorizontalOptions="EndAndExpand"
+                    WidthRequest="150"
+                    Text="Löschen"  />
+                <Button x:Name="Speichern" 
+                        Command="{Binding SaveBeregnungsDatensCommand}"
+                    HorizontalOptions="EndAndExpand"
+                    WidthRequest="150"
+                    Text="Speichern"  />
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -31,7 +31,7 @@ namespace Beregnungs.App.Views
             if (item == null)
                 return;
 
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+            await Navigation.PushAsync(new BeregnungsDatenDetailPage(new BeregnungsDatenDetailViewModel(item)));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
@@ -39,7 +39,7 @@ namespace Beregnungs.App.Views
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+            await Navigation.PushModalAsync(new NavigationPage(new NewBeregnungsDatenPage()));
         }
 
         protected override void OnAppearing()
@@ -49,5 +49,6 @@ namespace Beregnungs.App.Views
             if (viewModel.BeregnungsDatens.Count == 0)
                 viewModel.LoadBeregnungsDatensCommand.Execute(null);
         }
+
     }
 }
