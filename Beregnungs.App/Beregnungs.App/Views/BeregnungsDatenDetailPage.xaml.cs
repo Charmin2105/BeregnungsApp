@@ -34,7 +34,7 @@ namespace Beregnungs.App.Views
                 EndDatum = new DateTimeOffset(new DateTime(2019, 5, 23)),
                 BetriebID = new Guid("51004c54-3a86-4f55-b1a7-c6caeb8ca522"),
                 SchlagID = new Guid("51004c54-3a86-4f55-b1a7-c6caeb8ca532"),
-                Duese = "Düsenmaster 3000",
+                Duese = "Düsenmaster 1",
                 WasseruhrAnfang = 0,
                 WasseruhrEnde = 2000,
                 Vorkomnisse = "Alle Tod",

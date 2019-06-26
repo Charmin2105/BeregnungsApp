@@ -12,7 +12,6 @@ namespace Beregnungs.App.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<BeregnungsDaten> DataStore => DependencyService.Get<IDataStore<BeregnungsDaten>>() ?? new BeregnungsDatenRESTStore();
 
         bool isBusy = false;
         public bool IsBusy

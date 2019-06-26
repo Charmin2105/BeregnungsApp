@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Beregnungs.App.Models;
+using Beregnungs.App.Services;
 using Xamarin.Forms;
 
 namespace Beregnungs.App.ViewModels
 {
     public class BeregnungsDatenDetailViewModel : BaseViewModel
     {
+        public IDataStore<BeregnungsDaten> DataStore => DependencyService.Get<IDataStore<BeregnungsDaten>>() ?? new BeregnungsDatenRESTStore();
+
         public BeregnungsDaten BeregnungsDaten { get; set; }
         public Command SaveBeregnungsDatensCommand { get; set; }
         public Command DeleteBeregnungsDatensCommand { get; set; }
@@ -73,12 +76,12 @@ namespace Beregnungs.App.ViewModels
 
         private async Task ExecuteDeleteBeregnungsDatensCommand()
         {
-            await DataStore.DeleteAsync(BeregnungsDaten.ID);
+            await DataStore.DeleteDatenAsync(BeregnungsDaten.ID);
         }
 
         private async Task ExecuteSaveBeregnungsDatensCommand()
         {
-            await DataStore.UpdateAsync(BeregnungsDaten);
+            await DataStore.UpdateDatenAsync(BeregnungsDaten);
         }
     }
 }

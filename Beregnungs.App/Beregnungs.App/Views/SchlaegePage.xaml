@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Beregnungs.App.Views.SchlaegePage"
+              Title="{Binding Title}"
+             x:Name="BrowseSchlagPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Neu" Clicked="AddItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="add.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <StackLayout>
+        <ListView x:Name="ItemsListView"
+                ItemsSource="{Binding Schlag}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadSchlaegeCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10">
+                            <Label Text="Schlag ID:" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource TitleStyle}" 
+                                Font="Bold,14" />
+                            <Label Text="{Binding SchlagIDString}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                Font="13" />
+                            <Label Text="Name des Schlags" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource TitleStyle}" 
+                                Font="Bold,14" />
+                            <Label Text="{Binding Name}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="13" />
+                            <Label Text="BetriebID " 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource TitleStyle}" 
+                                Font="Bold,14" />
+                            <Label Text="{Binding BetriebIDString}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="13" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>    
+</ContentPage>

@@ -22,7 +22,10 @@ namespace Beregnungs.App
             if (UseMockDataStore)
                 DependencyService.Register<MockDataStore>();
             else
+            {
                 DependencyService.Register<BeregnungsDatenRESTStore>();
+                DependencyService.Register<SchlagRESTStore>();
+            }
             //    DependencyService.Register<AzureDataStore>();
 
             MainPage = new MainPage();

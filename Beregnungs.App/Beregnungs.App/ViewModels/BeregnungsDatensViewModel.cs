@@ -7,6 +7,7 @@ using Xamarin.Forms;
 
 using Beregnungs.App.Models;
 using Beregnungs.App.Views;
+using Beregnungs.App.Services;
 
 namespace Beregnungs.App.ViewModels
 {
@@ -14,6 +15,8 @@ namespace Beregnungs.App.ViewModels
     {
         #region Fields
         //Fields
+        public IDataStore<BeregnungsDaten> DataStore => DependencyService.Get<IDataStore<BeregnungsDaten>>() ?? new BeregnungsDatenRESTStore();
+
         public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
         public Command LoadBeregnungsDatensCommand { get; set; }
         string start = string.Empty;
@@ -95,7 +98,7 @@ namespace Beregnungs.App.ViewModels
             {
                 var newDaten = daten as BeregnungsDaten;
                 BeregnungsDatens.Add(newDaten);
-                await DataStore.AddAsync(newDaten);
+                await DataStore.AddDatenAsync(newDaten);
             });
         }
         #endregion
@@ -112,7 +115,7 @@ namespace Beregnungs.App.ViewModels
             try
             {
                 BeregnungsDatens.Clear();
-                var items = await DataStore.GetsAsync(true);
+                var items = await DataStore.GetDatensAsync(true);
                 foreach (var item in items)
                 {
                     BeregnungsDatens.Add(item);

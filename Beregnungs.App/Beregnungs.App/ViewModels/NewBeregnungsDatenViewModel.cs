@@ -1,11 +1,8 @@
 ﻿using Beregnungs.App.Models;
-using Beregnungs.App.Views;
+using Beregnungs.App.Services;
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -13,6 +10,8 @@ namespace Beregnungs.App.ViewModels
 {
     public class NewBeregnungsDatenViewModel : BaseViewModel
     {
+        public IDataStore<BeregnungsDaten> DataStore => DependencyService.Get<IDataStore<BeregnungsDaten>>() ?? new BeregnungsDatenRESTStore();
+
         public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
         public BeregnungsDaten beregnungsDaten;
         public Command SaveNewBeregnungsDatensCommand { get; set; }
@@ -101,9 +100,10 @@ namespace Beregnungs.App.ViewModels
                 IstAbgeschlossen = IstAbgeschlossen
         
             };
-           await  DataStore.AddAsync(beregnungsDaten);
+           await  DataStore.AddDatenAsync(beregnungsDaten);
 
-            await DataStore.GetsAsync(true);
+            //Laden der neuen Daten
+            await DataStore.GetDatensAsync(true);
 
         }
     }

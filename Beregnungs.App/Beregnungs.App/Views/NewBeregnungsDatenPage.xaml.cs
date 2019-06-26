@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using Beregnungs.App.Models;
 using Beregnungs.App.ViewModels;
-using System.Threading.Tasks;
 
 namespace Beregnungs.App.Views
 {
@@ -23,12 +21,6 @@ namespace Beregnungs.App.Views
             BindingContext = viewModel = new NewBeregnungsDatenViewModel();
 
         }
-
-        //async void Save_Clicked(object sender, EventArgs e)
-        //{
-        //    MessagingCenter.Send(this, "AddItem", BeregnungsDaten);
-        //    await Navigation.PopModalAsync();
-        //}
 
         async void Cancel_Clicked(object sender, EventArgs e)
         {
