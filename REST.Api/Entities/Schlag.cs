@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace REST.Api.Entities
 {
@@ -20,6 +21,12 @@ namespace REST.Api.Entities
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Betrieb 
+        /// </summary>
+        [Required]
+        public Guid BetriebID { get; set; }
 
         // Mögliche weitere Daten die erfasst werden sollen für einen Schlag
         //[Required]

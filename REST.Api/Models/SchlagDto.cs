@@ -15,5 +15,9 @@ namespace REST.Api.Models
         ///  Name des Schlags
         /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Guid BetriebID
+        /// </summary>
+        public Guid BetriebID { get; set; }
     }
 }
