@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Beregnungs.App.Views.NewBetriebPage"
+             Title="Neuer Betrieb">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Abbrechen" Clicked="Cancel_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="cancel.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem Text="Speichern" Command="{Binding SaveNewBetriebCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="save.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="20" Padding="15" PropertyChanged="StackLayout_PropertyChanged">
+                <Label Text="Name:" 
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource TitleStyle}" 
+                Font="Bold,14" />
+                <Entry Text="{Binding Name}" Placeholder="Feld 21" PlaceholderColor="Gray" />               
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
+

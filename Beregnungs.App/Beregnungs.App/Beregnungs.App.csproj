@@ -15,25 +15,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\BeregnungsDatensPage.xaml.cs">
+    <Compile Update="Views\BeregnungsDaten\BeregnungsDatensPage.xaml.cs">
       <DependentUpon>BeregnungsDatensPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\BeregnungsDatenDetailPage.xaml.cs">
+    <Compile Update="Views\BeregnungsDaten\BeregnungsDatenDetailPage.xaml.cs">
       <DependentUpon>BeregnungsDatenDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\NewBeregnungsDatenPage.xaml.cs">
+    <Compile Update="Views\BeregnungsDaten\NewBeregnungsDatenPage.xaml.cs">
       <DependentUpon>NewBeregnungsDatenPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\NewSchlagPage.xaml">
+    <EmbeddedResource Update="Views\Schlag\NewSchlagPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Betrieb\BetriebDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SchlaegePage.xaml">
+    <EmbeddedResource Update="Views\Betrieb\BetriebePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SchlagDetailPage.xaml">
+    <EmbeddedResource Update="Views\Betrieb\NewBetriebPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Schlag\SchlaegePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Schlag\SchlagDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

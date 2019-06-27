@@ -32,6 +32,9 @@ namespace Beregnungs.App.Views
                     case (int)MenuItemType.Schlage:
                         MenuPages.Add(id, new NavigationPage(new SchlaegePage()));
                         break;
+                    case (int)MenuItemType.Betrieb:
+                        MenuPages.Add(id, new NavigationPage(new BetriebePage()));
+                        break;
                     case (int)MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;
