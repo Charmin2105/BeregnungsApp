@@ -178,7 +178,7 @@ namespace REST.Api.Controllers
         ///     "name": "Glückliche Kühe",
         ///	}
         /// </remarks>
-        /// <response code="201">Returns Betrieb erstellt</response>
+
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost(Name = "CreateBetrieb")]

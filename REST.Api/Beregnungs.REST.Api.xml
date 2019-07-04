@@ -4,6 +4,66 @@
         <name>Beregnungs.REST.Api</name>
     </assembly>
     <members>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.ID">
+            <summary>
+             ID 
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.StartDatum">
+            <summary>
+             Start Datum der Beregnung
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.StartUhrzeit">
+            <summary>
+             Start Uhrzeit der Beregnung
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.EndDatum">
+            <summary>
+             End Datum der Beregnung
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebID">
+            <summary>
+              ID des Betriebs der die Beregnung durchgeführt hat
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.SchlagID">
+            <summary>
+             ID des Schlages  
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.Duese">
+            <summary>
+             Duese die verwendet wurde
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrAnfang">
+            <summary>
+             Wasseruhr Anfangsstand
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrEnde">
+            <summary>
+             Wasseruhr Endestand
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.Vorkomnisse">
+            <summary>
+             Vorkomnisse
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.IstAbgeschlossen">
+            <summary>
+             Ob die Beregnung abgeschlossen ist
+            </summary>
+        </member>
+        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebName">
+            <summary>
+             Name des Betriebs 
+            </summary>
+        </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.#ctor(REST.Api.Services.IBetriebRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.BeregnungsDatenController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
             <summary>
             Ctor
@@ -171,7 +231,6 @@
                 "name": "Glückliche Kühe",
             }
             </remarks>
-            <response code="201">Returns Betrieb erstellt</response>
         </member>
         <member name="M:REST.Api.Controllers.BetriebController.DeleteBetrieb(System.Guid)">
             <summary>
@@ -1346,66 +1405,6 @@
             UpdateSchlag
             </summary>
             <param name="schlag">Schlag</param>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.ID">
-            <summary>
-             ID 
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.StartDatum">
-            <summary>
-             Start Datum der Beregnung
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.StartUhrzeit">
-            <summary>
-             Start Uhrzeit der Beregnung
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.EndDatum">
-            <summary>
-             End Datum der Beregnung
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebID">
-            <summary>
-              ID des Betriebs der die Beregnung durchgeführt hat
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.SchlagID">
-            <summary>
-             ID des Schlages  
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.Duese">
-            <summary>
-             Duese die verwendet wurde
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrAnfang">
-            <summary>
-             Wasseruhr Anfangsstand
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrEnde">
-            <summary>
-             Wasseruhr Endestand
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.Vorkomnisse">
-            <summary>
-             Vorkomnisse
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.IstAbgeschlossen">
-            <summary>
-             Ob die Beregnung abgeschlossen ist
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebName">
-            <summary>
-             Name des Betriebs 
-            </summary>
         </member>
     </members>
 </doc>
