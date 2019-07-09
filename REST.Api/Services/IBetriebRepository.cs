@@ -35,9 +35,18 @@ namespace REST.Api.Services
         void DeleteBeregnungsDaten(BeregnungsDaten daten);
         void UpdateBeregnungsDaten(BeregnungsDaten daten);
         bool BeregnungsDatenExists(Guid guid);
-        bool BetriebExists(Guid betriebId); 
+        bool BetriebExists(Guid betriebId);
         #endregion
+        #region Schlaege
 
+
+
+
+
+
+
+
+        #endregion
         bool Save();
     }
 }

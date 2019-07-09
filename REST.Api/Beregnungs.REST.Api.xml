@@ -4,65 +4,52 @@
         <name>Beregnungs.REST.Api</name>
     </assembly>
     <members>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.ID">
+        <member name="M:REST.Api.Controllers.AuthController.CreateToken(REST.Api.Models.AccountDto)">
             <summary>
-             ID 
+            Login
             </summary>
+            <remarks> 
+            POST
+            {    
+                "benutzername": "string",
+                "passwort": "string"
+            }
+            </remarks>
+            <param name="accountLogin"></param>
+            <returns>Token</returns>
+            <response code="200">Returns Token</response>
         </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.StartDatum">
+        <member name="M:REST.Api.Controllers.AuthController.CreatAccount(REST.Api.Models.AccountForCreationDto)">
             <summary>
-             Start Datum der Beregnung
+            Hinzufügen eines Accounts.
             </summary>
+            <param name="account">Neuer Account.</param>
+            <returns>CreatedAtRoute </returns>
+            <remarks>
+            Beispiel request (erstellen eines neuen Schlags)
+            POST
+            {    
+                "benutzername": "Admin",
+                "eMail": "string",
+                "passwort": "nico123",
+                "istAdmin": true
+            }
+            </remarks>
+            <response code="201">Returns Account erstellt</response>
         </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.StartUhrzeit">
+        <member name="M:REST.Api.Controllers.AuthController.JwtTokenBuilder(System.Boolean)">
             <summary>
-             Start Uhrzeit der Beregnung
+            Methode zum erstellen des Tokens
             </summary>
+            <param name="istAdmin"> User ist Admin? </param>
+            <returns>Token</returns>
         </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.EndDatum">
+        <member name="M:REST.Api.Controllers.AuthController.CreateLinksForAccount(System.Guid,System.String)">
             <summary>
-             End Datum der Beregnung
+            CreateLinksForAccount
             </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebID">
-            <summary>
-              ID des Betriebs der die Beregnung durchgeführt hat
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.SchlagID">
-            <summary>
-             ID des Schlages  
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.Duese">
-            <summary>
-             Duese die verwendet wurde
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrAnfang">
-            <summary>
-             Wasseruhr Anfangsstand
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrEnde">
-            <summary>
-             Wasseruhr Endestand
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.Vorkomnisse">
-            <summary>
-             Vorkomnisse
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.IstAbgeschlossen">
-            <summary>
-             Ob die Beregnung abgeschlossen ist
-            </summary>
-        </member>
-        <member name="P:Beregnungs.REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebName">
-            <summary>
-             Name des Betriebs 
-            </summary>
+            <param name="account">Übergabe eines SchlagDto</param>
+            <returns>AccountDto mit Links </returns>
         </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.#ctor(REST.Api.Services.IBetriebRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.BeregnungsDatenController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
             <summary>
@@ -473,6 +460,31 @@
             </summary>
             <returns>OK</returns>
         </member>
+        <member name="P:REST.Api.Entities.Account.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Account.Benutzername">
+            <summary>
+            string Benutzernamen
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Account.EMail">
+            <summary>
+            string Benutzernamen
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Account.Passwort">
+            <summary>
+            string Passwort
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.Account.IstAdmin">
+            <summary>
+            bool IstAdmin
+            </summary>
+        </member>
         <member name="T:REST.Api.Entities.BeregnungsContext">
             <summary>
             BeregnungsContext
@@ -497,6 +509,11 @@
         <member name="P:REST.Api.Entities.BeregnungsContext.Mitarbeiters">
             <summary>
             Mitarbeiters
+            </summary>
+        </member>
+        <member name="P:REST.Api.Entities.BeregnungsContext.Accounts">
+            <summary>
+            Accounts
             </summary>
         </member>
         <member name="T:REST.Api.Entities.BeregnungsContextExtension">
@@ -801,6 +818,51 @@
             </summary>
             <param name="modelState"></param>
         </member>
+        <member name="P:REST.Api.Models.AccountDto.ID">
+            <summary>
+            Guid ID
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.AccountDto.Benutzername">
+            <summary>
+            string Benutzernamen
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.AccountDto.EMail">
+            <summary>
+            string Benutzernamen
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.AccountDto.Passwort">
+            <summary>
+            string Passwort
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.AccountDto.IstAdmin">
+            <summary>
+            bool IstAdmin
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.AccountForManipulationDto.Benutzername">
+            <summary>
+            string Benutzernamen
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.AccountForManipulationDto.EMail">
+            <summary>
+            string Benutzernamen
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.AccountForManipulationDto.Passwort">
+            <summary>
+            string Passwort
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.AccountForManipulationDto.IstAdmin">
+            <summary>
+            bool IstAdmin
+            </summary>
+        </member>
         <member name="T:REST.Api.Models.BeregnungsDatenDto">
             <summary>
             class BeregnungsDatenDto
@@ -929,6 +991,66 @@
         <member name="P:REST.Api.Models.BeregnungsDatenForUpdateDto.IstAbgeschlossen">
             <summary>
             Ist Abgeschlossen
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.ID">
+            <summary>
+             ID 
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.StartDatum">
+            <summary>
+             Start Datum der Beregnung
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.StartUhrzeit">
+            <summary>
+             Start Uhrzeit der Beregnung
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.EndDatum">
+            <summary>
+             End Datum der Beregnung
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebID">
+            <summary>
+              ID des Betriebs der die Beregnung durchgeführt hat
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.SchlagID">
+            <summary>
+             ID des Schlages  
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.Duese">
+            <summary>
+             Duese die verwendet wurde
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrAnfang">
+            <summary>
+             Wasseruhr Anfangsstand
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.WasseruhrEnde">
+            <summary>
+             Wasseruhr Endestand
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.Vorkomnisse">
+            <summary>
+             Vorkomnisse
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.IstAbgeschlossen">
+            <summary>
+             Ob die Beregnung abgeschlossen ist
+            </summary>
+        </member>
+        <member name="P:REST.Api.Models.BeregnungsDatenMitBetriebDto.BetriebName">
+            <summary>
+             Name des Betriebs 
             </summary>
         </member>
         <member name="T:REST.Api.Models.BetriebDto">
@@ -1117,57 +1239,6 @@
             override string Name
             </summary>
         </member>
-        <member name="T:REST.Api.Services.BeregnungsRepository">
-            <summary>
-            Daten verarbeiten
-            </summary>
-        </member>
-        <member name="M:REST.Api.Services.BeregnungsRepository.#ctor(REST.Api.Entities.BeregnungsContext,REST.Api.Services.IPropertyMappingService)">
-            <summary>
-            Ctor
-            </summary>
-            <param name="context">Datenbank Inhalt</param>
-        </member>
-        <member name="M:REST.Api.Services.BeregnungsRepository.AddBeregnungsDaten(REST.Api.Entities.BeregnungsDaten)">
-            <summary>
-            Hinzufügen neuer Daten
-            </summary>
-            <param name="daten">Neue Daten</param>
-        </member>
-        <member name="M:REST.Api.Services.BeregnungsRepository.BeregnungsDatenExists(System.Guid)">
-            <summary>
-            Abfrage ob eine bestimmte Daten existieren
-            </summary>
-            <param name="guid">Abzufragende Daten</param>
-            <returns>bool</returns>
-        </member>
-        <member name="M:REST.Api.Services.BeregnungsRepository.DeleteBeregnungsDaten(REST.Api.Entities.BeregnungsDaten)">
-            <summary>
-            Daten löschen
-            </summary>
-            <param name="daten">Zu löschende Daten</param>
-        </member>
-        <member name="M:REST.Api.Services.BeregnungsRepository.GetBeregnungsDaten(System.Guid)">
-            <summary>
-            Eine bestimmte Daten anzeigen
-            </summary>
-            <param name="guid">ID des Daten</param>
-            <returns></returns>
-        </member>
-        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.BeregnungsRepository.GetBeregnungsDatens(REST.Api.Helpers.BeregnungsDatenResourceParameter)" ignoriert -->
-        <member name="M:REST.Api.Services.BeregnungsRepository.GetBeregnungsDatens(System.Collections.Generic.IEnumerable{System.Guid})">
-            <summary>
-            GetDaten
-            </summary>
-            <param name="guids">IEnumerable der IDs</param>
-            <returns>IEnumerable</returns>
-        </member>
-        <member name="M:REST.Api.Services.BeregnungsRepository.Save">
-            <summary>
-            Abfrage ob gespeichert wurde
-            </summary>
-            <returns>bool</returns>
-        </member>
         <member name="T:REST.Api.Services.BetriebRepository">
             <summary>
             BetriebRepository
@@ -1288,11 +1359,6 @@
             </summary>
             <param name="guids">IEnumerable der IDs</param>
             <returns>IEnumerable</returns>
-        </member>
-        <member name="T:REST.Api.Services.IBeregnungsRepository">
-            <summary>
-            interface IBeregnungsRepository
-            </summary>
         </member>
         <member name="T:REST.Api.Services.IBetriebRepository">
             <summary>

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Beregnungs.REST.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using REST.Api.Entities;
 using REST.Api.Helpers;
@@ -15,6 +14,7 @@ using REST.Api.Services;
 
 namespace REST.Api.Controllers
 {
+    [Authorize]
     [Route("api/betriebe/{BetriebID}/beregnungsdaten")]
     public class BeregnungsDatenController : Controller
     {
@@ -55,7 +55,8 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet(Name = "GetBergenungsDatens")]
         [HttpHead]
-        public ActionResult<BeregnungsDaten> GetBeregnungsDatens(Guid betriebID, BeregnungsDatenResourceParameter resourceParameters,
+        public ActionResult<BeregnungsDaten> GetBeregnungsDatens(Guid betriebID, 
+            BeregnungsDatenResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
             //Mapping für OrderBy ist valid
@@ -201,7 +202,8 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id}", Name = "GetBergenungsDaten")]
-        public ActionResult<BeregnungsDaten> GetBeregnungsDaten(Guid betriebID, Guid id, [FromQuery] string fields)
+        public ActionResult<BeregnungsDaten> GetBeregnungsDaten(Guid betriebID, 
+            Guid id, [FromQuery] string fields)
         {
             if (!_typeHelperService.TypeHasProperties<BeregnungsDatenDto>(fields))
             {

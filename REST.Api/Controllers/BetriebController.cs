@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using REST.Api.Services;
 
 namespace REST.Api.Controllers
 {
+    [Authorize]
     [Route("api/betriebe")]
     public class BetriebController : Controller
     {
@@ -178,9 +180,9 @@ namespace REST.Api.Controllers
         ///     "name": "Glückliche Kühe",
         ///	}
         /// </remarks>
-
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [Authorize(Roles = "Administrator")]
         [HttpPost(Name = "CreateBetrieb")]
         public ActionResult<Betrieb> CreateBetrieb([FromBody]BetriebForCreationDto betrieb)
         {
@@ -194,7 +196,8 @@ namespace REST.Api.Controllers
             if (betrieb.Name == string.Empty)
             {
 
-                ModelState.AddModelError(nameof(BetriebForCreationDto), "Bitte einen Namen für den Betrieb eingeben.");
+                ModelState.AddModelError(nameof(BetriebForCreationDto), 
+                    "Bitte einen Namen für den Betrieb eingeben.");
             }
 
 
@@ -235,6 +238,7 @@ namespace REST.Api.Controllers
         /// <returns>No Content Code</returns>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}", Name = "DeleteBetrieb")]
         public ActionResult<Betrieb> DeleteBetrieb(Guid id)
         {
@@ -279,6 +283,7 @@ namespace REST.Api.Controllers
         /// <response code="201">Returns Betrieb erstellt</response>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}", Name = "UpdateBetrieb")]
         public ActionResult<Betrieb> UpdateBetrieb(Guid id, [FromBody]BetriebForUpdateDto betrieb)
         {
@@ -287,7 +292,7 @@ namespace REST.Api.Controllers
             {
                 return BadRequest();
             }
-            //Existiert Daten?
+            //Existiert Daten? Wenn nicht wird eine neue Ressource erstellt
             if (!_betriebsRepository.BetriebExists(id))
             {
                 //Falls nicht wird neu erstellt
@@ -307,6 +312,7 @@ namespace REST.Api.Controllers
                     new { guid = betriebToReturn.ID },
                     betriebToReturn);
             }
+
             var betriebFromRepo = _betriebsRepository.GetBetrieb(id);
 
             Mapper.Map(betrieb, betriebFromRepo);
@@ -347,6 +353,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "Administrator")]
         [HttpPatch("{id}", Name = "PartallyUpdateBetrieb")]
         public ActionResult<Betrieb> PartallyUpdateBetrieb(Guid id,
             [FromBody]JsonPatchDocument<BetriebForUpdateDto> patchDoc)

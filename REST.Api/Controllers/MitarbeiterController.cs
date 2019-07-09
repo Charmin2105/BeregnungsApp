@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using REST.Api.Services;
 
 namespace REST.Api.Controllers
 {
+    [Authorize]
     [Route("api/betriebe/{BetriebID}/mitarbeiters")]
     public class MitarbeiterController : Controller
     {
@@ -119,6 +121,7 @@ namespace REST.Api.Controllers
         /// <response code="201">Returns Mitarbeiter für einen Betrieb  erstellt</response>
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [Authorize(Roles = "Administrator")]
         [HttpPost(Name = "CreateMitarbeiter")]
         public ActionResult<Mitarbeiter> CreateMitarbeiter(Guid betriebID, [FromBody] MitarbeiterForCreationDto mitarbeiter)
         {
@@ -176,6 +179,7 @@ namespace REST.Api.Controllers
         /// <returns>No Content</returns>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}", Name = "DeleteMitarbeiter")]
         public ActionResult<Mitarbeiter> DeleteMitarbeiter(Guid betriebID, Guid id)
         {
@@ -222,6 +226,7 @@ namespace REST.Api.Controllers
         /// <response code="201">Returns Mitarbeiter für einen Betrieb  erstellt</response>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}", Name = "UpdateMitarbeiter")]
         public ActionResult<Mitarbeiter> UpdateMitarbeiter(Guid betriebID, Guid id,
             [FromBody] MitarbeiterForUpdateDto mitarbeiter)
@@ -308,6 +313,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "Administrator")]
         [HttpPatch("{id}", Name = "PartiallyUpdateMitarbeiter")]
         public ActionResult<Mitarbeiter> PartiallyUpdateMitarbeiter(Guid betriebID, Guid id,
             [FromBody] JsonPatchDocument<MitarbeiterForUpdateDto> patchDoc)

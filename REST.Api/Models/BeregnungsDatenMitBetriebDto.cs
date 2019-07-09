@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Beregnungs.REST.Api.Models
+namespace REST.Api.Models
 {
     public class BeregnungsDatenMitBetriebDto 
     {

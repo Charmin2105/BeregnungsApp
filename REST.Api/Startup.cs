@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using REST.Api.Entities;
 using REST.Api.Services;
 using Newtonsoft.Json.Serialization;
@@ -21,6 +17,9 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Reflection;
 using System.IO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace REST.Api
 {
@@ -38,6 +37,21 @@ namespace REST.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = Configuration["JWT:Issuser"],
+                    ValidAudience = Configuration["JWT:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
+
+                };
+            });
+
             services.AddMvc(setupAction =>
             {
                 setupAction.Filters.Add(
@@ -46,6 +60,8 @@ namespace REST.Api
                     new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
                 setupAction.Filters.Add(
                     new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+                setupAction.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status401Unauthorized));
                 setupAction.ReturnHttpNotAcceptable = true;
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
 
@@ -68,8 +84,8 @@ namespace REST.Api
             services.AddDbContext<BeregnungsContext>(opt => opt.UseSqlServer(connectionString));
 
             services.AddScoped<ISchlagRepository, SchlagRepository>();
-            services.AddScoped<IBeregnungsRepository, BeregnungsRepository>();
             services.AddScoped<IBetriebRepository, BetriebRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
@@ -198,6 +214,15 @@ namespace REST.Api
 
                 cfg.CreateMap<Models.MitarbeiterForUpdateDto, Entities.Mitarbeiter>();
                 cfg.CreateMap<Entities.Mitarbeiter, Models.MitarbeiterForUpdateDto>();
+
+                //Account Beregnungsdaten
+                cfg.CreateMap<Entities.Account, Models.AccountDto>()
+                    .ForMember(dest => dest.Benutzername, opt => opt.MapFrom(src =>
+                    $"{src.Benutzername}"));
+                cfg.CreateMap<Models.AccountForCreationDto, Entities.Account>();
+
+                cfg.CreateMap<Models.AccountForUpdateDto, Entities.Account>();
+                cfg.CreateMap<Entities.Account, Models.AccountForUpdateDto>();
             });
 
             //DbReset
@@ -217,7 +242,7 @@ namespace REST.Api
 
             app.UseHttpCacheHeaders();
 
-
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

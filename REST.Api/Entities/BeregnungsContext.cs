@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,10 @@ namespace REST.Api.Entities
         /// Mitarbeiters
         /// </summary>
         public DbSet<Mitarbeiter> Mitarbeiters { get; set; }
+        /// <summary>
+        /// Accounts
+        /// </summary>
+        public DbSet<Account> Accounts { get; set; }
     }
 
 }
