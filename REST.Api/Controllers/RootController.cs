@@ -15,6 +15,7 @@ using REST.Api.Services;
 namespace REST.Api.Controllers
 {
     [Authorize]
+    [Produces("application/json")]
     [Route("api")]
     public class RootController : Controller
     {

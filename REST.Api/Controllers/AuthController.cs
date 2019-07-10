@@ -19,6 +19,7 @@ using REST.Api.Helpers;
 
 namespace REST.Api.Controllers
 {
+    [Produces("application/json")]
     [Route("api/account")]
     public class AuthController : Controller
     {

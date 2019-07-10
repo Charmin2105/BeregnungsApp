@@ -15,6 +15,7 @@ using REST.Api.Services;
 namespace REST.Api.Controllers
 {
     [Authorize]
+    [Produces("application/json")]
     [Route("api/betriebe/{BetriebID}/mitarbeiters")]
     public class MitarbeiterController : Controller
     {

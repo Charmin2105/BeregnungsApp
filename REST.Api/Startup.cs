@@ -20,6 +20,8 @@ using System.IO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
 
 namespace REST.Api
 {
@@ -121,8 +123,9 @@ namespace REST.Api
 
             services.AddSwaggerGen(setupAction =>
             {
+
                 setupAction.SwaggerDoc(swaggername,
-                    new Swashbuckle.AspNetCore.Swagger.Info()
+                    new Info()
                     {
                         Title = "Beregnungs Api",
                         Version = "1",
@@ -136,11 +139,25 @@ namespace REST.Api
                             Email = "ni.herrmann@ostfalia.de"
                         }
                     });
+                setupAction.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                // Add swagger security
+                var security = new Dictionary<string, IEnumerable<string>>
+                    {
+                        {"Bearer", new string[] { }},
+                    };
+                setupAction.AddSecurityRequirement(security);
 
                 var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
 
                 setupAction.IncludeXmlComments(xmlCommentsFullPath);
+
             });
 
 
