@@ -13,6 +13,14 @@ namespace Beregnungs.App
         public static string AzureBackendUrl = "http://localhost:5000";
         public static bool UseMockDataStore = false;
 
+
+        //Token
+        public static string Token;
+        //BetirebID
+        public static string BetriebID = "25320c5e-f58a-4b1f-b63a-8ee07a840bdf";
+
+        public static bool IsLogedIn = false;
+
         public static string RESTBackendURL = "http://192.168.0.111:51872";
 
         public App()
@@ -28,7 +36,13 @@ namespace Beregnungs.App
             }
             //    DependencyService.Register<AzureDataStore>();
 
-            MainPage = new MainPage();
+            if (!IsLogedIn)
+                MainPage = new NavigationPage(new LoginPage());
+            else
+                MainPage = new MainPage();
+
+
+
         }
 
         protected override void OnStart()
@@ -39,11 +53,15 @@ namespace Beregnungs.App
         protected override void OnSleep()
         {
             // Handle when your app sleeps
+
         }
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            if (!IsLogedIn)
+                MainPage = new NavigationPage(new LoginPage());
+            else
+                MainPage = new MainPage();
         }
     }
 }

@@ -12,12 +12,20 @@ namespace Beregnungs.App.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        public string token;
 
         bool isBusy = false;
         public bool IsBusy
         {
             get { return isBusy; }
             set { SetProperty(ref isBusy, value); }
+        }
+
+        bool isLoggedIn = false;
+        public bool IsLoggedIn
+        {
+            get { return isLoggedIn; }
+            set { SetProperty(ref isLoggedIn, value); }
         }
 
         string title = string.Empty;
