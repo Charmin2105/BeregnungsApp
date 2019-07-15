@@ -15,7 +15,6 @@ using REST.Api.Services;
 namespace REST.Api.Controllers
 {
     [Authorize]
-    [Produces("application/json")]
     [Route("api/schlaege")]
     public class SchlagController : Controller
     {

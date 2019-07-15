@@ -1,0 +1,1777 @@
+{
+	"info": {
+		"_postman_id": "0d39fa36-a8a2-4ee8-808a-3623dacb0a40",
+		"name": "BeregnungsApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW5pc3RyYXRvciIsIkJlbnV0emVyIl0sImV4cCI6MTU2MjMzMjI1OSwiaXNzIjoiT3N0ZmFsaWEiLCJhdWQiOiJCZXJlZ251bmdzQXBwIn0.9hfHcbPuMG88BaD1y8UvosU_F5_rvdHf7nUbRMmcGcg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "www-Authenticate",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW5pc3RyYXRvciIsIkJlbnV0emVyIl0sImV4cCI6MTU2MjMyMzI1NiwiaXNzIjoiT3N0ZmFsaWEiLCJhdWQiOiJCZXJlZ251bmdzQXBwIn0.jSJjDHZQSNnb0JFq3YjJYW6Zx61HOirLlaUicWwUKKA",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {    \r\n    \"benutzername\": \"Admin\",\r\n    \"passwort\": \"nico123\"\r\n }"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/account/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"account",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Betrieb",
+			"item": [
+				{
+					"name": "Get Betrieb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0411133e-d9b7-4e0b-aca4-8370d8276206",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/duese\",\n\t\t\"value\" : \"13\"\n\t}\n]\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Betrieb mit ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6c922a13-ef76-432f-8224-eb16ace70c79",
+								"exec": [
+									"var body = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AccessToken\", body.token);",
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/duese\",\n\t\t\"value\" : \"13\"\n\t}\n]\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/32cebfa6-9b23-4b7a-6c92-08d6fa34adbd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								"32cebfa6-9b23-4b7a-6c92-08d6fa34adbd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Betrieb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "726a215d-9f17-4011-9a22-de8a54d6dcdb",
+								"exec": [
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\n\t{\n\t        \"id\": \"18c9f68d-cee1-4e8f-8227-be1a43a21191\",\n            \"name\": \"Glückliche Bauern3\",\n\t}\n\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/32cebfa6-9b23-4b7a-6c92-08d6fa34adbd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								"32cebfa6-9b23-4b7a-6c92-08d6fa34adbd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Betrieb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8f8ad295-df3f-49d9-a23c-23b477dd75bb",
+								"exec": [
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/name\",\n\t\t\"value\" : \"Zum fröhlichen Huhn\"\n\t}\n]\n\n\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/32cebfa6-9b23-4b7a-6c92-08d6fa34adbd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								"32cebfa6-9b23-4b7a-6c92-08d6fa34adbd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Betrieb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "31466e7a-556e-4a79-a0c9-714b07e98594",
+								"exec": [
+									"var body = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AccessToken\", body.token);",
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\n\t{\n            \"name\": \"Glückliche Kühe\",\n\t}\n\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Options Betrieb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a31cb7d7-6a1e-4479-93b8-fbec47e8671b",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/duese\",\n\t\t\"value\" : \"13\"\n\t}\n]\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Schläge",
+			"item": [
+				{
+					"name": "Patch Request Schlag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a20671b-747a-41d8-a80f-43d2f47a0e38",
+								"exec": [
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/name\",\n\t\t\"value\" : \"13\"\n\t}\n]"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/schlaege/c3fbd65b-536d-42bd-9b24-84ec9c4c84d4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"schlaege",
+								"c3fbd65b-536d-42bd-9b24-84ec9c4c84d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Schlaege ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3fb2d93d-4f42-416f-8776-7f9ad99e470c",
+								"exec": [
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"96337487-31ef-4497-9246-8cc120dc80de\",\n    \"name\": \"700\",\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/schlaege/c3fbd65b-536d-42bd-9b24-84ec9c4c84d4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"schlaege",
+								"c3fbd65b-536d-42bd-9b24-84ec9c4c84d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Schläge",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ee12e747-bfe5-4b45-97af-cb21af7ad001",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:51872/api/schlaege",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"schlaege"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Schlag mit Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "671ffde2-1543-4704-bb5e-a5a86df4bfa6",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:51872/api/schlaege/c3fbd65b-536d-42bd-9b24-84ec9c4c84d4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"schlaege",
+								"c3fbd65b-536d-42bd-9b24-84ec9c4c84d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Schläge HATEOAS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5abe138a-cf30-4651-95fb-adc4b4aa2cac",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.ostfalia.hateoas+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:51872/api/schlaege",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"schlaege"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Options Schläge",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f6411903-43b1-445e-b705-26fc77bc8ed7",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/name\",\n\t\t\"value\" : \"99\"\n\t}\n]"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/schlaege",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"schlaege"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Schlaege ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "05b693a7-5ccf-4713-b8de-15c3e9bf4f83",
+								"exec": [
+									"var body = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AccessToken\", body.token);",
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"700\",\n    \"betriebID\": \"25320c5e-f58a-4b1f-b63a-8ee07a840bdf\",\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/schlaege/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"schlaege",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BeregnungsDaten",
+			"item": [
+				{
+					"name": "Get BeregnungsDaten",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2229a49c-67ec-4e0b-948c-cd91eda0bdb9",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:51872/api/Betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/BeregnungsDaten",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"Betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"BeregnungsDaten"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get BeregnungsDaten HATEOAS Header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84b9ad7e-626e-44e4-878c-f0cd1ffb60b9",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/vnd.ostfalia.hateoas+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:51872/api/Betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/BeregnungsDaten",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"Betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"BeregnungsDaten"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get BeregnungsDaten mit PageSize",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "35e4159a-9791-4e44-bc52-c7c8e1573a1a",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"96337487-31ef-4497-9246-8cc120dc80de\",\n    \"name\": \"700\",\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/Betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/BeregnungsDaten?pageNumber=2&pageSize=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"Betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"BeregnungsDaten"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "2"
+								},
+								{
+									"key": "pageSize",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get BeregnungsDaten mit Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4469102a-8ec0-42f0-acc4-1dfa31b64249",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:51872/api/Betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/BeregnungsDaten/25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"Betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"BeregnungsDaten",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put BeregnungsDaten",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "44f1059e-3cd5-418f-961a-ea4fda073034",
+								"exec": [
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"63c2d821-cfe7-4d75-9cfe-33d3df9d224a\",\n    \"startDatum\": \"2019-05-21T00:00:00+02:00\",\n    \"startUhrzeit\": \"2019-06-04T00:00:00\",\n    \"endDatum\": \"2019-05-23T00:00:00+02:00\",\n    \"betrieb\": \"99fcb56d-8eb4-4cac-a208-10d179f35a97\",\n    \"schlagID\": \"99fcb56d-8eb4-4cac-a208-10d179f35a97\",\n    \"duese\": \"Düsenmaster 3000\",\n    \"wasseruhrAnfang\": 2000,\n    \"wasseruhrEnde\": 3000,\n    \"vorkomnisse\": \"Alle Tod\",\n    \"istAbgeschlossen\": true,\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/Betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/BeregnungsDaten/25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"Betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"BeregnungsDaten",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch BeregnungsDaten",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "593ca850-9441-44b7-9d04-8febe65cf490",
+								"exec": [
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/duese\",\n\t\t\"value\" : \"13\"\n\t}\n]\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/Betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/BeregnungsDaten/25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"Betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"BeregnungsDaten",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create BeregnungsDaten",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b26b722-14a0-48db-b6f8-eac4fae082e2",
+								"exec": [
+									"var body = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AccessToken\", body.token);",
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startDatum\": \"2019-05-21T00:00:00+02:00\",\n    \"startUhrzeit\": \"2019-06-04T00:00:00\",\n    \"endDatum\": \"2019-05-23T00:00:00+02:00\",\n    \"betrieb\": \"99fcb56d-8eb4-4cac-a208-10d179f35a97\",\n    \"schlagID\": \"99fcb56d-8eb4-4cac-a208-10d179f35a97\",\n    \"duese\": \"Düsenmaster 600\",\n    \"wasseruhrAnfang\": 2000,\n    \"wasseruhrEnde\": 3000,\n    \"vorkomnisse\": \"Alle Tod\",\n    \"istAbgeschlossen\": false,\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/Betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/BeregnungsDaten",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"Betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"BeregnungsDaten"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete BeregnungsDaten",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51872/api/beregnungsdaten/c14a3437-8c97-4f07-9eb7-6e1a695b5a9b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"beregnungsdaten",
+								"c14a3437-8c97-4f07-9eb7-6e1a695b5a9b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Options BeregnungsDaten",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f3b5d942-26db-489d-b2e3-4096d2cd1c49",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb9c5ed0-1ab5-420f-b0de-e00a4ae45421",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:51872/api/Betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/BeregnungsDaten",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"Betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"BeregnungsDaten"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mitarbeiter",
+			"item": [
+				{
+					"name": "Get Mitarbeiters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7e5ddda0-b85e-462f-9eae-5025898ce5de",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/duese\",\n\t\t\"value\" : \"13\"\n\t}\n]\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/mitarbeiters",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"mitarbeiters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mitarbeiter mit ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a7f3777-d9cd-4dd9-b4b1-53331d455749",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/mitarbeiters/fca81b75-e313-4d6d-9587-0611e3e02a9f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"mitarbeiters",
+								"fca81b75-e313-4d6d-9587-0611e3e02a9f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Mitarbeiter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1c673f2f-3b01-4990-a639-8a1a59e93789",
+								"exec": [
+									"var body = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AccessToken\", body.token);",
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"//Content-Typ stimmt mit Header überein",
+									"pm.test(\"Content-Type ist richtig\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"//Ist JSON",
+									"pm.test(\"Stock Quote ist JSON\",function(){",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\n\t{\n\t       \n            \"vorname\": \"Nico\",\n            \"nachname\": \"Herrmann\",\n            \"gebDatum\": \"0001-01-01T00:00:00+00:00\",\n\t}\n\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/mitarbeiters/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"mitarbeiters",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Mitarbeiter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cbc44176-8214-46a5-a0d4-f9f75eb41355",
+								"exec": [
+									"",
+									"//StatusCode",
+									"pm.test(\"Status code ist 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/Nachname\",\n\t\t\"value\" : \"Zum fröhlichen Huhn\"\n\t}\n]\n\n\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/mitarbeiters/fca81b75-e313-4d6d-9587-0611e3e02a9f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"mitarbeiters",
+								"fca81b75-e313-4d6d-9587-0611e3e02a9f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Options Mitarbeiters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7e10eb91-76f8-433b-9c14-79afb3cd18af",
+								"exec": [
+									"//StatusCode",
+									"pm.test(\"Status code ist 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Antwortzeit",
+									"pm.test(\"Response time ist weniger als 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json-patch+json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"op\" : \"replace\",\n\t\t\"path\":\"/duese\",\n\t\t\"value\" : \"13\"\n\t}\n]\n"
+						},
+						"url": {
+							"raw": "http://localhost:51872/api/betriebe/25320c5e-f58a-4b1f-b63a-8ee07a840bdf/mitarbeiters",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51872",
+							"path": [
+								"api",
+								"betriebe",
+								"25320c5e-f58a-4b1f-b63a-8ee07a840bdf",
+								"mitarbeiters"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW5pc3RyYXRvciIsIkJlbnV0emVyIl0sImV4cCI6MTU2MzE4ODIzNiwiaXNzIjoiT3N0ZmFsaWEiLCJhdWQiOiJCZXJlZ251bmdzQXBwIn0.k6U6WXng7_KPB9TWYKdDjBasR-oFJ5RP4vRy_fndxhk",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "15d4dc23-de98-4cd3-81ee-ade17e7368c3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "39310855-8079-404e-b0a9-399eeb205e89",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
