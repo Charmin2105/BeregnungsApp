@@ -19,8 +19,11 @@ namespace Beregnungs.App
         //BetirebID
         public static string BetriebID = "25320c5e-f58a-4b1f-b63a-8ee07a840bdf";
 
+        //Authentication
         public static bool IsLogedIn = false;
+        public static int LogInTimer = 60;
 
+        //API Url
         public static string RESTBackendURL = "http://192.168.0.111:51872";
 
         public App()

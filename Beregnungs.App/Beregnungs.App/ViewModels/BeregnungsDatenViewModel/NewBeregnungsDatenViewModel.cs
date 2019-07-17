@@ -10,15 +10,17 @@ namespace Beregnungs.App.ViewModels
 {
     public class NewBeregnungsDatenViewModel : BaseViewModel
     {
-        public IDataStore<BeregnungsDaten> DataStore => DependencyService.Get<IDataStore<BeregnungsDaten>>() ?? new BeregnungsDatenRESTStore();
+        public IDataStore<BeregnungsDaten> DataStore => 
+            DependencyService.Get<IDataStore<BeregnungsDaten>>() 
+            ?? new BeregnungsDatenRESTStore();
 
         public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
         public BeregnungsDaten beregnungsDaten;
         public Command SaveNewBeregnungsDatensCommand { get; set; }
 
-        string startDatum = "08.07.2016";
-        string uhrzeit = "13:30:35";
-        string endeDatum = "18.07.2016";
+        DateTime startDatum = DateTime.Now;
+        TimeSpan uhrzeit;
+        DateTime endeDatum;
         string betrieb = "Bauer Heinrich";
         string schlag = "Feld 10";
         string duese = "Düsenmaster 3000";
@@ -27,17 +29,17 @@ namespace Beregnungs.App.ViewModels
         string vorkomnisse = "Schlauch geplatzt";
         bool istAbgeschlossen = true;
 
-        public string StartDatum
+        public DateTime StartDatum
         {
             get { return startDatum; }
             set { startDatum = value; }
         }
-        public string Uhrzeit
+        public TimeSpan Uhrzeit
         {
             get { return uhrzeit; }
             set { uhrzeit = value; }
         }
-        public string EndDatum
+        public DateTime EndDatum
         {
             get { return endeDatum; }
             set { endeDatum = value; }
@@ -89,9 +91,9 @@ namespace Beregnungs.App.ViewModels
         {
             beregnungsDaten = new BeregnungsDaten()
             {
-                StartDatum = DateTimeOffset.Parse(StartDatum),
-                StartUhrzeit = DateTime.Parse(Uhrzeit),
-                EndDatum = DateTimeOffset.Parse(EndDatum),
+                StartDatum = DateTimeOffset.Parse(StartDatum.ToString()),
+                StartUhrzeit = Convert.ToDateTime(Uhrzeit.ToString()),
+                EndDatum = DateTimeOffset.Parse(EndDatum.ToString()),
                 //SchlagID = new Guid(Schlag),
                 WasseruhrAnfang = int.Parse(WasseruhrStart),
                 WasseruhrEnde = int.Parse(WasseruhrEnde),

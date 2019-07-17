@@ -22,6 +22,7 @@ namespace Beregnungs.App.Views
                 new HomeMenuItem {Id = MenuItemType.Schlage, Title="Schläge" },
                 new HomeMenuItem {Id = MenuItemType.Betrieb, Title="Betrieb" },
                 new HomeMenuItem {Id = MenuItemType.Mitarbeiter, Title="Mitarbeiter" },
+                new HomeMenuItem {Id = MenuItemType.Wasserverbrauch, Title="Wasserverbrauch" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" }
             };
 

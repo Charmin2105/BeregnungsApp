@@ -50,6 +50,13 @@ namespace Beregnungs.App.Models
         public int WasseruhrEnde { get; set; }
 
         /// <summary>
+        ///  Wasseruhr Endestand
+        /// </summary>
+        public int Verbrauch {
+            get { return WasseruhrEnde - WasseruhrAnfang; }
+            set { value = WasseruhrEnde - WasseruhrAnfang; } }
+
+        /// <summary>
         ///  Vorkomnisse
         /// </summary>
         public string Vorkomnisse { get; set; }

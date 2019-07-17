@@ -10,6 +10,7 @@ namespace Beregnungs.App.Models
         Schlage,
         Betrieb,
         Mitarbeiter,
+        Wasserverbrauch,
         About
     }
     public class HomeMenuItem

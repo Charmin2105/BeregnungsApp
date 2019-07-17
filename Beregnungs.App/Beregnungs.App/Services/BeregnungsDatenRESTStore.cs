@@ -44,8 +44,8 @@ namespace Beregnungs.App.Services
             //In JSON Format konvertieren
             var serializedItem = JsonConvert.SerializeObject(daten);
             //Daten übertragen
-            // TODO BetriebID
-            var response = await _client.PostAsync($"api/betriebe/" + betriebID + "/beregnungsdaten", new StringContent(serializedItem, Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsync($"api/betriebe/" + betriebID + "/beregnungsdaten",
+                new StringContent(serializedItem, Encoding.UTF8, "application/json"));
             return response.IsSuccessStatusCode;
         }
 

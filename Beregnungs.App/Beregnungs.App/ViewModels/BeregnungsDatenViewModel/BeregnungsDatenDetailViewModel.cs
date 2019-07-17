@@ -18,17 +18,17 @@ namespace Beregnungs.App.ViewModels
         public string StartDatum
         {
             get { return BeregnungsDaten.StartDatumString; }
-            set { BeregnungsDaten.StartDatumString = value; }
+            set { BeregnungsDaten.StartDatumString = value.ToString(); }
         }
         public string StartUhrzeit
         {
             get { return BeregnungsDaten.StartUhrzeitString; }
-            set { BeregnungsDaten.StartUhrzeitString = value; }
+            set { BeregnungsDaten.StartUhrzeitString = value.ToString(); }
         }
         public string EndDatum
         {
             get { return BeregnungsDaten.EndDatumString; }
-            set { BeregnungsDaten.EndDatumString = value; }
+            set { BeregnungsDaten.EndDatumString = value.ToString(); }
         }
         public string SchlagID
         {
