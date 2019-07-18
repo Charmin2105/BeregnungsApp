@@ -15,20 +15,20 @@ namespace Beregnungs.App.ViewModels
         public Command DeleteBeregnungsDatensCommand { get; set; }
         public string startDatum = string.Empty;
 
-        public string StartDatum
+        public DateTime StartDatum
         {
-            get { return BeregnungsDaten.StartDatumString; }
-            set { BeregnungsDaten.StartDatumString = value.ToString(); }
+            get { return BeregnungsDaten.StartDatum.Date; }
+            set { BeregnungsDaten.StartDatum = value; }
         }
-        public string StartUhrzeit
+        public TimeSpan StartUhrzeit
         {
-            get { return BeregnungsDaten.StartUhrzeitString; }
-            set { BeregnungsDaten.StartUhrzeitString = value.ToString(); }
+            get { return BeregnungsDaten.Uhrzeit; }
+            set { BeregnungsDaten.Uhrzeit = value; }
         }
-        public string EndDatum
+        public DateTime EndDatum
         {
-            get { return BeregnungsDaten.EndDatumString; }
-            set { BeregnungsDaten.EndDatumString = value.ToString(); }
+            get { return BeregnungsDaten.EndDatum.Date; }
+            set { BeregnungsDaten.EndDatum = value; }
         }
         public string SchlagID
         {

@@ -1,6 +1,7 @@
 ﻿using Beregnungs.App.Models;
 using Beregnungs.App.Services;
 using Beregnungs.App.Views;
+using Plugin.Connectivity;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Beregnungs.App.ViewModels
 
         private string username;
         private string password;
+        private string message;
 
         public Account Account { get; set; }
         public Command LoginCommand { get; set; }
@@ -24,6 +26,11 @@ namespace Beregnungs.App.ViewModels
         {
             get { return areCredentialsInvalid; }
             set { SetProperty(ref areCredentialsInvalid, value); }
+        }
+        public string Fehlermeldung
+        {
+            get { return message; }
+            set { message = value; }
         }
 
         public string Username
@@ -41,13 +48,22 @@ namespace Beregnungs.App.ViewModels
         public LoginViewModel(Account account = null)
         {
             Account = account;
-            LoginCommand = new Command(async () => await ExecuteLoginCommand());
+            if (CrossConnectivity.Current.IsConnected)
+            {
+                LoginCommand = new Command(async () => await ExecuteLoginCommand());
+            }
+            else
+            {
+                AreCredentialsInvalid = true;
+                Fehlermeldung = "Keine Internetverbindung vorhanden. Anmelden nicht möglich";
+            }
         }
 
         private async Task ExecuteLoginCommand()
         {
-
+            
             await Authenticate.Login(Account);
+            DependencyService.Get<IMessage>().LongAlert("Login erfolgreich");
 
             App.IsLogedIn = true;
             Application.Current.MainPage = new MainPage();

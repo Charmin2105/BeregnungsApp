@@ -22,27 +22,6 @@ namespace Beregnungs.App.Views
             BindingContext = this.viewModel = viewModel;
         }
 
-        public BeregnungsDatenDetailPage()
-        {
-            InitializeComponent();
 
-            var beregnungsDaten = new BeregnungsDaten()
-            {
-                ID = new Guid(),
-                StartDatum = new DateTimeOffset(new DateTime(2019, 5, 21)),
-                StartUhrzeit = DateTime.Today,
-                EndDatum = new DateTimeOffset(new DateTime(2019, 5, 23)),
-                BetriebID = new Guid("51004c54-3a86-4f55-b1a7-c6caeb8ca522"),
-                SchlagID = new Guid("51004c54-3a86-4f55-b1a7-c6caeb8ca532"),
-                Duese = "Düsenmaster 1",
-                WasseruhrAnfang = 0,
-                WasseruhrEnde = 2000,
-                Vorkomnisse = "Alle Tod",
-                IstAbgeschlossen = true
-            };
-
-            viewModel = new BeregnungsDatenDetailViewModel(beregnungsDaten);
-            BindingContext = viewModel;
-        }
     }
 }

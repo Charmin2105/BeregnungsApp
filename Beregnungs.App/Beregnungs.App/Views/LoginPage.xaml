@@ -18,13 +18,14 @@
                 <Label Text="Login" FontSize="Large" />
                 <Entry Text="{Binding Username}"
                        Placeholder="Benutzernamen" />
-                    <Entry Text="{Binding Password}"
+                <Entry Text="{Binding Password}"
                        Placeholder="Passwort"
                        IsPassword="True" />
-                    <Label Text="Falscher Benutzername oder Passwort" 
+                <Label Text="{Binding Fehlermeldung}" 
                        IsVisible="{Binding AreCredentialsInvalid}" 
                        TextColor="Red" />
-                </StackLayout>
+
+            </StackLayout>
                 <Button Grid.Row="2" Text="Login" Command="{Binding LoginCommand}" />
                 </Grid>
     </ContentPage.Content>

@@ -52,9 +52,11 @@ namespace Beregnungs.App.Models
         /// <summary>
         ///  Wasseruhr Endestand
         /// </summary>
-        public int Verbrauch {
+        public int Verbrauch
+        {
             get { return WasseruhrEnde - WasseruhrAnfang; }
-            set { value = WasseruhrEnde - WasseruhrAnfang; } }
+            set { value = WasseruhrEnde - WasseruhrAnfang; }
+        }
 
         /// <summary>
         ///  Vorkomnisse
@@ -67,17 +69,29 @@ namespace Beregnungs.App.Models
         public bool IstAbgeschlossen { get; set; }
 
         public string StartDatumString
-        { get { return StartDatum.ToString(); }
+        {
+            get { return StartDatum.ToString("d"); }
             set { StartDatum = DateTimeOffset.Parse(value); }
+        }
+        public TimeSpan Uhrzeit
+        {
+            get
+            {
+                return StartUhrzeit.TimeOfDay;
+            }
+            set
+            {
+                StartUhrzeit = DateTime.Parse(value.ToString());
+            }
         }
         public string StartUhrzeitString
         {
-            get { return StartUhrzeit.ToString(); }
+            get { return StartUhrzeit.ToString("t"); }
             set { StartUhrzeit = DateTime.Parse(value); }
         }
         public string EndDatumString
         {
-            get { return EndDatum.ToString(); }
+            get { return EndDatum.ToString("d"); }
             set { EndDatum = DateTimeOffset.Parse(value); }
         }
         public string BetriebIDString

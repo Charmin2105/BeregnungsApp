@@ -16,14 +16,14 @@
             Style="{DynamicResource TitleStyle}" 
             Font="Bold,14" />
             <TimePicker x:Name="_timePicker"
-                    Time="{Binding Uhrzeit}"
+                    Time="{Binding StartUhrzeit}"
                     Format="T"/>
             <Label Text="Ende der Beregnung:" 
             LineBreakMode="NoWrap" 
             Style="{DynamicResource ListItemDetailTextStyle}" 
             Font="Bold,14" />
-            <DatePicker MinimumDate="{Binding StartDatum}"
-                    Date="{Binding EndDatum}" />
+            <DatePicker Date="{Binding EndDatum}"
+                MinimumDate="{Binding StartDatum}"/>
             <Label Text="Schlag: " 
             LineBreakMode="NoWrap" 
             Style="{DynamicResource ListItemDetailTextStyle}" 

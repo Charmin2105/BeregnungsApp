@@ -96,7 +96,7 @@ namespace Beregnungs.App.Services
         public async Task<bool> DeleteDatenAsync(Guid id)
         {
             //Anfrage an Server
-            var response = await _client.DeleteAsync($"api/betriebe/" + betriebID + "/beregnungsdaten/{id}");
+            var response = await _client.DeleteAsync($"api/betriebe/" + betriebID + "/beregnungsdaten/" + id);
 
             return response.IsSuccessStatusCode;
         }
@@ -117,7 +117,7 @@ namespace Beregnungs.App.Services
             //In JSON konvertieren
             var serializedItem = JsonConvert.SerializeObject(daten);
             //An Server senden
-            var response = await _client.PutAsync($"api/betriebe/" + betriebID + "/beregnungsdaten/{daten.ID.ToString()}", new StringContent(serializedItem, Encoding.UTF8, "application/json"));
+            var response = await _client.PutAsync($"api/betriebe/" + betriebID + "/beregnungsdaten/"+daten.ID.ToString(), new StringContent(serializedItem, Encoding.UTF8, "application/json"));
 
             return response.IsSuccessStatusCode;
         }
