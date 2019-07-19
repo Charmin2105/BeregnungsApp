@@ -21,7 +21,7 @@ namespace Beregnungs.App.ViewModels
         public Command LoadBeregnungsDatensCommand { get; set; }
         public LineChart Chart { get; private set; }
         public int Verbrauch { get; set; }
-        public Entry[] entry;
+        public Entry[] entry { get; set; }
 
         public WasserverbrauchViewModel()
         {

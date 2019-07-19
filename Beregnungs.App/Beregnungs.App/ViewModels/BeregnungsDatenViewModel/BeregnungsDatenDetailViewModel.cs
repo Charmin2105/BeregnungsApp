@@ -77,6 +77,8 @@ namespace Beregnungs.App.ViewModels
         private async Task ExecuteDeleteBeregnungsDatensCommand()
         {
             await DataStore.DeleteDatenAsync(BeregnungsDaten.ID);
+            DependencyService.Get<IMessage>().LongAlert("Löschen erfolgreich");
+            // await Application.Current.MainPage.Navigation.PopAsync();
         }
 
         private async Task ExecuteSaveBeregnungsDatensCommand()

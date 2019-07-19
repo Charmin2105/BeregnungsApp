@@ -23,7 +23,7 @@
     
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Spacing="20" Padding="15" PropertyChanged="StackLayout_PropertyChanged">
+            <StackLayout Spacing="20" Padding="15" >
             <Label Text="Tag der Bergnung:" 
                 LineBreakMode="NoWrap" 
                 Style="{DynamicResource TitleStyle}" 
@@ -47,37 +47,37 @@
                 LineBreakMode="NoWrap" 
                 Style="{DynamicResource ListItemDetailTextStyle}" 
                 Font="Bold,14" />
-                <Entry Text="{Binding Schlag}" Placeholder="Schlag" PlaceholderColor="Olive" />
+                <Picker Title="Schlag auswählen:"
+                    ItemsSource="{Binding Schlags}"
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedItem="{Binding SelectedSchlag}" />
                 <Label Text="Wasseruhrstand Beginn:" 
                 LineBreakMode="NoWrap" 
                 Style="{DynamicResource ListItemTextStyle}" 
                 Font="Bold,14" />
-                <Entry Text="{Binding WasseruhrStart}" Placeholder="Wasseruhr Anfang" PlaceholderColor="Olive" />
+                <Entry Text="{Binding WasseruhrStart}" Placeholder="Wasseruhr Anfang" PlaceholderColor="Gray" Keyboard="Numeric"/>
                 <Label Text="Wasseruhrstand Ende:" 
                 LineBreakMode="NoWrap" 
                 Style="{DynamicResource ListItemTextStyle}" 
                 Font="Bold,14" />
-                <Entry Text="{Binding WasseruhrEnde}" Placeholder="Wasseruhr Ende" PlaceholderColor="Olive" />
-                <Label Text="Betrieb: " 
-                LineBreakMode="NoWrap" 
-                Style="{DynamicResource ListItemTextStyle}" 
-                Font="Bold,14" />
-                <Entry Text="{Binding Betrieb}" Placeholder="Betrieb" PlaceholderColor="Olive" />
+                <Entry Text="{Binding WasseruhrEnde}" Placeholder="Wasseruhr Ende" PlaceholderColor="Gray" Keyboard="Numeric" />
                 <Label Text="Verwendete Düse" 
                 LineBreakMode="NoWrap" 
                 Style="{DynamicResource ListItemTextStyle}" 
                 Font="Bold,14" />
-                <Entry Text="{Binding Duese}" Placeholder="Düse" PlaceholderColor="Olive" />
+                <Entry Text="{Binding Duese}" Placeholder="Düse" PlaceholderColor="Gray" />
                 <Label Text="Vorkommnisse" 
                 LineBreakMode="NoWrap" 
                 Style="{DynamicResource ListItemTextStyle}" 
                 Font="Bold,14" />
-                <Entry Text="{Binding Vorkommnisse}" Placeholder="Vorkommnisse" PlaceholderColor="Olive" />
-                <Label Text="Ist beendet" 
-                LineBreakMode="NoWrap" 
-                Style="{DynamicResource ListItemTextStyle}" 
-                Font="Bold,14" />
-                <Switch IsToggled="{Binding IstAbgeschlossen}"/>
+                <Entry Text="{Binding Vorkommnisse}" Placeholder="Vorkommnisse" PlaceholderColor="Gray" />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Beregnung abgeschlossen" 
+                    LineBreakMode="NoWrap" 
+                    Style="{DynamicResource ListItemTextStyle}" 
+                    Font="Bold,14" />
+                    <Switch IsToggled="{Binding IstAbgeschlossen}"/>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

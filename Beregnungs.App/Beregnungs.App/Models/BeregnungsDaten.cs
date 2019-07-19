@@ -1,9 +1,15 @@
 ﻿using System;
+using Beregnungs.App;
 
 namespace Beregnungs.App.Models
 {
     public class BeregnungsDaten
     {
+        /// <summary>
+        ///  Aktueller Wasserpreis
+        /// </summary>
+        private double _wasserPreis = 1.66;
+
         /// <summary>
         ///  ID 
         /// </summary>
@@ -50,12 +56,21 @@ namespace Beregnungs.App.Models
         public int WasseruhrEnde { get; set; }
 
         /// <summary>
-        ///  Wasseruhr Endestand
+        /// Verbrauch in m³
         /// </summary>
         public int Verbrauch
         {
             get { return WasseruhrEnde - WasseruhrAnfang; }
             set { value = WasseruhrEnde - WasseruhrAnfang; }
+        }
+        
+        /// <summary>
+        /// Wasserpreis 
+        /// </summary>
+        public double Preis
+        {
+            get { return Verbrauch * _wasserPreis; }
+            set { value = Verbrauch * _wasserPreis; }
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using Beregnungs.App.Services;
 
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -14,20 +15,24 @@ namespace Beregnungs.App.ViewModels
             DependencyService.Get<IDataStore<BeregnungsDaten>>() 
             ?? new BeregnungsDatenRESTStore();
 
+        public IDataStore<Schlag> SchlagDataStore => DependencyService.Get<IDataStore<Schlag>>() ?? new SchlagRESTStore();
+
         public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
-        public BeregnungsDaten beregnungsDaten;
+        public ObservableCollection<Schlag> Schlags { get; set; }
+        private BeregnungsDaten beregnungsDaten;
         public Command SaveNewBeregnungsDatensCommand { get; set; }
+        public Command LoadBeregnungsDatensCommand { get; set; }
 
         DateTime startDatum = DateTime.Now;
-        TimeSpan uhrzeit;
-        DateTime endeDatum;
-        string betrieb = "Bauer Heinrich";
-        string schlag = "Feld 10";
-        string duese = "Düsenmaster 3000";
-        string wasseruhrStart = "35000";
-        string wasseruhrEnde = "45000";
-        string vorkomnisse = "Schlauch geplatzt";
-        bool istAbgeschlossen = true;
+        TimeSpan uhrzeit = DateTime.Now.TimeOfDay;
+        DateTime endeDatum = DateTime.Now;
+        Betrieb betrieb;
+        Schlag schlag;
+        string duese = string.Empty;
+        string wasseruhrStart = string.Empty;
+        string wasseruhrEnde = string.Empty;
+        string vorkomnisse = string.Empty;
+        bool istAbgeschlossen = false;
 
         public DateTime StartDatum
         {
@@ -44,12 +49,12 @@ namespace Beregnungs.App.ViewModels
             get { return endeDatum; }
             set { endeDatum = value; }
         }
-        public string Betrieb
+        public Betrieb Betrieb
         {
             get { return betrieb; }
             set { betrieb = value; }
         }
-        public string Schlag
+        public Schlag SelectedSchlag
         {
             get { return schlag; }
             set { schlag = value; }
@@ -84,7 +89,26 @@ namespace Beregnungs.App.ViewModels
         public NewBeregnungsDatenViewModel()
         {
             BeregnungsDatens = new ObservableCollection<BeregnungsDaten>();
+            Schlags = new ObservableCollection<Schlag>();
+            LoadBeregnungsDatensCommand = new Command(async () => await ExecuteLoadItemsCommand());
             SaveNewBeregnungsDatensCommand = new Command(async () => await ExecuteSaveNewBeregnungsDatensCommand());
+        }
+
+        private async Task ExecuteLoadItemsCommand()
+        {
+            try
+            {
+                Schlags.Clear();
+                var items = await SchlagDataStore.GetDatensAsync(true);
+                foreach (var item in items)
+                {
+                    Schlags.Add(item);                    
+                }                     
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
 
         private async Task ExecuteSaveNewBeregnungsDatensCommand()
@@ -94,7 +118,7 @@ namespace Beregnungs.App.ViewModels
                 StartDatum = DateTimeOffset.Parse(StartDatum.ToString()),
                 StartUhrzeit = Convert.ToDateTime(Uhrzeit.ToString()),
                 EndDatum = DateTimeOffset.Parse(EndDatum.ToString()),
-                //SchlagID = new Guid(Schlag),
+                SchlagID = schlag.ID,
                 WasseruhrAnfang = int.Parse(WasseruhrStart),
                 WasseruhrEnde = int.Parse(WasseruhrEnde),
                 Duese = Duese,
@@ -103,9 +127,7 @@ namespace Beregnungs.App.ViewModels
         
             };
            await  DataStore.AddDatenAsync(beregnungsDaten);
-
-            //Laden der neuen Daten
-            await DataStore.GetDatensAsync(true);
+            DependencyService.Get<IMessage>().LongAlert("Beregnungsdaten erfolgreich gespeichert");
 
         }
     }

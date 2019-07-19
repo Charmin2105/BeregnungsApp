@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Beregnungs.App.Models;
 using Beregnungs.App.Views;
 using Beregnungs.App.Services;
+using Plugin.Connectivity;
 
 namespace Beregnungs.App.ViewModels
 {
@@ -25,8 +26,7 @@ namespace Beregnungs.App.ViewModels
         string betrieb = string.Empty;
         string schlag = string.Empty;
         string duese = string.Empty;
-        string wasseruhrStart = string.Empty;
-        string wasseruhrEnde = string.Empty;
+        string verbrauchTitel = string.Empty;
         string vorkomnisse = string.Empty;
 
         public string StartTitel
@@ -59,21 +59,17 @@ namespace Beregnungs.App.ViewModels
             get { return duese; }
             set { SetProperty(ref duese, value); }
         }
-        public string WasseruhrStartTitel
+        public string VerbrauchTitel
         {
-            get { return wasseruhrStart; }
-            set { SetProperty(ref wasseruhrEnde, value); }
-        }
-        public string WasseruhrEndeTitel
-        {
-            get { return wasseruhrEnde; }
-            set { SetProperty(ref wasseruhrEnde, value); }
+            get { return verbrauchTitel; }
+            set { SetProperty(ref verbrauchTitel, value); }
         }
         public string VorkomnisseTitel
         {
             get { return vorkomnisse; }
             set { SetProperty(ref vorkomnisse, value); }
         }
+
         #endregion
 
         #region Ctor
@@ -87,19 +83,11 @@ namespace Beregnungs.App.ViewModels
             BetriebTitel = "Betrieb";
             SchlagTitel = "Schlag";
             DueseTitel = "Verwendete Düse";
-            WasseruhrStartTitel = "Wasseruhrstand Start";
-            WasseruhrEndeTitel = "Wasseruhrstand Ende";
+            VerbrauchTitel = "Verbrauchtes Wasser in m³";
             VorkomnisseTitel = "Vorkomnisse";
 
             BeregnungsDatens = new ObservableCollection<BeregnungsDaten>();
             LoadBeregnungsDatensCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            //MessagingCenter.Subscribe<NewBeregnungsDatenPage, BeregnungsDaten>(this, "AddBeregnungsDaten", async (obj, daten) =>
-            //{
-            //    var newDaten = daten as BeregnungsDaten;
-            //    BeregnungsDatens.Add(newDaten);
-            //    await DataStore.AddDatenAsync(newDaten);
-            //});
         }
         #endregion
 
@@ -108,27 +96,37 @@ namespace Beregnungs.App.ViewModels
         //Load Comand
         async Task ExecuteLoadItemsCommand()
         {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
-            try
+            //Prüfung ob Internet Verbindung vorhanden ist
+            if (CrossConnectivity.Current.IsConnected)
             {
-                BeregnungsDatens.Clear();
-                var items = await DataStore.GetDatensAsync(true);
-                foreach (var item in items)
+                if (IsBusy)
+                    return;
+
+                IsBusy = true;
+
+                try
                 {
-                    BeregnungsDatens.Add(item);
+                    BeregnungsDatens.Clear();
+                    var items = await DataStore.GetDatensAsync(true);
+                    foreach (var item in items)
+                    {
+                        BeregnungsDatens.Add(item);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    IsBusy = false;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
+                DependencyService.Get<IMessage>().LongAlert("Laden nicht möglich, kein Verbindung zum Server verfügbar");
                 IsBusy = false;
+
             }
         } 
         #endregion

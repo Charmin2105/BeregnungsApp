@@ -13,6 +13,7 @@ namespace Beregnungs.App
         public static string AzureBackendUrl = "http://localhost:5000";
         public static bool UseMockDataStore = false;
 
+        public static double Wasserpreis = 1.66;
 
         //Token
         public static string Token;

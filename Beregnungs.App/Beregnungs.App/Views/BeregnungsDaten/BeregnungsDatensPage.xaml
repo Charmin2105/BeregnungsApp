@@ -60,14 +60,29 @@
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="13" />
-                            <Label Text="Verbrauchtes Wasser in m³" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                Font="Bold,14" />
-                            <Label Text="{Binding Verbrauch}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="13" />
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                <StackLayout>
+                                    <Label Text="Wasserverbrauch in m³"
+                                           WidthRequest="175"
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    Font="Bold,14" />
+                                    <Label Text="{Binding Verbrauch} " 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="13" />
+                                </StackLayout>
+                                <StackLayout>
+                                    <Label Text="Kosten in Euro" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    Font="Bold,14" />
+                                    <Label Text="{Binding Preis}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="13" />
+                                </StackLayout>
+                            </StackLayout>
                             <Label Text="Betrieb: " 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 

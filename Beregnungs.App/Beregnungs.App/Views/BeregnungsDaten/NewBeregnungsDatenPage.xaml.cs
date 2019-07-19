@@ -26,7 +26,13 @@ namespace Beregnungs.App.Views
         {
             await Navigation.PopModalAsync();
         }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
 
+            if (viewModel.BeregnungsDatens.Count == 0)
+                viewModel.LoadBeregnungsDatensCommand.Execute(null);
+        }
         private void StackLayout_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
 

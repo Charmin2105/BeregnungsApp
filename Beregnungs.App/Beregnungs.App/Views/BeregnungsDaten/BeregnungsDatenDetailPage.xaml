@@ -43,7 +43,8 @@
             Style="{DynamicResource ListItemTextStyle}" 
             Font="Bold,14" />
             <Entry Text="{Binding WasseruhrEnde}" 
-                   Style=""/>
+                   Style=""
+                   Keyboard="Numeric"/>
             <Label Text="Betrieb: " 
             LineBreakMode="NoWrap" 
             Style="{DynamicResource ListItemTextStyle}" 
@@ -63,7 +64,13 @@
             Font="Bold,14" />
             <Entry Text="{Binding Vorkommnisse}" 
                    Style=""/>
-            <Switch IsToggled="{Binding IstAbgeschlossen}"/>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Beregnung abgeschlossen" 
+                    LineBreakMode="NoWrap" 
+                    Style="{DynamicResource ListItemTextStyle}" 
+                    Font="Bold,14" />
+                <Switch IsToggled="{Binding IstAbgeschlossen}"/>
+            </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="Löschen" 
                          Command="{Binding DeleteBeregnungsDatensCommand}"
