@@ -1159,7 +1159,7 @@
              Nachname des Mitarbeiters
             </summary>
         </member>
-        <member name="P:REST.Api.Models.MitarbeiterDto.GebDatum">
+        <member name="P:REST.Api.Models.MitarbeiterDto.Geburtstag">
             <summary>
              GebDatum des Mitarbeiters
             </summary>
@@ -1184,7 +1184,7 @@
             Nachname  des Mitarbeiter
             </summary>
         </member>
-        <member name="P:REST.Api.Models.MitarbeiterForManipulationDto.GebDatum">
+        <member name="P:REST.Api.Models.MitarbeiterForManipulationDto.Geburtstag">
             <summary>
             GebDatum  des Mitarbeiter
             </summary>

@@ -8,13 +8,14 @@ namespace Beregnungs.App.ViewModels
 {
     public class BeregnungsDatenDetailViewModel : BaseViewModel
     {
-        public IDataStore<BeregnungsDaten> DataStore => DependencyService.Get<IDataStore<BeregnungsDaten>>() ?? new BeregnungsDatenRESTStore();
+        //Fields
+        private IDataStore<BeregnungsDaten> DataStore => DependencyService.Get<IDataStore<BeregnungsDaten>>() ?? new BeregnungsDatenRESTStore();
 
-        public BeregnungsDaten BeregnungsDaten { get; set; }
+        private BeregnungsDaten BeregnungsDaten { get; set; }
         public Command SaveBeregnungsDatensCommand { get; set; }
         public Command DeleteBeregnungsDatensCommand { get; set; }
-        public string startDatum = string.Empty;
 
+        //DataBinding Accessor
         public DateTime StartDatum
         {
             get { return BeregnungsDaten.StartDatum.Date; }
@@ -66,6 +67,7 @@ namespace Beregnungs.App.ViewModels
             set { BeregnungsDaten.IstAbgeschlossen = value; }
         }
 
+        //Ctor
         public BeregnungsDatenDetailViewModel(BeregnungsDaten beregnungsDaten = null)
         {
             Title = "Beregnungsdaten";
@@ -74,6 +76,7 @@ namespace Beregnungs.App.ViewModels
             DeleteBeregnungsDatensCommand = new Command(async () => await ExecuteDeleteBeregnungsDatensCommand());
         }
 
+        //Daten löschen
         private async Task ExecuteDeleteBeregnungsDatensCommand()
         {
             await DataStore.DeleteDatenAsync(BeregnungsDaten.ID);
@@ -81,9 +84,11 @@ namespace Beregnungs.App.ViewModels
             // await Application.Current.MainPage.Navigation.PopAsync();
         }
 
+        //Daten speichern
         private async Task ExecuteSaveBeregnungsDatensCommand()
         {
             await DataStore.UpdateDatenAsync(BeregnungsDaten);
+            DependencyService.Get<IMessage>().LongAlert("Speichern erfolgreich");
         }
     }
 }

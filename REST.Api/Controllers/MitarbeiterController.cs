@@ -138,7 +138,7 @@ namespace REST.Api.Controllers
                 ModelState.AddModelError(nameof(MitarbeiterForCreationDto),
                    "Nachname darf nicht gleich mit Vorname sein.");
             }
-            if (mitarbeiter.GebDatum >= DateTime.Today)
+            if (mitarbeiter.Geburtstag >= DateTime.Today)
             {
                 ModelState.AddModelError(nameof(MitarbeiterForCreationDto),
                      "Geburtsdatum darf nicht in der Zukunft liegen");
@@ -244,7 +244,7 @@ namespace REST.Api.Controllers
                 ModelState.AddModelError(nameof(MitarbeiterForCreationDto),
                    "Nachname darf nicht gleich mit Vorname sein.");
             }
-            if (mitarbeiter.GebDatum >= DateTime.Today)
+            if (mitarbeiter.Geburtstag >= DateTime.Today)
             {
                 ModelState.AddModelError(nameof(MitarbeiterForCreationDto),
                      "Geburtsdatum darf nicht in der Zukunft liegen");
@@ -342,7 +342,7 @@ namespace REST.Api.Controllers
                     ModelState.AddModelError(nameof(MitarbeiterForCreationDto),
                        "Nachname darf nicht gleich mit Vorname sein.");
                 }
-                if (mitarbeiterDto.GebDatum >= DateTime.Today)
+                if (mitarbeiterDto.Geburtstag >= DateTime.Today)
                 {
                     ModelState.AddModelError(nameof(MitarbeiterForCreationDto),
                          "Geburtsdatum darf nicht in der Zukunft liegen");

@@ -20,15 +20,16 @@ namespace Beregnungs.App.ViewModels
 
         public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
         public Command LoadBeregnungsDatensCommand { get; set; }
-        string start = string.Empty;
-        string uhrzeit = string.Empty;
-        string ende = string.Empty;
-        string betrieb = string.Empty;
-        string schlag = string.Empty;
-        string duese = string.Empty;
-        string verbrauchTitel = string.Empty;
-        string vorkomnisse = string.Empty;
+        private string start = string.Empty;
+        private string uhrzeit = string.Empty;
+        private string ende = string.Empty;
+        private string betrieb = string.Empty;
+        private string schlag = string.Empty;
+        private string duese = string.Empty;
+        private string verbrauchTitel = string.Empty;
+        private string vorkomnisse = string.Empty;
 
+        //Binding Context überschriften
         public string StartTitel
         {
             get { return start; }

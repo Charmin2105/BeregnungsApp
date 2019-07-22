@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Beregnungs.App.Services
 {
-    class BeregnungsDatenRESTStore : IDataStore<BeregnungsDaten>
+    public class BeregnungsDatenRESTStore : IDataStore<BeregnungsDaten>
     {
-        HttpClient _client;
+        private HttpClient _client;
         IEnumerable<BeregnungsDaten> beregnungsDatens;
-        string betriebID = App.BetriebID;
+        private string betriebID = App.BetriebID;
 
         /// <summary>
         /// Ctor
@@ -80,7 +80,7 @@ namespace Beregnungs.App.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine(@"\tBeregnungsDaten erfolgreich geladen.");
+                    Debug.WriteLine(@"\t BeregnungsDaten erfolgreich geladen.");
                 }
 
             }
@@ -117,7 +117,7 @@ namespace Beregnungs.App.Services
             //In JSON konvertieren
             var serializedItem = JsonConvert.SerializeObject(daten);
             //An Server senden
-            var response = await _client.PutAsync($"api/betriebe/" + betriebID + "/beregnungsdaten/"+daten.ID.ToString(), new StringContent(serializedItem, Encoding.UTF8, "application/json"));
+            var response = await _client.PutAsync($"api/betriebe/" + betriebID + "/beregnungsdaten/" + daten.ID.ToString(), new StringContent(serializedItem, Encoding.UTF8, "application/json"));
 
             return response.IsSuccessStatusCode;
         }

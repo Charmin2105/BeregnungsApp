@@ -29,6 +29,6 @@ namespace REST.Api.Models
         /// GebDatum  des Mitarbeiter
         /// </summary>
         [Required(ErrorMessage = "Ein Geburtsdatum ist erforderlich.")]
-        public DateTimeOffset GebDatum { get; set; }
+        public DateTimeOffset Geburtstag { get; set; }
     }
 }

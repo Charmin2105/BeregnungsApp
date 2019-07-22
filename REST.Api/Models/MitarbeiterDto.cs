@@ -28,6 +28,6 @@ namespace REST.Api.Models
         /// <summary>
         ///  GebDatum des Mitarbeiters
         /// </summary>
-        public DateTimeOffset GebDatum { get; set; }
+        public DateTimeOffset Geburtstag { get; set; }
     }
 }

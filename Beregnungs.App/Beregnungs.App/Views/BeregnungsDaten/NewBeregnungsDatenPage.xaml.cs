@@ -31,7 +31,7 @@ namespace Beregnungs.App.Views
             base.OnAppearing();
 
             if (viewModel.BeregnungsDatens.Count == 0)
-                viewModel.LoadBeregnungsDatensCommand.Execute(null);
+                viewModel.LoadSchlagCommand.Execute(null);
         }
         private void StackLayout_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {

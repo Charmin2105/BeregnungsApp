@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Beregnungs.App.Views.NewMitarbeiterPage"
+             Title="Neue Beregnungs Daten">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Abbrechen" Clicked="Cancel_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="cancel.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem Text="Speichern" Command="{Binding SaveNewMitarbeiterCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="save.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Vorname: " 
+                       LineBreakMode="NoWrap" 
+                       Style="{DynamicResource TitleStyle}" 
+                       Font="Bold,14" />
+                <Entry Text="{Binding Vorname}"
+                       WidthRequest="150"
+                       Style="{DynamicResource ListItemTextStyle}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Nachname: " 
+                       LineBreakMode="NoWrap" 
+                       Style="{DynamicResource TitleStyle}" 
+                       Font="Bold,14" />
+                <Entry Text="{Binding Nachname}" 
+                       WidthRequest="150"
+                       Style="{DynamicResource ListItemTextStyle}"  />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Geburtsdatum: " 
+                       LineBreakMode="NoWrap" 
+                       Style="{DynamicResource ListItemDetailTextStyle}" 
+                       Font="Bold,14" />
+                <DatePicker MinimumDate="01/01/1990" Date="{Binding GebDatum}" />
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

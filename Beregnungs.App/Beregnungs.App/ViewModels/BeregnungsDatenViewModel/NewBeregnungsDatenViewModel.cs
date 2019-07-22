@@ -11,17 +11,17 @@ namespace Beregnungs.App.ViewModels
 {
     public class NewBeregnungsDatenViewModel : BaseViewModel
     {
-        public IDataStore<BeregnungsDaten> DataStore => 
+        private IDataStore<BeregnungsDaten> DataStore => 
             DependencyService.Get<IDataStore<BeregnungsDaten>>() 
             ?? new BeregnungsDatenRESTStore();
 
-        public IDataStore<Schlag> SchlagDataStore => DependencyService.Get<IDataStore<Schlag>>() ?? new SchlagRESTStore();
+        private IDataStore<Schlag> SchlagDataStore => DependencyService.Get<IDataStore<Schlag>>() ?? new SchlagRESTStore();
 
-        public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
+        public  ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
         public ObservableCollection<Schlag> Schlags { get; set; }
         private BeregnungsDaten beregnungsDaten;
         public Command SaveNewBeregnungsDatensCommand { get; set; }
-        public Command LoadBeregnungsDatensCommand { get; set; }
+        public Command LoadSchlagCommand { get; set; }
 
         DateTime startDatum = DateTime.Now;
         TimeSpan uhrzeit = DateTime.Now.TimeOfDay;
@@ -34,6 +34,7 @@ namespace Beregnungs.App.ViewModels
         string vorkomnisse = string.Empty;
         bool istAbgeschlossen = false;
 
+        //DataBinding Accessor
         public DateTime StartDatum
         {
             get { return startDatum; }
@@ -85,15 +86,16 @@ namespace Beregnungs.App.ViewModels
             set { istAbgeschlossen = value; }
         }
 
-
+        //ctor
         public NewBeregnungsDatenViewModel()
         {
             BeregnungsDatens = new ObservableCollection<BeregnungsDaten>();
             Schlags = new ObservableCollection<Schlag>();
-            LoadBeregnungsDatensCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadSchlagCommand = new Command(async () => await ExecuteLoadItemsCommand());
             SaveNewBeregnungsDatensCommand = new Command(async () => await ExecuteSaveNewBeregnungsDatensCommand());
         }
 
+        //Schläge laden
         private async Task ExecuteLoadItemsCommand()
         {
             try
@@ -111,6 +113,7 @@ namespace Beregnungs.App.ViewModels
             }
         }
 
+        //Beregnungsdaten speichern
         private async Task ExecuteSaveNewBeregnungsDatensCommand()
         {
             beregnungsDaten = new BeregnungsDaten()

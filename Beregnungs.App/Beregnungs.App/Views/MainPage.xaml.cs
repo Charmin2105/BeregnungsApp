@@ -35,6 +35,9 @@ namespace Beregnungs.App.Views
                     case (int)MenuItemType.Betrieb:
                         MenuPages.Add(id, new NavigationPage(new BetriebePage()));
                         break;
+                    case (int)MenuItemType.Mitarbeiter:
+                        MenuPages.Add(id, new NavigationPage(new MitarbeiterPage()));
+                        break;
                     case (int)MenuItemType.Wasserverbrauch:
                         MenuPages.Add(id, new NavigationPage(new WasserverbrauchPage()));
                         break;

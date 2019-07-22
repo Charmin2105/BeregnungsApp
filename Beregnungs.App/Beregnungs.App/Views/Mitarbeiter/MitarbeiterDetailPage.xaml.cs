@@ -5,22 +5,18 @@ using Xamarin.Forms.Xaml;
 
 using Beregnungs.App.Models;
 using Beregnungs.App.ViewModels;
-
 namespace Beregnungs.App.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BeregnungsDatenDetailPage : ContentPage
+    public partial class MitarbeiterDetailPage : ContentPage
     {
-        public BeregnungsDaten BeregnungsDaten { get; set; }
-        BeregnungsDatenDetailViewModel viewModel;
+        public Mitarbeiter Mitarbeiter { get; set; }
+        MitarbeiterDetailViewModel viewModel;
 
-        public BeregnungsDatenDetailPage(BeregnungsDatenDetailViewModel viewModel)
+        public MitarbeiterDetailPage(MitarbeiterDetailViewModel viewModel)
         {
             InitializeComponent();
-
             BindingContext = this.viewModel = viewModel;
         }
-
-
     }
 }
