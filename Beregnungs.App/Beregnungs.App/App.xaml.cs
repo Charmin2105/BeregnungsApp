@@ -18,7 +18,7 @@ namespace Beregnungs.App
         //Token
         public static string Token;
         //BetirebID
-        public static string BetriebID = "25320c5e-f58a-4b1f-b63a-8ee07a840bdf";
+        public static string BetriebID;
 
         //Authentication
         public static bool IsLogedIn = false;

@@ -17,5 +17,10 @@ namespace Beregnungs.App.Models
         /// </summary>
         public string Passwort { get; set; }
 
+        /// <summary>
+        /// Guid BetriebID
+        /// </summary>
+        public Guid BetriebID { get; set; }
+
     }
 }

@@ -40,5 +40,11 @@ namespace REST.Api.Entities
         /// </summary>
         [Required]
         public bool IstAdmin { get; set; }
+
+        /// <summary>
+        /// Guid BetriebID
+        /// </summary>
+        [Required]
+        public Guid BetriebID { get; set; }
     }
 }

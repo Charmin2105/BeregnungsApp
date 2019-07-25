@@ -32,5 +32,10 @@ namespace REST.Api.Models
         /// bool IstAdmin
         /// </summary>
         public bool IstAdmin { get; set; }
+
+        /// <summary>
+        /// Guid BetriebID
+        /// </summary>
+        public Guid BetriebID { get; set; }
     }
 }

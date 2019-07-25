@@ -31,5 +31,11 @@ namespace REST.Api.Models
         /// </summary>
         [Required(ErrorMessage = "Bitte angeben ob der Account Administrationsrecht besitzt.")]
         public bool IstAdmin { get; set; }
+
+        /// <summary>
+        /// Guid ID
+        /// </summary>
+        [Required(ErrorMessage = "Bitte angeben zu welchem Betrieb der Account gehört.")]
+        public Guid BetriebID { get; set; }
     }
 }
