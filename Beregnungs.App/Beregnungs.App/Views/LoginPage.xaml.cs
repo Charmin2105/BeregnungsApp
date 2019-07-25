@@ -18,17 +18,13 @@ namespace Beregnungs.App.Views
         LoginViewModel viewModel;
         public Command LoginCommand;
 
+
         public LoginPage()
         {
             InitializeComponent();
 
-            var account = new Account()
-            {
-                Benutzername = "Admin",
-                Passwort = "nico123"
-            };
-            viewModel = new LoginViewModel(account);
-            BindingContext = viewModel;            
+            BindingContext = viewModel = new LoginViewModel();
+                       
         }
 	}
 }

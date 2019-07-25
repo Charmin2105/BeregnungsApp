@@ -233,39 +233,7 @@ namespace REST.Api.Controllers
             return links;
         }
 
-        /// <summary>
-        /// Laden eines bestimmten Accounts
-        /// </summary>
-        /// <param name="id">Id des gesuchten Accounts</param>
-        /// <param name="fields">fields parameter</param>
-        /// <returns>Ok Status Code</returns>
-        /// <response code="200">Returns den angeforderten Account</response>
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize]
-        [HttpGet("{id}", Name = "GetAccount")]
-        public ActionResult<Account> GetAccount(Guid id, [FromQuery] string fields)
-        {
-            if (!_typeHelperService.TypeHasProperties<AccountDto>(fields))
-            {
-                return BadRequest();
-            }
-            var accountFromRepo = _accountRepository.GetAccount(id);
-            if (accountFromRepo == null)
-            {
-                return NotFound();
-            }
-            var account = Mapper.Map<AccountDto>(accountFromRepo);
 
-            var links = CreateLinksForAccount(id, fields);
-
-            var linkedResourceToReturn = account.ShapeData(fields)
-                as IDictionary<string, object>;
-
-            linkedResourceToReturn.Add("links", links);
-
-            return Ok(linkedResourceToReturn);
-        }
 
     }
 }

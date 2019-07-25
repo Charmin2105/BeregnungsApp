@@ -61,12 +61,21 @@ namespace Beregnungs.App.ViewModels
 
         private async Task ExecuteLoginCommand()
         {
-            
-            await Authenticate.Login(Account);
-            DependencyService.Get<IMessage>().LongAlert("Login erfolgreich");
+            Account = new Account()
+            {
+                Benutzername = Username,
+                Passwort = Password
+            };
 
-            App.IsLogedIn = true;
-            Application.Current.MainPage = new MainPage();
+            if (await Authenticate.Login(Account))
+            {
+                DependencyService.Get<IMessage>().LongAlert("Login erfolgreich");
+
+                App.IsLogedIn = true;
+                Application.Current.MainPage = new MainPage();
+            }
+            DependencyService.Get<IMessage>().LongAlert("Login Fehlgeschlagen");
+
         }
     }
 }
