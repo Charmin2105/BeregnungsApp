@@ -18,13 +18,17 @@ namespace Beregnungs.App.Droid
 
     public class MessageDroid : IMessage
     {
+        //Langer Toast
         public void LongAlert(string message)
         {
+            //Toast erstellen
             Toast.MakeText(Application.Context, message, ToastLength.Long).Show();
         }
 
+        //Kurzer Toast
         public void ShortAlert(string message)
         {
+            //Toast erstellen
             Toast.MakeText(Application.Context, message, ToastLength.Short).Show();
         }
     }

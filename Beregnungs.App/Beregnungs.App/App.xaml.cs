@@ -9,10 +9,10 @@ namespace Beregnungs.App
 {
     public partial class App : Application
     {
-        //TODO: Replace with *.azurewebsites.net url after deploying backend to Azure
-        public static string AzureBackendUrl = "http://localhost:5000";
-        public static bool UseMockDataStore = false;
+        #region Fields
+        //Fields
 
+        //TODO  für die Zukunft über REST API immer Akutellen Wert anfordern
         public static double Wasserpreis = 1.66;
 
         //Token
@@ -22,31 +22,22 @@ namespace Beregnungs.App
 
         //Authentication
         public static bool IsLogedIn = false;
+
+        //TODO Für die Zukunft Rückmeldung an den Benutzer das der Token nicht mehr Gültig ist.
         public static int LogInTimer = 60;
 
         //API Url
-        public static string RESTBackendURL = "http://192.168.0.111:51872";
+        public static string RESTBackendURL = "http://192.168.0.111:51872"; 
+        #endregion
 
         public App()
         {
             InitializeComponent();
 
-            if (UseMockDataStore)
-                DependencyService.Register<MockDataStore>();
-            else
-            {
-                DependencyService.Register<BeregnungsDatenRESTStore>();
-                DependencyService.Register<SchlagRESTStore>();
-            }
-            //    DependencyService.Register<AzureDataStore>();
-
             if (!IsLogedIn)
                 MainPage = new NavigationPage(new LoginPage());
             else
                 MainPage = new MainPage();
-
-
-
         }
 
         protected override void OnStart()

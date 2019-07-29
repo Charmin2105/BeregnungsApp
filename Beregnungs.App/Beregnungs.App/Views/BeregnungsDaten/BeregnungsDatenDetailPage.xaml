@@ -10,7 +10,8 @@
             Style="{DynamicResource TitleStyle}" 
             Font="Bold,14" />
             <DatePicker MinimumDate="{Binding StartDatum}"
-                    Date="{Binding StartDatum}" />
+                    Date="{Binding StartDatum}"
+                        IsEnabled="False"/>
             <Label Text="Beginn der Beregnung:" 
             LineBreakMode="NoWrap" 
             Style="{DynamicResource TitleStyle}" 

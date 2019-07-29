@@ -51,15 +51,6 @@
             <param name="account">Übergabe eines SchlagDto</param>
             <returns>AccountDto mit Links </returns>
         </member>
-        <member name="M:REST.Api.Controllers.AuthController.GetAccount(System.Guid,System.String)">
-            <summary>
-            Laden eines bestimmten Accounts
-            </summary>
-            <param name="id">Id des gesuchten Accounts</param>
-            <param name="fields">fields parameter</param>
-            <returns>Ok Status Code</returns>
-            <response code="200">Returns den angeforderten Account</response>
-        </member>
         <member name="M:REST.Api.Controllers.BeregnungsDatenController.#ctor(REST.Api.Services.IBetriebRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.BeregnungsDatenController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
             <summary>
             Ctor

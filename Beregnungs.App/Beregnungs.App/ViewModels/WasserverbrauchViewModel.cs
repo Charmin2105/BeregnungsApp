@@ -19,14 +19,25 @@ namespace Beregnungs.App.ViewModels
 
         public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
         public Command LoadBeregnungsDatensCommand { get; set; }
-        public LineChart Chart { get; private set; }
+        public LineChart Chart
+        {
+            get { return Chart; }
+            set { value = Chart; }
+        }
         public int Verbrauch { get; set; }
-        public Entry[] entry { get; set; }
+        public Entry[] entry;
+        public Entry[] Entry
+        {
+            get { return entry; }
+            set { value = entry; }
+        }
+
 
         public WasserverbrauchViewModel()
         {
             LoadBeregnungsDatensCommand = new Command(async () => await ExecuteLoadItemsCommand());
-            var entries = new[]
+            BeregnungsDatens = new ObservableCollection<BeregnungsDaten>();
+            entry = new[]
               {
                  new Entry(25)
                  {
@@ -54,9 +65,9 @@ namespace Beregnungs.App.ViewModels
             } };
             Chart = new LineChart()
             {
-                Entries = entries
+                Entries = Entry
             };
-            BeregnungsDatens = new ObservableCollection<BeregnungsDaten>();
+
         }
 
         #region Methods
@@ -79,12 +90,14 @@ namespace Beregnungs.App.ViewModels
                     {
                         new Entry(item.Verbrauch)
                         {
-                             Label = "iOS",
-                             ValueLabel = "128",
-                             Color = SKColor.Parse("#b455b6")
+                            Label = item.StartDatumString,
                         }
                    };
                 }
+                Chart = new LineChart()
+                {
+                    Entries = entry
+                };
             }
             catch (Exception ex)
             {

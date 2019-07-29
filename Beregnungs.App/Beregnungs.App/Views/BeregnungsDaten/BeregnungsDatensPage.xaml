@@ -36,14 +36,6 @@
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 Font="13" />
-                            <Label Text="Beginn der Beregnung:" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource TitleStyle}" 
-                                Font="Bold,14" />
-                            <Label Text="{Binding StartUhrzeitString}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="13" />
                             <Label Text="Ende der Beregnung:" 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemDetailTextStyle}" 
@@ -83,22 +75,6 @@
                                     FontSize="13" />
                                 </StackLayout>
                             </StackLayout>
-                            <Label Text="Betrieb: " 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                Font="Bold,14" />
-                            <Label Text="{Binding BetriebIDString}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="13" />
-                            <Label Text="Verwendete Düse" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                Font="Bold,14" />
-                            <Label Text="{Binding Duese}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="13" />
                             <Label Text="Vorkommnisse" 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
@@ -107,6 +83,13 @@
                                 LineBreakMode="NoWrap"
                                 Style="{DynamicResource ListItemDetailTextStyle}"
                                 FontSize="13" />
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Beregnung abgeschlossen" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    Font="Bold,14" />
+                                <Switch IsToggled="{Binding IstAbgeschlossen}" IsEnabled="False"/>
+                            </StackLayout>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

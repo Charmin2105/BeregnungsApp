@@ -5,7 +5,7 @@
              x:Class="Beregnungs.App.Views.WasserverbrauchPage">
     <ContentPage.Content>
         <StackLayout>
-            <microcharts:ChartView x:Name="chartViewVerbrauch" Chart="{Binding Chart}" HeightRequest=" 350" />
+            <microcharts:ChartView x:Name="chartViewVerbrauch" Chart="{Binding Chart}"  HeightRequest=" 350" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

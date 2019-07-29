@@ -61,6 +61,12 @@ namespace Beregnungs.App.ViewModels
 
         private async Task ExecuteLoginCommand()
         {
+            if (Username == string.Empty || Password == string.Empty || Username == null || Password == null)
+            {
+                DependencyService.Get<IMessage>().LongAlert("Bitte Benutzernamen und Passwort eingeben");
+                return;
+            }
+
             Account = new Account()
             {
                 Benutzername = Username,
@@ -74,8 +80,11 @@ namespace Beregnungs.App.ViewModels
                 App.IsLogedIn = true;
                 Application.Current.MainPage = new MainPage();
             }
-            DependencyService.Get<IMessage>().LongAlert("Login Fehlgeschlagen");
-
+            else
+            {
+                DependencyService.Get<IMessage>().LongAlert("Login Fehlgeschlagen");
+                return;
+            }
         }
     }
 }
