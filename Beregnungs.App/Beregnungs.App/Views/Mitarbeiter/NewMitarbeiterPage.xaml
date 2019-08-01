@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Beregnungs.App.Views.NewMitarbeiterPage"
-             Title="Neue Beregnungs Daten">
+             Title="Neuer Mitarbeiter">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Abbrechen" Clicked="Cancel_Clicked">
             <ToolbarItem.Icon>

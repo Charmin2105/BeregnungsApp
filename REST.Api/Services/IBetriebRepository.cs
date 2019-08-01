@@ -38,14 +38,13 @@ namespace REST.Api.Services
         bool BetriebExists(Guid betriebId);
         #endregion
         #region Schlaege
-
-
-
-
-
-
-
-
+        PagedList<Schlag> GetSchlaege(Guid betriebId, SchlagResourceParameter schlagResourceParameters);
+        Schlag GetSchlag(Guid betriebId, Guid guid);
+        IEnumerable<Schlag> GetSchlaege(Guid betriebId);
+        void AddSchlag(Guid betriebId, Schlag schlag);
+        void DeleteSchlag(Schlag schlag);
+        void UpdateSchlag(Schlag schlag);
+        bool SchlagExists(Guid betriebID, Guid schlagId);
         #endregion
         bool Save();
     }

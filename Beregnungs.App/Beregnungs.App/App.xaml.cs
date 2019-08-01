@@ -13,7 +13,7 @@ namespace Beregnungs.App
         //Fields
 
         //TODO  für die Zukunft über REST API immer Akutellen Wert anfordern
-        public static double Wasserpreis = 1.66;
+        public static double Wasserpreis = 0.15;
 
         //Token
         public static string Token;

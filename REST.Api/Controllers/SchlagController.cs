@@ -15,11 +15,11 @@ using REST.Api.Services;
 namespace REST.Api.Controllers
 {
     [Authorize]
-    [Route("api/schlaege")]
+    [Route("api/betriebe/{BetriebID}/schlaege")]
     public class SchlagController : Controller
     {
         //fields
-        private ISchlagRepository _schlagRepository;
+        private IBetriebRepository _betriebRepository;
         private ILogger<SchlagController> _iLogger;
         private IUrlHelper _urlHelper;
         private IPropertyMappingService _propertyMappingService;
@@ -32,14 +32,14 @@ namespace REST.Api.Controllers
         /// </summary>
         /// <param name="beregnungsRepository"></param>
         /// <param name="ilogger"></param>
-        public SchlagController(ISchlagRepository schlagRepository,
+        public SchlagController(IBetriebRepository betriebRepository,
             ILogger<SchlagController> ilogger,
             IUrlHelper urlHelper,
             IPropertyMappingService propertyMappingService,
             ITypeHelperService typeHelperService)
         {
             _iLogger = ilogger;
-            _schlagRepository = schlagRepository;
+            _betriebRepository = betriebRepository;
             _urlHelper = urlHelper;
             _propertyMappingService = propertyMappingService;
             _typeHelperService = typeHelperService;
@@ -57,7 +57,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet(Name = "GetSchlaege")]
         [HttpHead]
-        public ActionResult<Schlag> GetSchlaege(SchlagResourceParameter resourceParameters,
+        public ActionResult<Schlag> GetSchlaege(Guid betriebID, SchlagResourceParameter resourceParameters,
             [FromHeader(Name = "Accept")]string mediaType)
         {
             if (!_typeHelperService.TypeHasProperties<SchlagDto>(resourceParameters.Fields))
@@ -65,7 +65,7 @@ namespace REST.Api.Controllers
                 return BadRequest();
             }
             //Aus DB laden
-            var schlagfromRepo = _schlagRepository.GetSchlaege(resourceParameters);
+            var schlagfromRepo = _betriebRepository.GetSchlaege(betriebID,resourceParameters);
             var schlag = Mapper.Map<IEnumerable<SchlagDto>>(schlagfromRepo);
 
             //Falls der Header "application/vnd.ostfalia.hateoas+json" werden keine Links im Header mit angegeben. 
@@ -139,7 +139,7 @@ namespace REST.Api.Controllers
         /// <param name="schlagRessourceParameters">Übergabe der RessourceParameter</param>
         /// <param name="type">Übergabe der ResourceUriType </param>
         /// <returns>Link</returns>
-        private string CreateSchlagResourceUri(SchlagResourceParameter resourceParameters, ResourceUriType type)
+        private string CreateSchlagResourceUri( SchlagResourceParameter resourceParameters, ResourceUriType type)
         {
             switch (type)
             {
@@ -176,9 +176,9 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id}", Name = "GetSchlag")]
-        public ActionResult<Schlag> GetSchlag(Guid id, [FromQuery] string fields)
+        public ActionResult<Schlag> GetSchlag(Guid betriebID, Guid id, [FromQuery] string fields)
         {
-            var schlagfromRepo = _schlagRepository.GetSchlag(id);
+            var schlagfromRepo = _betriebRepository.GetSchlag(betriebID, id);
             if (schlagfromRepo == null)
             {
                 return NotFound();
@@ -211,7 +211,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost(Name = "CreatSchlag")]
-        public ActionResult<Schlag> CreatSchlag([FromBody]SchlagForCreationDto schlag)
+        public ActionResult<Schlag> CreatSchlag(Guid betriebID, [FromBody]SchlagForCreationDto schlag)
         {
             //Überprüfung ob der Übergabeparameter leer ist
             // <returns>BadRequest </returns>
@@ -234,9 +234,9 @@ namespace REST.Api.Controllers
 
             var schlagEntity = Mapper.Map<Schlag>(schlag);
 
-            _schlagRepository.AddSchlag(schlagEntity);
+            _betriebRepository.AddSchlag(betriebID,schlagEntity);
 
-            if (!_schlagRepository.Save())
+            if (!_betriebRepository.Save())
             {
                 throw new Exception("Fehler beim Speichern eines neuen Schlages");
             }
@@ -264,22 +264,22 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{id}", Name = "DeleteSchlag")]
-        public ActionResult<Schlag> DeleteSchlag(Guid id)
+        public ActionResult<Schlag> DeleteSchlag(Guid betriebID, Guid id)
         {
             //Existiert der Schlag?
-            if (!_schlagRepository.SchlagExists(id))
+            if (!_betriebRepository.SchlagExists(betriebID,id))
             {
                 return NotFound();
             }
 
-            var schlagFromRepo = _schlagRepository.GetSchlag(id);
+            var schlagFromRepo = _betriebRepository.GetSchlag(betriebID, id);
             if (schlagFromRepo == null)
             {
                 return NotFound();
             }
-            _schlagRepository.DeleteSchlag(schlagFromRepo);
+            _betriebRepository.DeleteSchlag(schlagFromRepo);
 
-            if (!_schlagRepository.Save())
+            if (!_betriebRepository.Save())
             {
                 throw new Exception($"Löschen des Schlags schlug fehl. ");
             }
@@ -306,7 +306,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}", Name = "UpdateSchlag")]
-        public ActionResult<Schlag> UpdateSchlag(Guid id, [FromBody]SchlagForUpdateDto schlag)
+        public ActionResult<Schlag> UpdateSchlag(Guid betriebID, Guid id, [FromBody]SchlagForUpdateDto schlag)
         {
             //geänderte Daten
             // <returns>BadRequest </returns>
@@ -317,14 +317,14 @@ namespace REST.Api.Controllers
 
             //Existiert der Schlag?
             // <returns>NotFound </returns>
-            if (!_schlagRepository.SchlagExists(id))
+            if (!_betriebRepository.SchlagExists(betriebID,id))
             {
                 var schlagEntity = Mapper.Map<Schlag>(schlag);
                 schlagEntity.ID = id;
 
-                _schlagRepository.AddSchlag(schlagEntity);
+                _betriebRepository.AddSchlag(betriebID,schlagEntity);
 
-                if (!_schlagRepository.Save())
+                if (!_betriebRepository.Save())
                 {
                     throw new Exception($"Upserting schlug fehl.");
                 }
@@ -341,7 +341,7 @@ namespace REST.Api.Controllers
                 return Ok(("GetSchlag",
                     new { id = linkedResourceToReturn["ID"] }, linkedResourceToReturn));
             }
-            var schlagFromRepo = _schlagRepository.GetSchlag(id);
+            var schlagFromRepo = _betriebRepository.GetSchlag(betriebID,id);
             //if (schlagFromRepo == null)
             //{
             //    var schlagEntity = Mapper.Map<Schlag>(schlag);
@@ -363,9 +363,9 @@ namespace REST.Api.Controllers
 
             Mapper.Map(schlag, schlagFromRepo);
 
-            _schlagRepository.UpdateSchlag(schlagFromRepo);
+            _betriebRepository.UpdateSchlag(schlagFromRepo);
 
-            if (!_schlagRepository.Save())
+            if (!_betriebRepository.Save())
             {
                 throw new Exception($"Speichern des Schlags schlug fehl. ");
             }
@@ -398,7 +398,7 @@ namespace REST.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPatch("{id}", Name = "PartiallyUpdateSchlag")]
-        public ActionResult<Schlag> PartiallyUpdateSchlag(Guid id,
+        public ActionResult<Schlag> PartiallyUpdateSchlag(Guid betriebID, Guid id,
             [FromBody]JsonPatchDocument<SchlagForUpdateDto> patchDoc)
         {
             //Eingabe ist nicht null
@@ -408,12 +408,12 @@ namespace REST.Api.Controllers
             }
             //Existiert der Schlag?
             // <returns>NotFound </returns>
-            if (!_schlagRepository.SchlagExists(id))
+            if (!_betriebRepository.SchlagExists(betriebID,id))
             {
                 return NotFound();
             }
 
-            var schlagFromRepo = _schlagRepository.GetSchlag(id);
+            var schlagFromRepo = _betriebRepository.GetSchlag(betriebID,id);
 
             if (schlagFromRepo == null)
             {
@@ -430,9 +430,9 @@ namespace REST.Api.Controllers
                 var schlagToAdd = Mapper.Map<Schlag>(schlagDto);
                 schlagToAdd.ID = id;
 
-                _schlagRepository.AddSchlag(schlagToAdd);
+                _betriebRepository.AddSchlag(betriebID,schlagToAdd);
 
-                if (!_schlagRepository.Save())
+                if (!_betriebRepository.Save())
                 {
                     throw new Exception($"Upserting Schlag mit der ID: {id} schlug fehl");
                 }
@@ -457,8 +457,8 @@ namespace REST.Api.Controllers
 
             Mapper.Map(schlagToPatch, schlagFromRepo);
 
-            _schlagRepository.UpdateSchlag(schlagFromRepo);
-            if (!_schlagRepository.Save())
+            _betriebRepository.UpdateSchlag(schlagFromRepo);
+            if (!_betriebRepository.Save())
             {
                 throw new Exception($"Patch Schlag mit der ID: {id} schlug fehl");
             }

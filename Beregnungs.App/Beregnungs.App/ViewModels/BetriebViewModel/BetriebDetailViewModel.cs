@@ -30,14 +30,17 @@ namespace Beregnungs.App.ViewModels
             DeleteBetriebCommand = new Command(async () => await ExecuteDeleteBetriebCommand());
         }
 
-        private Task ExecuteDeleteBetriebCommand()
+        private async Task ExecuteDeleteBetriebCommand()
         {
-            throw new NotImplementedException();
+            await DataStore.DeleteDatenAsync(Betrieb.ID);
+            DependencyService.Get<IMessage>().LongAlert("Löschen erfolgreich");
+            // await Application.Current.MainPage.Navigation.PopAsync();
         }
 
-        private Task ExecuteSaveBetriebCommand()
+        private async Task ExecuteSaveBetriebCommand()
         {
-            throw new NotImplementedException();
+            await DataStore.UpdateDatenAsync(Betrieb);
+            DependencyService.Get<IMessage>().LongAlert("Speichern erfolgreich");
         }
     }
 }

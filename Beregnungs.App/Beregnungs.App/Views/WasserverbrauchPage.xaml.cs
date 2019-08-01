@@ -31,9 +31,7 @@ namespace Beregnungs.App.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            if (viewModel.BeregnungsDatens.Count == 0)
-                viewModel.LoadBeregnungsDatensCommand.Execute(null);
+            viewModel.LoadBeregnungsDatensCommand.Execute(null);
         }
     }
 }

@@ -31,9 +31,15 @@ namespace REST.Api.Entities
             = new List<Mitarbeiter>();
 
         /// <summary>
-        /// ICollection<Mitarbeiter> Mitarbeiters
+        /// ICollection<Mitarbeiter> BeregnungsDaten
         /// </summary>
         public ICollection<BeregnungsDaten> BeregnungsDaten { get; set; }
             = new List<BeregnungsDaten>();
+
+        /// <summary>
+        /// ICollection<Mitarbeiter> Schlage
+        /// </summary>
+        public ICollection<Schlag> Schlag { get; set; }
+            = new List<Schlag>();
     }
 }

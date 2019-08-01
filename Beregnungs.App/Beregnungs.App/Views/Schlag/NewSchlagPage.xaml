@@ -30,11 +30,7 @@
                 Style="{DynamicResource TitleStyle}" 
                 Font="Bold,14" />
                 <Entry Text="{Binding Name}" Placeholder="Feld 21" PlaceholderColor="Gray" />
-                <Label Text="ID des Betirebs:" 
-                LineBreakMode="NoWrap" 
-                Style="{DynamicResource TitleStyle}" 
-                Font="Bold,14" />
-                <Entry Text="{Binding BetriebID}" Placeholder="c3fbd65b-536d-42bd-9b24-84ec9c4c84d4" PlaceholderColor="Gray" />
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -16,17 +16,6 @@ namespace Beregnungs.App.Models
         /// </summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Guid BetriebID
-        /// </summary>
-        public Guid BetriebID { get; set; }
-
-
-        public string BetriebIDString
-        {
-            get { return BetriebID.ToString(); }
-            set { BetriebID = Guid.Parse(value); }
-        }
         public string SchlagIDString
         {
             get { return ID.ToString(); }

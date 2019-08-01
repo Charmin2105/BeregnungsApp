@@ -21,11 +21,6 @@ namespace Beregnungs.App.ViewModels
             get { return Schlag.Name; }
             set { Schlag.Name = value; }
         }
-        public string BetriebID
-        {
-            get { return Schlag.BetriebID.ToString(); }
-            set { Schlag.BetriebID = Guid.Parse( value); }
-        }
 
         public SchlagDetailViewModel(Schlag schlag = null)
         {

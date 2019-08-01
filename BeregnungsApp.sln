@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beregnungs.App.Android", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beregnungs.App.iOS", "Beregnungs.App\Beregnungs.App.iOS\Beregnungs.App.iOS.csproj", "{05C533CD-63D0-40D4-92E7-814AEA991A2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beregnungs.App", "Beregnungs.App\Beregnungs.App\Beregnungs.App.csproj", "{3548DE9C-8847-419E-837A-68653E591A36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Beregnungs.App", "Beregnungs.App\Beregnungs.App\Beregnungs.App.csproj", "{3548DE9C-8847-419E-837A-68653E591A36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

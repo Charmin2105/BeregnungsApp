@@ -13,7 +13,6 @@ namespace Beregnungs.App.Views
 	{
         public Betrieb Betrieb { get; set; }
         BetriebDetailViewModel viewModel;
-        public Command SaveBetriebCommand;
 
         //Ctor mit Parameter
         public BetriebDetailPage (BetriebDetailViewModel viewModel)
@@ -25,12 +24,8 @@ namespace Beregnungs.App.Views
         public BetriebDetailPage()
         {
             InitializeComponent();
-            var betrieb = new Betrieb()
-            {
-                ID = new Guid("25320c5e-f58a-4b1f-b63a-8ee07a840bdf"),
-                Name = "SudiFarm"
-            };
-            viewModel = new BetriebDetailViewModel(betrieb);
+
+            viewModel = new BetriebDetailViewModel(Betrieb);
             BindingContext = viewModel;
 
         }

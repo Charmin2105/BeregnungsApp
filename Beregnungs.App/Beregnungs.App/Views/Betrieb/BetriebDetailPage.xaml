@@ -6,12 +6,6 @@
 
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
-            <Label Text="ID des Betirebs:" 
-                LineBreakMode="NoWrap" 
-                Style="{DynamicResource TitleStyle}" 
-                Font="Bold,14" />
-            <Entry Text="{Binding ID}" 
-                   IsEnabled="False" PlaceholderColor="Gray" />
             <Label Text="Name:" 
                 LineBreakMode="NoWrap" 
                 Style="{DynamicResource TitleStyle}" 
@@ -21,12 +15,12 @@
 
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="Löschen" 
-                         Command="{Binding DeleteSchlagCommand}"
+                         Command="{Binding DeleteBetriebCommand}"
                     HorizontalOptions="EndAndExpand"
                     WidthRequest="150"
                     Text="Löschen"  />
                 <Button x:Name="Speichern" 
-                        Command="{Binding SaveSchlagCommand}"
+                        Command="{Binding SaveBetriebCommand}"
                     HorizontalOptions="EndAndExpand"
                     WidthRequest="150"
                     Text="Speichern"  />

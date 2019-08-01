@@ -14,8 +14,8 @@ namespace Beregnungs.App.Services
     {
         HttpClient _client;
         IEnumerable<Schlag> schlaege;
+        private string betriebID = App.BetriebID;
 
-        string url = $"api/schlaege";
 
         /// <summary>
         /// Ctor
@@ -46,7 +46,7 @@ namespace Beregnungs.App.Services
             var serializedItem = JsonConvert.SerializeObject(daten);
 
             //An Server senden
-            var response = await _client.PostAsync(url, new StringContent(serializedItem, Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsync($"api/betriebe/" + betriebID + "/schlaege", new StringContent(serializedItem, Encoding.UTF8, "application/json"));
             return response.IsSuccessStatusCode;
         }
 
@@ -58,7 +58,7 @@ namespace Beregnungs.App.Services
         public async Task<bool> DeleteDatenAsync(Guid id)
         {
             //Anfrage an Server
-            var response = await _client.DeleteAsync($"api/schlaege/{id}");
+            var response = await _client.DeleteAsync($"api/betriebe/" + betriebID + "/schlaege/{id}");
 
             return response.IsSuccessStatusCode;
         }
@@ -76,7 +76,7 @@ namespace Beregnungs.App.Services
             if (forceRefresh)
             {
                 //Anfrage an Server
-                var response = await _client.GetAsync(url);
+                var response = await _client.GetAsync($"api/betriebe/" + betriebID + "/schlaege");
 
                 //Umwandeln der JSON in IEnumerable<Schlag>
                 var json = await response.Content.ReadAsStringAsync();
@@ -120,7 +120,7 @@ namespace Beregnungs.App.Services
             var serializedItem = JsonConvert.SerializeObject(daten);
 
             //An Server senden
-            var response = await _client.PutAsync($"api/schlaege/{daten.ID.ToString()}", new StringContent(serializedItem, Encoding.UTF8, "application/json"));
+            var response = await _client.PutAsync($"api/betriebe/" + betriebID + "/schlaege/{daten.ID.ToString()}", new StringContent(serializedItem, Encoding.UTF8, "application/json"));
 
             return response.IsSuccessStatusCode;
         }

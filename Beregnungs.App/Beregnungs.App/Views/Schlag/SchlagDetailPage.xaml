@@ -11,13 +11,6 @@
                 Font="Bold,14" />
             <Entry Text="{Binding Name}" 
                    PlaceholderColor="Gray" />
-            <Label Text="ID des Betirebs:" 
-                LineBreakMode="NoWrap" 
-                Style="{DynamicResource TitleStyle}" 
-                Font="Bold,14" />
-            <Entry Text="{Binding BetriebID}" 
-                   IsEnabled="False" PlaceholderColor="Gray" />
-            
             <StackLayout Orientation="Horizontal">
                 <Button x:Name="Löschen" 
                          Command="{Binding DeleteSchlagCommand}"

@@ -181,6 +181,7 @@ namespace REST.Api.Services
         }
         #endregion
 
+        #region BeregnungsDaten
         /// <summary>
         /// Hinzufügen neuer Daten
         /// </summary>
@@ -235,7 +236,7 @@ namespace REST.Api.Services
         /// </summary>
         /// <param name="datenresourceParameters">Seiteneinstellungen</param>
         /// <returns> PagedList<Daten></returns>
-        public PagedList<BeregnungsDaten> GetBeregnungsDatens(Guid betriebId,BeregnungsDatenResourceParameter datenresourceParameters)
+        public PagedList<BeregnungsDaten> GetBeregnungsDatens(Guid betriebId, BeregnungsDatenResourceParameter datenresourceParameters)
         {
             //var collectionBeforPaging = _context.BeregnungsDatens.OrderBy(a =>
             //a.StartDatum).AsQueryable();
@@ -284,6 +285,86 @@ namespace REST.Api.Services
         public void UpdateBeregnungsDaten(BeregnungsDaten daten)
         {
             // throw new NotImplementedException();
+        }
+        #endregion
+
+        /// <summary>
+        /// AddSchlag
+        /// </summary>
+        /// <param name="schlag">Schlag</param>
+        public void AddSchlag(Guid betriebId, Schlag schlag)
+        {
+            var betrieb = GetBetrieb(betriebId);
+            if (betrieb != null)
+            {
+                if (schlag.ID == Guid.Empty)
+                {
+                    schlag.ID = Guid.NewGuid();
+                    betrieb.Schlag.Add(schlag);
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// DeleteSchlag
+        /// </summary>
+        /// <param name="schlag">Schlag</param>
+        public void DeleteSchlag(Schlag schlag)
+        {
+            _context.Schlaege.Remove(schlag);
+        }
+
+        /// <summary>
+        /// GetSchlaege
+        /// </summary>
+        /// <param name="schlagRessource">SchlagResourceParameter</param>
+        /// <returns>PagedList<Schlag></returns>
+        public PagedList<Schlag> GetSchlaege(Guid betriebId, SchlagResourceParameter schlagRessource)
+        {
+            var collectionBeforPaging = _context.Schlaege.Where(b => b.Betrieb.ID == betriebId).OrderBy(a => a.Name);
+            return PagedList<Schlag>.Create(collectionBeforPaging, schlagRessource.PageNumber, schlagRessource.PageSize);
+        }
+
+        /// <summary>
+        /// GetSchlag
+        /// </summary>
+        /// <param name="Id">Guid</param>
+        /// <returns>Schlag</returns>
+        public Schlag GetSchlag(Guid betriebId, Guid Id)
+        {
+            return _context.Schlaege
+                        .Where(b => b.Betrieb.ID == betriebId && b.ID == Id).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// GetSchlaege
+        /// </summary>
+        /// <param name="guids">Guid</param>
+        /// <returns>IEnumerable<Schlag></returns>
+        public IEnumerable<Schlag> GetSchlaege(Guid betriebId)
+        {
+            return _context.Schlaege.Where(b => b.Betrieb.ID == betriebId).ToList();
+        }
+
+
+        /// <summary>
+        /// SchlagExists
+        /// </summary>
+        /// <param name="schlagId">Guid</param>
+        /// <returns>bool</returns>
+        public bool SchlagExists(Guid betriebID, Guid schlagId)
+        {
+            return _context.Schlaege.Any(a => a.Betrieb.ID == betriebID && a.ID == schlagId);
+        }
+
+        /// <summary>
+        /// UpdateSchlag
+        /// </summary>
+        /// <param name="schlag">Schlag</param>
+        public void UpdateSchlag(Schlag schlag)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

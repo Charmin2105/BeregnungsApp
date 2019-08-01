@@ -44,7 +44,7 @@ namespace Beregnungs.App.Models
 
         public string GebDatumString
         {
-            get { return Geburtstag.ToString(); }
+            get { return Geburtstag.ToString("d"); }
         }
     }
 }

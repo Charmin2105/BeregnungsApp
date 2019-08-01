@@ -43,14 +43,6 @@
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="13" />
-                            <Label Text="BetriebID " 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource TitleStyle}" 
-                                Font="Bold,14" />
-                            <Label Text="{Binding BetriebIDString}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="13" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

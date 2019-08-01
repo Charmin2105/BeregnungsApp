@@ -355,14 +355,14 @@
             </summary>
             <returns>OK</returns>
         </member>
-        <member name="M:REST.Api.Controllers.SchlagController.#ctor(REST.Api.Services.ISchlagRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.SchlagController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
+        <member name="M:REST.Api.Controllers.SchlagController.#ctor(REST.Api.Services.IBetriebRepository,Microsoft.Extensions.Logging.ILogger{REST.Api.Controllers.SchlagController},Microsoft.AspNetCore.Mvc.IUrlHelper,REST.Api.Services.IPropertyMappingService,REST.Api.Services.ITypeHelperService)">
             <summary>
             Ctor
             </summary>
             <param name="beregnungsRepository"></param>
             <param name="ilogger"></param>
         </member>
-        <member name="M:REST.Api.Controllers.SchlagController.GetSchlaege(REST.Api.Helpers.SchlagResourceParameter,System.String)">
+        <member name="M:REST.Api.Controllers.SchlagController.GetSchlaege(System.Guid,REST.Api.Helpers.SchlagResourceParameter,System.String)">
             <summary>
             Laden aller Schläge.
             </summary>
@@ -379,7 +379,7 @@
             <param name="type">Übergabe der ResourceUriType </param>
             <returns>Link</returns>
         </member>
-        <member name="M:REST.Api.Controllers.SchlagController.GetSchlag(System.Guid,System.String)">
+        <member name="M:REST.Api.Controllers.SchlagController.GetSchlag(System.Guid,System.Guid,System.String)">
             <summary>
             Laden eines bestimmten Schlages.
             </summary>
@@ -387,7 +387,7 @@
             <returns>OK Code </returns>
             <response code="200">Returns einen bestimmten Schlag</response>
         </member>
-        <member name="M:REST.Api.Controllers.SchlagController.CreatSchlag(REST.Api.Models.SchlagForCreationDto)">
+        <member name="M:REST.Api.Controllers.SchlagController.CreatSchlag(System.Guid,REST.Api.Models.SchlagForCreationDto)">
             <summary>
             Hinzufügen eines Schlages.
             </summary>
@@ -402,14 +402,14 @@
             </remarks>
             <response code="201">Returns Schlag erstellt</response>
         </member>
-        <member name="M:REST.Api.Controllers.SchlagController.DeleteSchlag(System.Guid)">
+        <member name="M:REST.Api.Controllers.SchlagController.DeleteSchlag(System.Guid,System.Guid)">
             <summary>
              Löschen eines Schlages.
              </summary>
              <param name="id">Id des zu löschenden Schlag.</param>
              <returns>NoContent  Code</returns>
         </member>
-        <member name="M:REST.Api.Controllers.SchlagController.UpdateSchlag(System.Guid,REST.Api.Models.SchlagForUpdateDto)">
+        <member name="M:REST.Api.Controllers.SchlagController.UpdateSchlag(System.Guid,System.Guid,REST.Api.Models.SchlagForUpdateDto)">
             <summary>
              Update eines Schlages.
              </summary>
@@ -426,7 +426,7 @@
              </remarks>
              <response code="201">Returns Schlag erstellt</response>
         </member>
-        <member name="M:REST.Api.Controllers.SchlagController.PartiallyUpdateSchlag(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.SchlagForUpdateDto})">
+        <member name="M:REST.Api.Controllers.SchlagController.PartiallyUpdateSchlag(System.Guid,System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{REST.Api.Models.SchlagForUpdateDto})">
             <summary>
              Teilupdate eines Schlages.
              </summary>
@@ -615,6 +615,7 @@
         </member>
         <!-- Ungültiger XML-Kommentar wurde für den Member "P:REST.Api.Entities.Betrieb.Mitarbeiters" ignoriert -->
         <!-- Ungültiger XML-Kommentar wurde für den Member "P:REST.Api.Entities.Betrieb.BeregnungsDaten" ignoriert -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "P:REST.Api.Entities.Betrieb.Schlag" ignoriert -->
         <member name="T:REST.Api.Entities.Mitarbeiter">
             <summary>
             Mitarbeiter
@@ -660,7 +661,7 @@
             string Name
             </summary>
         </member>
-        <member name="P:REST.Api.Entities.Schlag.BetriebID">
+        <member name="P:REST.Api.Entities.Schlag.Betrieb">
             <summary>
             Betrieb 
             </summary>
@@ -1374,6 +1375,40 @@
             </summary>
             <param name="guids">IEnumerable der IDs</param>
             <returns>IEnumerable</returns>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.AddSchlag(System.Guid,REST.Api.Entities.Schlag)">
+            <summary>
+            AddSchlag
+            </summary>
+            <param name="schlag">Schlag</param>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.DeleteSchlag(REST.Api.Entities.Schlag)">
+            <summary>
+            DeleteSchlag
+            </summary>
+            <param name="schlag">Schlag</param>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.BetriebRepository.GetSchlaege(System.Guid,REST.Api.Helpers.SchlagResourceParameter)" ignoriert -->
+        <member name="M:REST.Api.Services.BetriebRepository.GetSchlag(System.Guid,System.Guid)">
+            <summary>
+            GetSchlag
+            </summary>
+            <param name="Id">Guid</param>
+            <returns>Schlag</returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:REST.Api.Services.BetriebRepository.GetSchlaege(System.Guid)" ignoriert -->
+        <member name="M:REST.Api.Services.BetriebRepository.SchlagExists(System.Guid,System.Guid)">
+            <summary>
+            SchlagExists
+            </summary>
+            <param name="schlagId">Guid</param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:REST.Api.Services.BetriebRepository.UpdateSchlag(REST.Api.Entities.Schlag)">
+            <summary>
+            UpdateSchlag
+            </summary>
+            <param name="schlag">Schlag</param>
         </member>
         <member name="T:REST.Api.Services.IBetriebRepository">
             <summary>

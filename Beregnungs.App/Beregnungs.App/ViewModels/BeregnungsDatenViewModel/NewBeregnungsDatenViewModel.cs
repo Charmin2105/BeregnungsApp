@@ -29,8 +29,8 @@ namespace Beregnungs.App.ViewModels
         Betrieb betrieb;
         Schlag schlag;
         string duese = string.Empty;
-        string wasseruhrStart = string.Empty;
-        string wasseruhrEnde = string.Empty;
+        string wasseruhrStart = "0";
+        string wasseruhrEnde = "0";
         string vorkomnisse = string.Empty;
         bool istAbgeschlossen = false;
 

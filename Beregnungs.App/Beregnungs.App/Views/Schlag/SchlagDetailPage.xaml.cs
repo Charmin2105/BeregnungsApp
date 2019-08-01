@@ -29,7 +29,6 @@ namespace Beregnungs.App.Views
             {
                   ID = new Guid("25320c5e-f58a-4b1f-b63a-8ee07a840bdf"),
                   Name = "Feld 1",
-                  BetriebID = new Guid("51004c54-3a86-4f55-b1a7-c6caeb8ca522"),
             };
             viewModel = new SchlagDetailViewModel(schlag);
             BindingContext = viewModel;

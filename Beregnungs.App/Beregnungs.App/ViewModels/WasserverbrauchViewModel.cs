@@ -6,6 +6,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -17,13 +18,8 @@ namespace Beregnungs.App.ViewModels
     {
         public IDataStore<BeregnungsDaten> DataStore => DependencyService.Get<IDataStore<BeregnungsDaten>>() ?? new BeregnungsDatenRESTStore();
 
-        public ObservableCollection<BeregnungsDaten> BeregnungsDatens { get; set; }
         public Command LoadBeregnungsDatensCommand { get; set; }
-        public LineChart Chart
-        {
-            get { return Chart; }
-            set { value = Chart; }
-        }
+        public LineChart Chart { get; set; }
         public int Verbrauch { get; set; }
         public Entry[] entry;
         public Entry[] Entry
@@ -36,31 +32,30 @@ namespace Beregnungs.App.ViewModels
         public WasserverbrauchViewModel()
         {
             LoadBeregnungsDatensCommand = new Command(async () => await ExecuteLoadItemsCommand());
-            BeregnungsDatens = new ObservableCollection<BeregnungsDaten>();
             entry = new[]
               {
-                 new Entry(25)
+                 new Entry(3500)
                  {
-                     Label = "UWP",
-                     ValueLabel = "212",
+                     Label = "25.07.2019",
+                     ValueLabel = "3500",
                      Color = SKColor.Parse("#2c3e50")
                  },
-                 new Entry(248)
+                 new Entry(3862)
                  {
-                     Label = "Android",
-                     ValueLabel = "248",
+                     Label = "26.07.2019",
+                     ValueLabel = "3862",
                      Color = SKColor.Parse("#77d065")
                  },
-                 new Entry(128)
+                 new Entry(2356)
                  {
-                     Label = "iOS",
-                     ValueLabel = "128",
+                     Label = "26.07.2019",
+                     ValueLabel = "2356",
                      Color = SKColor.Parse("#b455b6")
                  },
-                 new Entry(514)
+                 new Entry(4639)
                  {
-                     Label = "Shared",
-                     ValueLabel = "514",
+                     Label = "28.07.2019",
+                     ValueLabel = "4639",
                      Color = SKColor.Parse("#3498db")
             } };
             Chart = new LineChart()
@@ -74,27 +69,21 @@ namespace Beregnungs.App.ViewModels
         //Load Comand
         async Task ExecuteLoadItemsCommand()
         {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
             try
             {
-                BeregnungsDatens.Clear();
                 var items = await DataStore.GetDatensAsync(true);
                 foreach (var item in items)
                 {
-                    BeregnungsDatens.Add(item);
                     entry = new[]
                     {
                         new Entry(item.Verbrauch)
                         {
                             Label = item.StartDatumString,
+                            ValueLabel = item.StartDatumString
                         }
                    };
                 }
-                Chart = new LineChart()
+               Chart = new LineChart()
                 {
                     Entries = entry
                 };

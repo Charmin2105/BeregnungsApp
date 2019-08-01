@@ -25,8 +25,8 @@ namespace REST.Api.Entities
         /// <summary>
         /// Betrieb 
         /// </summary>
-        [Required]
-        public Guid BetriebID { get; set; }
+        [ForeignKey("BetriebID")]
+        public Betrieb Betrieb { get; set; }
 
         // Mögliche weitere Daten die erfasst werden sollen für einen Schlag
         //[Required]

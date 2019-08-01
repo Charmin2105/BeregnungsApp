@@ -17,7 +17,6 @@ namespace Beregnungs.App.ViewModels
         public Command SaveNewSchlagCommand { get; set; }
 
         string name = string.Empty;
-        string betriebID = string.Empty;
 
         public string Name
         {
@@ -26,14 +25,6 @@ namespace Beregnungs.App.ViewModels
                 return name;
             }
             set { name = value; }
-        }
-        public string BetriebID
-        {
-            get
-            {
-                return betriebID;
-            }
-            set { betriebID = value; }
         }
 
         //Ctor
@@ -47,8 +38,7 @@ namespace Beregnungs.App.ViewModels
         {
             schlag = new Schlag()
             {
-                Name = Name,
-                BetriebID = new Guid(BetriebID)
+                Name = Name
             };
             await DataStore.AddDatenAsync(schlag);
         }

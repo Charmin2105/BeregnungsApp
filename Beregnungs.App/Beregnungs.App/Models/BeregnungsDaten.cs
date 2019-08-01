@@ -8,7 +8,7 @@ namespace Beregnungs.App.Models
         /// <summary>
         ///  Aktueller Wasserpreis
         /// </summary>
-        private double _wasserPreis = 1.66;
+        private double _wasserPreis = App.Wasserpreis;
 
         /// <summary>
         ///  ID 
